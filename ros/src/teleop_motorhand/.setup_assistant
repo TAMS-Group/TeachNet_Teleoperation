@@ -1,0 +1,8 @@
+moveit_setup_assistant_config:
+  URDF:
+    package: tams_motorhand_description
+    relative_path: robots/tams_motorhand.urdf.xacro
+  SRDF:
+    relative_path: config/tams_motorhand.srdf
+  CONFIG:
+    generated_timestamp: 1405180525

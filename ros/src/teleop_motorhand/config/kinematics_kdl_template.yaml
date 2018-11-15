@@ -1,0 +1,41 @@
+wrist:
+  kinematics_solver: kdl_kinematics_plugin/KDLKinematicsPlugin
+  kinematics_solver_search_resolution: 0.003
+  kinematics_solver_timeout: 0.005
+  kinematics_solver_attempts: 3
+  position_only_ik: true
+first_finger:
+  kinematics_solver: kdl_kinematics_plugin/KDLKinematicsPlugin
+  kinematics_solver_search_resolution: 0.001
+  kinematics_solver_timeout: 0.005
+  kinematics_solver_attempts: 3
+  position_only_ik: true
+  tip_name: fftip
+middle_finger:
+  kinematics_solver: kdl_kinematics_plugin/KDLKinematicsPlugin
+  kinematics_solver_search_resolution: 0.001
+  kinematics_solver_timeout: 0.005
+  kinematics_solver_attempts: 3
+  position_only_ik: true
+  tip_name: mftip
+ring_finger:
+  kinematics_solver: kdl_kinematics_plugin/KDLKinematicsPlugin
+  kinematics_solver_search_resolution: 0.001
+  kinematics_solver_timeout: 0.005
+  kinematics_solver_attempts: 3
+  position_only_ik: true
+  tip_name: rftip
+little_finger:
+  kinematics_solver: kdl_kinematics_plugin/KDLKinematicsPlugin
+  kinematics_solver_search_resolution: 0.001
+  kinematics_solver_timeout: 0.005
+  kinematics_solver_attempts: 3
+  position_only_ik: true
+  tip_name: lftip
+thumb:
+  kinematics_solver: kdl_kinematics_plugin/KDLKinematicsPlugin
+  kinematics_solver_search_resolution: 0.001
+  kinematics_solver_timeout: 0.005
+  kinematics_solver_attempts: 3
+  position_only_ik: true
+  tip_name: thtip

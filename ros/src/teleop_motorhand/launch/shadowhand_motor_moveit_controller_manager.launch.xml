@@ -1,0 +1,8 @@
+<launch>
+  <!-- Set the param that trajectory_execution_manager needs to find the controller plugin -->
+  <arg name="moveit_controller_manager" default="moveit_simple_controller_manager/MoveItSimpleControllerManager"/>
+  <param name="moveit_controller_manager" value="$(arg moveit_controller_manager)"/>
+  <!-- load controller_list -->
+
+  <node name="load_controllers" pkg="sr_moveit_hand_config" type="generate_load_moveit_config.py" respawn="false" output="screen" args="real_controllers --"/>
+</launch>

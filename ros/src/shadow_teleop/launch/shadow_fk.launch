@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<launch>
+    <node name="shadow_forward_kinematics" pkg="shadow_teleop" type="shadow_forward_kinematics" output="screen">
+        <param name="jointsfile" value="$(find shadow_teleop)/data/paper_img/joint46.csv"/>
+        <param name="cartesian_pos_file" value="$(find shadow_teleop)/data/paper_img/output.csv"/>
+        <param name="location_frame" value="world"/>
+    </node>
+</launch>

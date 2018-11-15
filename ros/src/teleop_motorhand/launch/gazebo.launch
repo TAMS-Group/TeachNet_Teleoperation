@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<launch> 
+  <include file="$(find sr_robot_launch)/launch/srhand.launch"> 
+    <arg name="eth_port" value="eth1" />
+    <arg name="hand_serial" value="23" /> 
+    <arg name="hand_id" value="rh" /> 
+
+    <arg name="robot_description" value="$(find tams_motorhand_description)/robots/tams_motorhand.urdf.xacro" />
+    <arg name="mapping_path" value="$(find sr_edc_launch)/mappings/default_mappings/rh_E_v1.yaml"/> 
+
+    <arg name="use_moveit" value="true"/>
+    <arg name="sim" value="true"/>
+  </include> 
+</launch>

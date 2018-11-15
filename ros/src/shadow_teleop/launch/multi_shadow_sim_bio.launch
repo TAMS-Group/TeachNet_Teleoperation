@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<launch>
+    <node name="moveit_multi_bioik_dataset" pkg="shadow_teleop" type="moveit_multi_bioik_dataset" output="screen">
+        <param name="mapfile" value="$(find shadow_teleop)/data/Human_label/hand.csv"/>
+        <param name="depth_img_path" value="$(find shadow_teleop)/data/depth_shadow/"/>
+        <param name="depth_img_path1" value="$(find shadow_teleop)/data/depth_shadow1/"/>
+        <param name="depth_img_path2" value="$(find shadow_teleop)/data/depth_shadow2/"/>
+        <param name="depth_img_path3" value="$(find shadow_teleop)/data/depth_shadow3/"/>
+        <param name="depth_img_path4" value="$(find shadow_teleop)/data/depth_shadow4/"/>
+        <param name="depth_img_path5" value="$(find shadow_teleop)/data/depth_shadow5/"/>
+        <param name="depth_img_path6" value="$(find shadow_teleop)/data/depth_shadow6/"/>
+        <param name="depth_img_path7" value="$(find shadow_teleop)/data/depth_shadow7/"/>
+        <param name="depth_img_path8" value="$(find shadow_teleop)/data/depth_shadow8/"/>
+        <param name="jointsfile" value="$(find shadow_teleop)/data/Human_label/tams_joints_file.csv"/>
+    </node>
+</launch>
