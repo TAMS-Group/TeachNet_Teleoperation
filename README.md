@@ -66,7 +66,10 @@ alt="video"  border="0" /></a>
   ```
   python ros/src/shadow_teleop/scripts/human_robot_mappingfile.py
   ```
-- Run shadow hand in gazebo and use the our simulation world (./ros/src/shadow_teleop/data/world/shadowhand_multiview.world).
+- Run shadow hand in gazebo and use the our simulation world (./ros/src/teleop_motorhand/worlds/shadowhand_multiview.world).
+  ```
+  roslaunch teleop_motorhand shadow.launch
+  ```
 - Generate dataset by running the code:
   ```
   roslaunch shadow_teleop multi_shadow_sim_bio.launch
