@@ -4,7 +4,7 @@
   <!-- include macro definitions -->
   <xacro:include filename="$(find sr_description)/hand/xacro/full_hand.urdf.xacro" />
   <xacro:include filename="$(find sr_description)/other/xacro/gazebo/gazebo.urdf.xacro" />
-  <xacro:include filename="$(find tams_motorhand_description)/urdf/biotac.urdf.xacro" />
+  <xacro:include filename="$(find teleop_motorhand)/urdf/biotac.urdf.xacro" />
 
   <xacro:macro name="tams_motorhand" params="prefix">
     <!-- shadow motorhand BioTac -->
