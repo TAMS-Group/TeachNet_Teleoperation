@@ -4,24 +4,24 @@
   <arg name="debug" default="false"/>
   <arg name="load_robot_description" default="true"/>
   <arg name="gui" default="true"/>
-  
+
   <!-- Broadcast static tf for robot root -->
   <node name="virtual_joint_broadcaster" pkg="sr_moveit_hand_config" type="virtual_joint_broadcaster.py" output="screen" />
-  
-  <include file="$(find tams_motorhand)/launch/planning_context.launch" />
-  
-  <node pkg="sr_utilities_common" type="timed_roslaunch.sh" args="2 tams_motorhand move_group.launch 
-    allow_trajectory_execution:=true 
-    fake_execution:=false 
-    info:=true 
-    debug:=$(arg debug) 
+
+  <include file="$(find teleop_motorhand)/launch/planning_context.launch" />
+
+  <node pkg="sr_utilities_common" type="timed_roslaunch.sh" args="2 teleop_motorhand move_group.launch
+    allow_trajectory_execution:=true
+    fake_execution:=false
+    info:=true
+    debug:=$(arg debug)
     publish_monitored_planning_scene:=true
     pipeline:=$(arg planning)" name="timed_roslaunch" output="screen"/>
 
   <!-- Run Rviz and load the default config to see the state of the move_group node -->
   <group if="$(arg gui)">
-    <node pkg="sr_utilities_common" type="timed_roslaunch.sh" args="2 tams_motorhand moveit_rviz.launch 
-      config:=true 
+    <node pkg="sr_utilities_common" type="timed_roslaunch.sh" args="2 teleop_motorhand moveit_rviz.launch
+      config:=true
       debug:=$(arg debug)" name="timed_roslaunch_rviz" output="screen"
     />
   </group>

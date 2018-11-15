@@ -7,38 +7,38 @@
   <arg     if="$(arg debug)" name="launch_prefix" value="gdb --ex run --args" />
 
   <!-- Verbose Mode Option -->
-  <arg name="info" default="$(arg debug)" />  
+  <arg name="info" default="$(arg debug)" />
   <arg unless="$(arg info)" name="command_args" value="" />
   <arg     if="$(arg info)" name="command_args" value="--debug" />
 
   <!-- move_group settings -->
-  <arg name="allow_trajectory_execution" default="true"/> 
+  <arg name="allow_trajectory_execution" default="true"/>
   <arg name="fake_execution" default="false"/>
   <arg name="max_safe_path_cost" default="1"/>
   <arg name="jiggle_fraction" default="0.05" />
   <arg name="publish_monitored_planning_scene" default="true"/>
 
   <!-- Planning Functionality -->
-  <include ns="move_group" file="$(find tams_motorhand)/launch/planning_pipeline.launch.xml">
+  <include ns="move_group" file="$(find teleop_motorhand)/launch/planning_pipeline.launch.xml">
     <arg name="pipeline" value="$(arg pipeline)" />
   </include>
-  
+
   <!-- Inverse Kinematics -->
   <group ns="move_group">
     <!--<node name="load_kinematics" pkg="sr_moveit_hand_config" type="generate_load_moveit_config.py" respawn="false" output="screen" args="kinematics $(find sr_moveit_hand_config)/config/kinematics_template.yaml - -" />-->
-   <rosparam command="load" file="$(find tams_motorhand)/config/kinematics.yaml"/>
+   <rosparam command="load" file="$(find teleop_motorhand)/config/kinematics.yaml"/>
   </group>
 
   <!-- Trajectory Execution Functionality -->
-  <include ns="move_group" file="$(find tams_motorhand)/launch/trajectory_execution.launch.xml" if="$(arg allow_trajectory_execution)">
+  <include ns="move_group" file="$(find teleop_motorhand)/launch/trajectory_execution.launch.xml" if="$(arg allow_trajectory_execution)">
     <arg name="moveit_manage_controllers" value="true" />
     <arg name="moveit_controller_manager" value="shadowhand_motor" unless="$(arg fake_execution)"/>
     <arg name="moveit_controller_manager" value="fake" if="$(arg fake_execution)"/>
   </include>
 
   <!-- Sensors Functionality -->
-  <include ns="move_group" file="$(find tams_motorhand)/launch/sensor_manager.launch.xml" if="$(arg allow_trajectory_execution)">
-    <arg name="moveit_sensor_manager" value="shadowhand_motor" /> 
+  <include ns="move_group" file="$(find teleop_motorhand)/launch/sensor_manager.launch.xml" if="$(arg allow_trajectory_execution)">
+    <arg name="moveit_sensor_manager" value="shadowhand_motor" />
   </include>
 
   <!-- Start the actual move_group node/action server -->
@@ -68,5 +68,5 @@
     <param name="planning_scene_monitor/publish_state_updates" value="$(arg publish_monitored_planning_scene)" />
     <param name="planning_scene_monitor/publish_transforms_updates" value="$(arg publish_monitored_planning_scene)" />
   </node>
-  
+
 </launch>
