@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<launch>
+    <include file="$(find teleop_motorhand)/launch/demo.launch" />
+    <include file="$(find realsense_camera)/launch/f200_nodelet_default.launch" />
+    <node name="interpolate_traj_service" pkg="shadow_teleop" type="interpolate_traj_service" output="screen"/>
+</launch>
