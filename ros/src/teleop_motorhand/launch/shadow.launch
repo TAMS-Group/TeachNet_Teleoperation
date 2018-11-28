@@ -2,21 +2,24 @@
 <launch>
 
   <arg name="hand_id" default="rh"/>
-  <arg name="sim" default="true"/>
+  <arg name="sim" default="false"/>
   <arg name="debug" default="false"/>
   <arg name="verbose" default="true" />
   <!-- Set to true to spawn trajectory controllers for the hands(the trajectory controller overwrites continuously the joint position command, preventing direct control via topics-->
   <arg name="hand_trajectory" default="true"/>
-  <arg name="hand_serial" default="23"/>
-  <arg name="eth_port" default="eth1"/>
+  <arg name="hand_serial" default="554"/>
+  <arg name="eth_port" default="enp2s0"/>
   <arg name="use_moveit" default="true"/>
+  <arg name="pwm_control" default="true"/>
   <arg name="gui" default="true"/>
   <!-- the path to the mapping files -->
   <arg name="mapping_path" default="$(find sr_edc_launch)/mappings/default_mappings/rh_E_v1.yaml"/>
   <arg name="db" default="false" />
+  <arg name="db_path" default="$(find tams_motorhand)/default_warehouse_mongo_db" />
+
 
   <!-- robot description -->
-  <include file="$(find teleop_motorhand)/launch/tams_motorhand_upload.launch" />
+  <arg name="robot_description" value="$(find teleop_motorhand)/robots/tams_motorhand.urdf.xacro" />
 
   <param name="/hand/mapping/$(arg hand_serial)" value="$(arg hand_id)"/>
   <param name="/hand/joint_prefix/$(arg hand_serial)" value="$(arg hand_id)_"/>
@@ -32,7 +35,7 @@
       <arg name="debug" value="$(arg debug)"/>
       <arg name="verbose" value="$(arg verbose)" />
     </include>
-
+    <param name="robot_description" command="xacro --inorder $(arg robot_description)"/>
     <node name="spawn_model" pkg="gazebo_ros" type="spawn_model" args="-urdf -param robot_description -model usrh -z 0.0 "
           respawn="false" output="screen"/>
 

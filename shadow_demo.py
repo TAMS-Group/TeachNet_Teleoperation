@@ -10,7 +10,6 @@ import torch.nn as nn
 import torch.nn.functional as F
 import numpy as np
 import cv2
-from mayavi import mlab
 import csv
 from model.model import *
 from utils import seg_hand_depth
@@ -20,8 +19,6 @@ import moveit_commander
 from sensor_msgs.msg import Image
 from cv_bridge import CvBridge, CvBridgeError
 from shadow_teleop.srv import *
-from sr_robot_commander.sr_hand_commander import SrHandCommander
-from gazebo_msgs.srv import SetModelConfiguration
 
 parser = argparse.ArgumentParser(description='deepShadowTeleop')
 parser.add_argument('--cuda', action='store_true')

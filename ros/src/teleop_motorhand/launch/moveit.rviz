@@ -7,7 +7,7 @@ Panels:
         - /Global Options1
         - /MotionPlanning1/Planning Request1
       Splitter Ratio: 0.742560029
-    Tree Height: 804
+    Tree Height: 393
   - Class: rviz/Help
     Name: Help
   - Class: rviz/Views
@@ -539,7 +539,7 @@ Visualization Manager:
       Value: false
       Visual Enabled: true
     - Class: rviz/Camera
-      Enabled: false
+      Enabled: true
       Image Rendering: background and overlay
       Image Topic: /camera/depth/image_raw
       Name: Camera
@@ -547,243 +547,47 @@ Visualization Manager:
       Queue Size: 2
       Transport Hint: raw
       Unreliable: false
-      Value: false
+      Value: true
       Visibility:
-        "": true
         Grid: true
         InteractiveMarkers: true
+        MarkerArray: true
         MotionPlanning: true
         RobotModel: true
+        RobotState: true
         Value: true
       Zoom Factor: 1
     - Class: rviz/MarkerArray
-      Enabled: true
+      Enabled: false
       Marker Topic: /goal/Markers
       Name: MarkerArray
       Namespaces:
-        goal: true
+        {}
       Queue Size: 100
-      Value: true
+      Value: false
     - Attached Body Color: 150; 50; 150
       Class: moveit_rviz_plugin/RobotState
       Collision Enabled: false
-      Enabled: true
+      Enabled: false
       Links:
         All Links Enabled: true
         Expand Joint Details: false
         Expand Link Details: false
         Expand Tree: false
         Link Tree Style: Links in Alphabetic Order
-        rh_ff_J1_dummy:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        rh_ff_biotac_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        rh_ffdistal:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        rh_ffknuckle:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        rh_ffmiddle:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        rh_ffproximal:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        rh_fftip:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        rh_forearm:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        rh_imu:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        rh_lf_J1_dummy:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        rh_lf_biotac_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        rh_lfdistal:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        rh_lfknuckle:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        rh_lfmetacarpal:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        rh_lfmiddle:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        rh_lfproximal:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        rh_lftip:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        rh_manipulator:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        rh_mf_J1_dummy:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        rh_mf_biotac_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        rh_mfdistal:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        rh_mfknuckle:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        rh_mfmiddle:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        rh_mfproximal:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        rh_mftip:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        rh_palm:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        rh_rf_J1_dummy:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        rh_rf_biotac_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        rh_rfdistal:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        rh_rfknuckle:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        rh_rfmiddle:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        rh_rfproximal:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        rh_rftip:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        rh_th_biotac_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        rh_thbase:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        rh_thdistal:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        rh_thdistal_J1_dummy:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        rh_thhub:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        rh_thmiddle:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        rh_thproximal:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        rh_thtip:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        rh_wrist:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        world:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
       Name: RobotState
       Robot Alpha: 0.5
       Robot Description: robot_description
       Robot State Topic: /real_robot_state_bioik
       Show All Links: true
       Show Highlights: true
-      Value: true
+      Value: false
       Visual Enabled: true
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
     Default Light: true
-    Fixed Frame: world
+    Fixed Frame: camera_depth_optical_frame
     Frame Rate: 30
   Name: root
   Tools:
@@ -810,28 +614,28 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.00999999978
-      Pitch: 0.164796323
+      Pitch: 0.234796315
       Target Frame: forearm
       Value: Orbit (rviz)
-      Yaw: 4.23177242
+      Yaw: 4.59677267
     Saved: ~
 Window Geometry:
   Camera:
     collapsed: false
   Displays:
-    collapsed: true
-  Height: 987
+    collapsed: false
+  Height: 1014
   Help:
     collapsed: false
-  Hide Left Dock: true
+  Hide Left Dock: false
   Hide Right Dock: false
   MotionPlanning:
-    collapsed: true
+    collapsed: false
   MotionPlanning - Trajectory Slider:
     collapsed: false
-  QMainWindow State: 000000ff00000000fd00000002000000000000031b0000038cfc0200000007fc0000002e0000038c0000000000fffffffaffffffff0100000002fb000000100044006900730070006c0061007900730000000000ffffffff0000017900fffffffb0000001c004d006f00740069006f006e0050006c0061006e006e0069006e00670000000000ffffffff0000031b00fffffffb0000000800480065006c00700000000342000000bb0000007900fffffffb0000000c00430061006d0065007200610000000219000001c50000001800fffffffb0000001e004d006f00740069006f006e00200050006c0061006e006e0069006e006701000002330000019e0000000000000000fb0000002e004d006f00740069006f006e0050006c0061006e006e0069006e00670020002d00200053006c00690064006500720000000000ffffffff0000000000000000fb00000044004d006f00740069006f006e0050006c0061006e006e0069006e00670020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000004c00fffffffb0000000c00430061006d006500720061010000032e000000d0000000000000000000000001000001a700000443fc0200000001fb0000000a00560069006500770073000000002e00000443000000b700ffffff000003420000038c00000001000000020000000100000002fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
+  QMainWindow State: 000000ff00000000fd0000000200000000000002e2000003a6fc0200000007fc0000002e000001d0000000d700fffffffa000000000100000002fb000000100044006900730070006c0061007900730100000000ffffffff0000017500fffffffb0000001c004d006f00740069006f006e0050006c0061006e006e0069006e00670000000000ffffffff0000031300fffffffb0000000800480065006c00700000000342000000bb0000007700fffffffb0000000c00430061006d0065007200610100000205000001cf0000001900fffffffb0000001e004d006f00740069006f006e00200050006c0061006e006e0069006e006701000002330000019e0000000000000000fb0000002e004d006f00740069006f006e0050006c0061006e006e0069006e00670020002d00200053006c00690064006500720000000000ffffffff0000000000000000fb00000044004d006f00740069006f006e0050006c0061006e006e0069006e00670020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000004c00fffffffb0000000c00430061006d006500720061010000032e000000d0000000000000000000000001000001a700000443fc0200000001fb0000000a00560069006500770073000000002e00000443000000b500ffffff000001d3000003a600000001000000020000000100000002fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
   Views:
     collapsed: false
-  Width: 834
-  X: 643
-  Y: 129
+  Width: 1212
+  X: 711
+  Y: 30
