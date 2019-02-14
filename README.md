@@ -1,6 +1,7 @@
 # Vision-based Teleoperation of Shadow Dexterous Hand using End-to-End Deep Neural Network
 
 Venue: ICRA 2019
+
 Author's mail : sli@informatik.uni-hamburg.de, jeasinema@gmail.com
 
 
@@ -127,7 +128,7 @@ If you use this work（collobrated with  ）, please cite:
 @inproceedings{li2018vision,
   title={Vision-based Teleoperation of Shadow Dexterous Hand using End-to-End Deep Neural Network},
   author={Li, Shuang and Ma, Xiaojian and Liang, Hongzhuo and G{\"o}rner, Michael and Ruppel, Philipp and Fang, Bing and Sun, Fuchun and Zhang, Jianwei},
-  booktitle={IEEE International Conference on Robotics and Automation (ICRA 2019)},
+  booktitle={IEEE International Conference on Robotics and Automation (ICRA)},
   year={2019}
 }
 ```
