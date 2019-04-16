@@ -16,6 +16,7 @@
   <build_depend>bio_ik</build_depend>
   <build_depend>cv_bridge</build_depend>
   <build_depend>gazebo_msgs</build_depend>
+  <build_depend>tf2_ros</build_depend>
   <build_depend>message_generation</build_depend>
   <build_depend>trajectory_msgs</build_depend>
   <build_depend>bio_ik_msgs</build_depend>
@@ -24,6 +25,7 @@
   <exec_depend>trajectory_msgs</exec_depend>
   <exec_depend>message_runtime</exec_depend>
   <exec_depend>gazebo_msgs</exec_depend>
+  <exec_depend>tf2_ros</exec_depend>
   <exec_depend>cv_bridge</exec_depend>
   <exec_depend>moveit_core</exec_depend>
   <exec_depend>roscpp</exec_depend>

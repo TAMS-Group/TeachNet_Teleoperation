@@ -1,5 +1,9 @@
 #include <ros/ros.h>
-#include <tf/transform_listener.h>
+#include <tf2_ros/transform_listener.h>
+#include "tf2/transform_datatypes.h"
+
+// important for tf2::Transform
+#include "tf2_geometry_msgs/tf2_geometry_msgs.h"
 
 #include <moveit/robot_model_loader/robot_model_loader.h>
 #include <moveit/robot_model/robot_model.h>
@@ -20,7 +24,8 @@ int main(int argc, char** argv)
     ros::NodeHandle pnh("~");
     ros::AsyncSpinner spinner(1);
     spinner.start();
-    tf::TransformListener tf_listener;
+    tf2_ros::Buffer tfbuffer;
+    tf2_ros::TransformListener tf_listener(tfbuffer);
 
     std::string jointsfile_;
     std::string cartesian_pos_file_;
@@ -83,16 +88,20 @@ int main(int argc, char** argv)
             const Eigen::Affine3d &link_state = kinematic_state->getGlobalLinkTransform(link);
             // ROS_INFO_STREAM("Translation: " << link_state.translation());
             // ROS_INFO_STREAM("Rotation: " << link_state.rotation()); //3*3
-            tf::Vector3 link_position(link_state.translation().x(), link_state.translation().y(), link_state.translation().z());
+            tf2::Vector3 link_position(link_state.translation().x(), link_state.translation().y(), link_state.translation().z());
 
             if (location_frame_ == "wrist")
             {
                 // transform position from base_frame into rh_wrist
                 // use for cartesian_rhwrist_pos_file.csv  [0.000, -0.010, 0.213]
-                tf::Stamped<tf::Point> stamped_in(link_position, ros::Time::now(), base_frame);
-                tf::Stamped<tf::Vector3> stamped_out;
-                tf_listener.waitForTransform("rh_wrist", base_frame, ros::Time::now(), ros::Duration(5.0));
-                tf_listener.transformPoint("rh_wrist", stamped_in, stamped_out);
+                tf2::Stamped<tf2::Vector3> stamped_in(link_position, ros::Time::now(), base_frame);
+                tf2::Stamped<tf2::Vector3> stamped_out;
+                geometry_msgs::TransformStamped wrist_base_transform = tfbuffer.lookupTransform("rh_wrist", base_frame, ros::Time::now(), ros::Duration(5.0));
+                tf2::Stamped<tf2::Transform> trans;
+                tf2::convert(wrist_base_transform, trans);
+                stamped_out.setData(trans * stamped_in);
+                stamped_out.stamp_ = trans.stamp_;
+                stamped_out.frame_id_ = base_frame;
                 link_position = stamped_out;
             }
 

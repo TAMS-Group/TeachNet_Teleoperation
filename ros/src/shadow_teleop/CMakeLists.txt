@@ -15,6 +15,7 @@ find_package(catkin REQUIRED COMPONENTS
   trajectory_msgs
   message_generation
   bio_ik_msgs
+  tf2_ros
 )
 find_package( OpenCV REQUIRED )
 
