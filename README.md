@@ -87,7 +87,6 @@ alt="video"  border="0" /></a>
 
 ## Model Training
 - If you want to train the network yourself instead of using a pretrained model, follow below steps.
-- 
 
 - Launch a tensorboard for monitoring:
     ```bash
