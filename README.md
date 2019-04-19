@@ -80,7 +80,7 @@ alt="video"  border="0" /></a>
 - Save ```robot_joints_file.csv``` as ```joint_all.npy``` by ```pandas.readcsv()``` or ```numpy.loadtxt()```.
 - Crop human or shadow image into 100*100 (normalized to [0,255)): 
   ```
-    python utils/seg_depty.py
+    python utils/seg_depth.py
   ```
    Please change the location of original depth images and cropped depth images ```fl``` to your own dataset location.
 - Last but not least, spilt ```joint_all.npy``` into training dataset and test dataset by yourself, and save as ```joint_train.npy``` and ```joint_test.npy``` at your own dataset location.
