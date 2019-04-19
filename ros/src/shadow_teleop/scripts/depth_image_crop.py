@@ -9,10 +9,11 @@
 import numpy as np
 from PIL import Image
 
+
 def main():
     """ train_images: pairs of human hand images and shadow hand images """
     base_path = "../data/"
-    DataFile = open(base_path + "Human_label/9.txt", "r")
+    DataFile = open(base_path + "Human_label/Training_Annotation.txt", "r")
 
     lines = DataFile.read().splitlines()
     for line in lines:
@@ -22,6 +23,7 @@ def main():
         label.append([float(l.replace(" ", "")) for l in label_source[0:63]])
 
         keypoints = np.array(label)
+        # image path depends on the location of your training dataset
         h_img = Image.open(base_path + "training/" + str(frame))  # 640*320
         # h_img.show()
         keypoints = keypoints.reshape(21, 3)
@@ -71,8 +73,11 @@ def main():
         print(width)
         print(height)
 
+        # change the path of cropped images
         h_img.save("../data/" + frame)
-    DataFile.close()
+        DataFile.close()
+
+
 if __name__ == '__main__':
     main()
         

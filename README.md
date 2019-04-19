@@ -63,7 +63,7 @@ alt="video"  border="0" /></a>
 - Download our package in same workspace, then build this package with catkin_make.
 
 ## Dataset Generation
-- Download ([BigHand2.2M dataset](http://icvl.ee.ic.ac.uk/hands17/challenge/)). Put the lable file ```Training_Annotation.txt``` into ```ros/src/shadow_teleop/data/Human_label/```.
+- Download ([BigHand2.2M dataset](http://icvl.ee.ic.ac.uk/hands17/challenge/)). Put the lable file ```Training_Annotation.txt``` into ```ros/src/shadow_teleop/data/Human_label/```. Building nine folders respectively called ```depth_shadow[1-8]``` saves robot depth images from nine viewpoint in```ros/src/shadow_teleop/data/```.
 - Generate robot mapping file by human hand keypoints from BigHand2.2M dataset. The generated file save in ```ros/src/shadow_teleop/data/human_robot_mapdata.csv```.
   ```
   python ros/src/shadow_teleop/scripts/human_robot_mappingfile.py
@@ -76,13 +76,18 @@ alt="video"  border="0" /></a>
   ```
   roslaunch shadow_teleop multi_shadow_sim_bio.launch
   ```
- Please change the location of human_robot_mapdata.csv, the location of saved depth images, and the location of saved correspond joints in this launch file.
-
-## Pretrained Models:
-- Download [pretrained models](https://tams.informatik.uni-hamburg.de/people/sli/data/TeachNet_model/) for real-time test.
+   Please note the location of saved depth images and the location of robot_joints_file.csv.
+- Save ```robot_joints_file.csv``` as ```joint_all.npy``` by ```pandas.readcsv()``` or ```numpy.loadtxt()```.
+- Crop human or shadow image into 100*100 (normalized to [0,255)): 
+  ```
+    python utils/seg_depty.py
+  ```
+   Please change the location of original depth images and cropped depth images ```fl``` to your own dataset location.
+- Last but not least, spilt ```joint_all.npy``` into training dataset and test dataset by yourself, and save as ```joint_train.npy``` and ```joint_test.npy``` at your own dataset location.
 
 ## Model Training
 - If you want to train the network yourself instead of using a pretrained model, follow below steps.
+- 
 
 - Launch a tensorboard for monitoring:
     ```bash
@@ -91,7 +96,7 @@ alt="video"  border="0" /></a>
 
     and run an experiment for 200 epoch:
     ```
-    python main.py --epoch 200 --mode 'train' --batch-size 256 --lr 0.01 --gpu 1 --tag 'teachnet'
+    python main.py --epoch 200 --mode 'train' --batch-size 256 --lr 0.01 --gpu 1 --tag 'teachnet' --data-path 'LOCATION OF YOUR TRAINING DATASET'
     ```
 
     File name and corresponding experiment:
@@ -101,6 +106,10 @@ alt="video"  border="0" /></a>
     main_baseline_shadow.py    --- Single shadow
     main_gan.py                --- Teach Soft-Early approach
     ```
+
+## Pretrained Models:
+- Download [pretrained models](https://tams.informatik.uni-hamburg.de/people/sli/data/TeachNet_model/) for real-time test.
+
 
 ## RealsenseF200 Realtime Demo
 - Launch camera RealsenseF200 (If you use the other camera which is suitable for close-range tracking, please use corresponding launch file). Or you can download the recorded [example rosbag](https://tams.informatik.uni-hamburg.de/people/sli/data/TeachNet_model/), and play the bag file:

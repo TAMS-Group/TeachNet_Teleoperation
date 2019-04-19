@@ -132,13 +132,12 @@ class Teleoperation():
 
 
     def joint_cal(self, img, isbio=False):
-        #start = rospy.Time.now().to_sec()
+        # start = rospy.Time.now().to_sec()
 
         # run the model
         feature = test(model, img)
-        #network_time = rospy.Time.now().to_sec() - start
-        #print("network_time is ", network_time)
-        
+        # network_time = rospy.Time.now().to_sec() - start
+        # print("network_time is ", network_time)
 
         joint = [0.0, 0.0]
         joint += feature.tolist()

@@ -42,6 +42,7 @@ def func2(f):
 
 
 def main():
+    # crop shadow depth images
     # f = np.load('./data/joint_all.npy')[..., 0]
     # fl = []
     # for i in range(9):
@@ -51,7 +52,7 @@ def main():
     #             './data/crop/shadow{}/{}'.format(i, j),
     #             # './data/origin/shadow{}/{}'.format(i, j),
     #         ])
-    # 
+    # crop human depth images
     cores = mp.cpu_count()
     pool = mp.Pool(processes=cores) 
     # pool.map(func, fl)
