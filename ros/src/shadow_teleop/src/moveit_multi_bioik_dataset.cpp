@@ -1,8 +1,6 @@
 #include <ros/ros.h>
 #include <cv_bridge/cv_bridge.h>
-#include <tf2_ros/transform_listener.h>
-#include "tf2/transform_datatypes.h"
-#include "tf2_geometry_msgs/tf2_geometry_msgs.h"
+#include <tf/transform_listener.h>
 #include <sensor_msgs/Image.h>
 
 #include <moveit/robot_model_loader/robot_model_loader.h>
@@ -284,8 +282,7 @@ int main(int argc, char** argv)
     ros::NodeHandle pnh("~");
     ros::AsyncSpinner spinner(1);
     spinner.start();
-    tf2_ros::Buffer tfbuffer;
-    tf2_ros::TransformListener tf_listener(tfbuffer);
+    tf::TransformListener tf_listener;
 
     std::string mapfile_;
     std::string jointsfile_;
@@ -381,21 +378,18 @@ int main(int argc, char** argv)
             }
             csvItem.push_back(std::stof(items));
         }
-        geometry_msgs::TransformStamped base_wrist_transform = tfbuffer.lookupTransform(base_frame, "rh_wrist", ros::Time::now(), ros::Duration(5.0));
-        tf2::Stamped<tf2::Transform> trans;
-        tf2::convert(base_wrist_transform, trans);
 
         for (int j = 0; j< MapPositionlinks.size(); j++)
         {
             int t = j * 3;
-            tf2::Vector3 position = tf2::Vector3(csvItem[t], csvItem[t+1], csvItem[t+2]);
+            tf::Vector3 position = tf::Vector3(csvItem[t], csvItem[t+1], csvItem[t+2]);
+
             // transform position from current rh_wrist into base_frame
-            tf2::Stamped<tf2::Vector3> stamped_in(position, ros::Time::now(), "rh_wrist");
-            tf2::Stamped<tf2::Vector3>  stamped_out;
-            stamped_out.setData(trans * stamped_in);
-            stamped_out.stamp_ = trans.stamp_;
-            stamped_out.frame_id_ = "rh_wrist";
-            tf2::Vector3 Mapposition = stamped_out;
+            tf::Stamped<tf::Point> stamped_in(position, ros::Time::now(), "rh_wrist");
+            tf::Stamped<tf::Vector3> stamped_out;
+            tf_listener.waitForTransform(base_frame, "rh_wrist", ros::Time::now(), ros::Duration(5.0));
+            tf_listener.transformPoint(base_frame, stamped_in, stamped_out);
+            tf::Vector3 Mapposition = stamped_out;
             Mapposition.setZ(Mapposition.z() + 0.04);
 
             ik_options.goals.emplace_back(new bio_ik::PositionGoal(MapPositionlinks[j], Mapposition, MapPositionweights[j]));
@@ -404,40 +398,31 @@ int main(int argc, char** argv)
         for (int j = 0; j< MapDirectionlinks1.size(); j++)
         {
             int t = 30 + j * 3;
-            tf2::Vector3 proximal_direction = (tf2::Vector3(csvItem[t], csvItem[t+1], csvItem[t+2])).normalized();
+            tf::Vector3 proximal_direction = (tf::Vector3(csvItem[t], csvItem[t+1], csvItem[t+2])).normalized();
 
             // transform position from current rh_wrist into base_frame
-            tf2::Stamped<tf2::Vector3> stamped_in(proximal_direction, ros::Time::now(), "rh_wrist");
-            tf2::Stamped<tf2::Vector3> stamped_out;
-            tf2::Vector3 end = stamped_in;
-            tf2::Vector3 origin = tf2::Vector3(0,0,0);
-            tf2::Vector3 output = (trans * end) - (trans * origin);
-            stamped_out.setData( output);
-            stamped_out.stamp_ = trans.stamp_;
-            stamped_out.frame_id_ = "rh_wrist";
+            tf::Stamped<tf::Point> stamped_in(proximal_direction, ros::Time::now(), "rh_wrist");
+            tf::Stamped<tf::Vector3> stamped_out;
+            tf_listener.waitForTransform(base_frame, "rh_wrist", ros::Time::now(), ros::Duration(5.0));
+            tf_listener.transformVector(base_frame, stamped_in, stamped_out);
+            tf::Vector3 Mapdirection = stamped_out;
 
-            tf2::Vector3 Mapdirection = stamped_out;
-            ik_options.goals.emplace_back(new bio_ik::DirectionGoal(MapDirectionlinks1[j], tf2::Vector3(0,0,1), Mapdirection.normalized(), MapDirectionweights1[j]));
+            ik_options.goals.emplace_back(new bio_ik::DirectionGoal(MapDirectionlinks1[j], tf::Vector3(0,0,1), Mapdirection.normalized(), MapDirectionweights1[j]));
         }
 
         for (int j = 0; j< MapDirectionlinks2.size(); j++)
         {
             int t = 45 + j*3;
-            tf2::Vector3 dummy_direction = (tf2::Vector3(csvItem[t], csvItem[t+1], csvItem[t+2])).normalized();
+            tf::Vector3 dummy_direction = (tf::Vector3(csvItem[t], csvItem[t+1], csvItem[t+2])).normalized();
 
             // transform position from current rh_wrist into base_frame
-            tf2::Stamped<tf2::Vector3> stamped_in(dummy_direction, ros::Time::now(), "rh_wrist");
-            tf2::Stamped<tf2::Vector3> stamped_out;
-            tf2::Vector3 end = stamped_in;
-            tf2::Vector3 origin = tf2::Vector3(0,0,0);
-            tf2::Vector3 output = (trans * end) - (trans * origin);
-            stamped_out.setData(output);
-            stamped_out.stamp_ = trans.stamp_;
-            stamped_out.frame_id_ = "rh_wrist";
+            tf::Stamped<tf::Point> stamped_in(dummy_direction, ros::Time::now(), "rh_wrist");
+            tf::Stamped<tf::Vector3> stamped_out;
+            tf_listener.waitForTransform(base_frame, "rh_wrist", ros::Time::now(), ros::Duration(5.0));
+            tf_listener.transformVector(base_frame, stamped_in, stamped_out);
+            tf::Vector3 Mapdirection = stamped_out;
 
-            tf2::Vector3 Mapdirection = stamped_out;
-
-            ik_options.goals.emplace_back(new bio_ik::DirectionGoal(MapDirectionlinks2[j], tf2::Vector3(0,0,1), Mapdirection.normalized(), MapDirectionweights2[j]));
+            ik_options.goals.emplace_back(new bio_ik::DirectionGoal(MapDirectionlinks2[j], tf::Vector3(0,0,1), Mapdirection.normalized(), MapDirectionweights2[j]));
         }
 
         robot_state = current_state;

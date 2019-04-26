@@ -11,7 +11,7 @@ from PIL import Image
 
 
 def main():
-    """ train_images: pairs of human hand images and shadow hand images """
+    """crop human hand images to 100*100"""
     base_path = "../data/"
     DataFile = open(base_path + "Human_label/Training_Annotation.txt", "r")
 

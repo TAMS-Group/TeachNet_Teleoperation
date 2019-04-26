@@ -78,7 +78,14 @@ alt="video"  border="0" /></a>
   ```
    Please note the location of saved depth images and the location of robot_joints_file.csv.
 - Save ```robot_joints_file.csv``` as ```joint_all.npy``` by ```pandas.readcsv()``` or ```numpy.loadtxt()```.
-- Crop human or shadow image into 100*100 (normalized to [0,255)): 
+- Crop human hand images into 100*100 (normalized to [0,255)):
+  ```
+    python ros/src/shadow_teleop/scripts/depth_image_crop.py
+  ```
+  ```
+    python utils/seg_depth.py
+  ```
+- Crop shadow images into 100*100(normalized to [0,255)):
   ```
     python utils/seg_depth.py
   ```
