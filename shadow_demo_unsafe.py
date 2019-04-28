@@ -24,7 +24,7 @@ from sr_robot_commander.sr_hand_commander import SrHandCommander
 parser = argparse.ArgumentParser(description='deepShadowTeleop')
 parser.add_argument('--cuda', action='store_true')
 parser.add_argument('--gpu', type=int, default=0)
-parser.add_argument('--model-path', type=str, default='./weights/naive_human_baseline_embed128.model',
+parser.add_argument('--model-path', type=str, default='./weights/new_early_teach_teleop.model',
                    help='pre-trained model path')
 # add robot lated args here
 
@@ -90,10 +90,10 @@ def test(model, img):
 
 class Teleoperation():
     def __init__(self):
-        self.mgi = moveit_commander.MoveGroupCommander("right_hand")
+        #self.mgi = moveit_commander.MoveGroupCommander("right_hand")
         self.bridge = CvBridge()
-        self.mgi.set_named_target("open")
-        self.mgi.go()
+        #self.mgi.set_named_target("open")
+        #self.mgi.go()
         self.hand_commander = SrHandCommander(name="right_hand")
         # self.hand_commander.move_to_joint_value_target_unsafe(start_pos, 1.2, False, angle_degrees=True)
 
@@ -120,15 +120,17 @@ class Teleoperation():
 
                 n = cv2.resize(img, (0, 0), fx=2, fy=2)
                 n1 = cv2.normalize(n, n, alpha=0, beta=1, norm_type=cv2.NORM_MINMAX, dtype=cv2.CV_32F)
-                cv2.imshow("segmented human hand", n1)
-                cv2.waitKey(1)
+                #cv2.imshow("segmented human hand", n1)
+                #cv2.waitKey(1)
 
                 # get the clipped joints
                 goal = tuple(self.joint_cal(img, isbio=True))
-                hand_pos = self.mgi.get_current_joint_values()
-                hand_pos['rh_FFJ3'] = goal[3]
-                start = hand_pos
-                hand_commander.move_to_joint_value_target_unsafe(goal, 0.5, False, angle_degrees=True)
+                hand_pos = self.hand_commander.get_joints_position()
+                #hand_pos['rh_FFJ3'] = goal[3]
+                hand_pos.update({"rh_FFJ3": goal[3]})
+                print("hand_pos['rh_FFJ3'] is : ", hand_pos["rh_FFJ3"])
+                self.hand_commander.move_to_joint_value_target_unsafe(hand_pos, 0.5, False, angle_degrees=True)
+                #rospy.sleep(0.5)
 
                 # collision check and manipulate
                 # csl_client = rospy.ServiceProxy('CheckSelfCollision', checkSelfCollision)
