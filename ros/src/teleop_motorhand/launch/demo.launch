@@ -26,13 +26,14 @@
   <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" respawn="true" output="screen" />
 
   <!-- Run the main MoveIt executable without trajectory execution (we do not have controllers configured by default) -->
-  <node pkg="sr_utilities_common" type="timed_roslaunch.sh" args="2  teleop_motorhand move_group.launch
-    allow_trajectory_execution:=true
-    fake_execution:=true
-    info:=true
-    debug:=$(arg debug)
+  <node pkg="teleop_motorhand" type="timed_roslaunch.sh" args="2 teleop_motorhand move_group.launch 
+    allow_trajectory_execution:=true 
+    fake_execution:=true 
+    info:=true 
+    debug:=$(arg debug) 
     publish_monitored_planning_scene:=true
     pipeline:=$(arg planning)" name="timed_roslaunch" output="screen"/>
+
 
   <!-- Run Rviz and load the default config to see the state of the move_group node -->
   <include file="$(find teleop_motorhand)/launch/moveit_rviz.launch">

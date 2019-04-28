@@ -14,9 +14,6 @@
   <arg name="gui" default="true"/>
   <!-- the path to the mapping files -->
   <arg name="mapping_path" default="$(find sr_edc_launch)/mappings/default_mappings/rh_E_v1.yaml"/>
-  <arg name="db" default="false" />
-  <arg name="db_path" default="$(find tams_motorhand)/default_warehouse_mongo_db" />
-
 
   <!-- robot description -->
   <arg name="robot_description" value="$(find teleop_motorhand)/robots/tams_motorhand.urdf.xacro" />
@@ -65,7 +62,7 @@
 
   <!-- MOVEIT -->
   <group if="$(arg use_moveit)">
-    <node pkg="sr_utilities_common" type="timed_roslaunch.sh" args="15 teleop_motorhand moveit_planning_and_execution.launch
+    <node pkg="teleop_motorhand" type="timed_roslaunch.sh" args="15 teleop_motorhand moveit_planning_and_execution.launch
       use_gui:=$(arg gui)" name="timed_roslaunch" output="screen"/>
   </group>
 

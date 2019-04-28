@@ -10,7 +10,7 @@
 
   <include file="$(find teleop_motorhand)/launch/planning_context.launch" />
 
-  <node pkg="sr_utilities_common" type="timed_roslaunch.sh" args="2 teleop_motorhand move_group.launch
+  <node pkg="teleop_motorhand" type="timed_roslaunch.sh" args="2 teleop_motorhand move_group.launch
     allow_trajectory_execution:=true
     fake_execution:=false
     info:=true
@@ -20,7 +20,7 @@
 
   <!-- Run Rviz and load the default config to see the state of the move_group node -->
   <group if="$(arg gui)">
-    <node pkg="sr_utilities_common" type="timed_roslaunch.sh" args="2 teleop_motorhand moveit_rviz.launch
+    <node pkg="teleop_motorhand" type="timed_roslaunch.sh" args="2 teleop_motorhand moveit_rviz.launch
       config:=true
       debug:=$(arg debug)" name="timed_roslaunch_rviz" output="screen"
     />
