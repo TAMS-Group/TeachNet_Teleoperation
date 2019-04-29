@@ -10,7 +10,9 @@ import sys
 import cv2
 import pickle
 import numpy as np
+from numba import jit
 
+@jit(nopython=True)
 def surround(i, j, xl, yl, add=1):
     sur = []
     if i-add >= 0:
@@ -21,7 +23,7 @@ def surround(i, j, xl, yl, add=1):
         sur.append([i+add, j])
     if j+add < yl:
         sur.append([i, j+add])
-    return np.array(sur)
+    return sur
 
 
 def seg_hand_with_label(img, label, output_size=100):
@@ -52,6 +54,23 @@ def seg_hand_with_label(img, label, output_size=100):
 
     return img, label, np.array([x_max, x_min, y_max, y_min])
 
+@jit(nopython=True)
+def inner(inner_edge, img, zero_as_infty, fore_thresh, mask, gap, thresh, x, y, w, l, add):
+    for i, j in zip(x, y):
+        sur = surround(i, j, w, l, add)
+        for s in sur:
+            xx, yy = s
+            if gap < abs(img[xx, yy] - img[i, j]):
+                if zero_as_infty or abs(img[xx, yy] - img[i, j]) < thresh:
+                    if img[xx, yy] > img[i, j]:
+                        if img[i, j] <= fore_thresh:
+                            mask[xx, yy] = 0
+                            inner_edge.append((i, j))
+                    else:
+                        if img[xx, yy] <= fore_thresh:
+                            mask[i, j] = 0
+                            inner_edge.append((xx, yy))
+    return inner_edge, mask
 
 def seg_hand_depth(img, gap=100, thresh=500, padding=10, output_size=100, scale=10, add=5, box_z=250, zero_as_infty=False, fore_p_thresh=300, label=None):
     img = img.astype(np.float32)
@@ -88,20 +107,23 @@ def seg_hand_depth(img, gap=100, thresh=500, padding=10, output_size=100, scale=
     open_mask -= tmp
     img[open_mask.astype(np.bool)] = np.iinfo(np.uint16).max
 
-    for i, j in zip(x, y):
-        sur = surround(i, j, w, l, add)
-        for s in sur:
-            xx, yy = s
-            if gap < abs(img[xx, yy] - img[i, j]):
-                if zero_as_infty or abs(img[xx, yy] - img[i, j]) < thresh:
-                    if img[xx, yy] > img[i, j]:
-                        if img[i, j] <= fore_thresh:
-                            mask[xx, yy] = 0
-                            inner_edge.append((i, j))
-                    else:
-                        if img[xx, yy] <= fore_thresh:
-                            mask[i, j] = 0
-                            inner_edge.append((xx, yy))
+    inner_edge = [(1,1)]
+    inner_edge, mask = inner(inner_edge, img, zero_as_infty, fore_thresh, mask, gap, thresh, x, y, w, l, add)
+    inner_edge = inner_edge[1:]
+    # for i, j in zip(x, y):
+    #     sur = surround(i, j, w, l, add)
+    #     for s in sur:
+    #         xx, yy = s
+    #         if gap < abs(img[xx, yy] - img[i, j]):
+    #             if zero_as_infty or abs(img[xx, yy] - img[i, j]) < thresh:
+    #                 if img[xx, yy] > img[i, j]:
+    #                     if img[i, j] <= fore_thresh:
+    #                         mask[xx, yy] = 0
+    #                         inner_edge.append((i, j))
+    #                 else:
+    #                     if img[xx, yy] <= fore_thresh:
+    #                         mask[i, j] = 0
+    #                         inner_edge.append((xx, yy))
     mask = mask.astype(np.bool)
     edge_x, edge_y = np.where(mask == 0)
     x_min, x_max = np.min(edge_x), np.max(edge_x)

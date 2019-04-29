@@ -2,7 +2,7 @@
 <launch>
 
   <arg name="hand_id" default="rh"/>
-  <arg name="sim" default="false"/>
+  <arg name="sim" default="true"/>
   <arg name="debug" default="false"/>
   <arg name="verbose" default="true" />
   <!-- Set to true to spawn trajectory controllers for the hands(the trajectory controller overwrites continuously the joint position command, preventing direct control via topics-->
