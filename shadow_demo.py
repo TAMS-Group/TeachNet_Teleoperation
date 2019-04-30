@@ -193,23 +193,31 @@ class Teleoperation():
 class Teleoperation_Intel():
     def __init__(self):
         self.mgi = moveit_commander.MoveGroupCommander("right_hand")
-        self.mgi.set_named_target("open")
-        self.mgi.go()
+        # self.mgi.set_named_target("open")
+        # self.mgi.go()
+        self.bridge = CvBridge()
         #self.hand_commander = SrHandCommander(name="right_hand")
         # self.hand_commander.move_to_joint_value_target_unsafe(start_pos, 1.2, False, angle_degrees=True)
         
-        self.pipeline = rs.pipeline()
-        self.config = rs.config()
-        self.config.enable_stream(rs.stream.depth, 640, 480, rs.format.z16, 30)
-        self.pipeline.start(self.config)
+        # self.pipeline = rs.pipeline()
+        # self.config = rs.config()
+        # self.config.enable_stream(rs.stream.depth, 640, 480, rs.format.z16, 30)
+        # self.pipeline.start(self.config)
 
     def online_once(self):
-        frames = self.pipeline.wait_for_frames()
-        depth_frame = frames.get_depth_frame()
-        if not depth_frame:
-            return
-        rospy.loginfo("Got an image from realsense SDK ^_^")
-        img = np.asanyarray(depth_frame.get_data())
+        img_data = rospy.wait_for_message("/camera/aligned_depth_to_color/image_raw", Image)
+        rospy.loginfo("Got an image ^_^")
+        try:
+            img = self.bridge.imgmsg_to_cv2(img_data, desired_encoding="passthrough")
+        except CvBridgeError as e:
+             rospy.logerr(e)
+
+        #frames = self.pipeline.wait_for_frames()
+        #depth_frame = frames.get_depth_frame()
+        #if not depth_frame:
+        #    return
+        #rospy.loginfo("Got an image from realsense SDK ^_^")
+        #img = np.asanyarray(depth_frame.get_data())
 
         try:
             # preproces
@@ -225,10 +233,14 @@ class Teleoperation_Intel():
 
             # get the clipped joints
             goal = tuple(self.joint_cal(img, isbio=True))
-            # from IPython import embed;embed()
+
+            # only first finger
             start = self.mgi.get_current_joint_values()
             hand_pos = copy.deepcopy(start)
             hand_pos[4] = goal[4]
+            hand_pos[3] = goal[3]
+            hand_pos[2] = goal[2]
+            #print(goal[4])
             #self.mgi.set_joint_value_target(hand_pos)
             #self.mgi.go()
 
