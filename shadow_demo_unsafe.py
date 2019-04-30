@@ -133,33 +133,31 @@ class Teleoperation():
 
                 # bug:get_joints_position() return radian joints
                 hand_pos = self.hand_commander.get_joints_position()
-                for i in hand_pos:
-                     hand_pos[i] = hand_pos[i] * 180 / 3.1415926
 
                 # first finger
-                hand_pos.update({"rh_FFJ3": goal[3] * 180 / 3.1415926})
-                #hand_pos.update({"rh_FFJ2": goal[4] * 180 / 3.1415926})
-                # hand_pos.update({"rh_FFJ4": goal[2] * 180 / 3.1415926})
+                hand_pos.update({"rh_FFJ3": goal[3]})
+                #hand_pos.update({"rh_FFJ2": goal[4]})
+                # hand_pos.update({"rh_FFJ4": goal[2]})
                 
                 # middle finger
-                hand_pos.update({"rh_MFJ3": goal[12] * 180 / 3.1415926})
-                #hand_pos.update({"rh_MFJ2": goal[13] * 180 / 3.1415926})
+                hand_pos.update({"rh_MFJ3": goal[12]})
+                #hand_pos.update({"rh_MFJ2": goal[13]})
  
                 # ring finger
-                hand_pos.update({"rh_RFJ3": goal[16] * 180 / 3.1415926})
-                #hand_pos.update({"rh_RFJ2": goal[17] * 180 / 3.1415926})
+                hand_pos.update({"rh_RFJ3": goal[16]})
+                #hand_pos.update({"rh_RFJ2": goal[17]})
                 
                 # little finger
-                hand_pos.update({"rh_LFJ3": goal[8] * 180 / 3.1415926})
-                #hand_pos.update({"rh_LFJ2": goal[9] * 180 / 3.1415926})
+                hand_pos.update({"rh_LFJ3": goal[8]})
+                #hand_pos.update({"rh_LFJ2": goal[9]})
 
                 # thumb
-                #hand_pos.update({"rh_THJ5": goal[19] * 180 / 3.1415926})
-                #hand_pos.update({"rh_THJ4": goal[20] * 180 / 3.1415926})
-                #hand_pos.update({"rh_THJ3": goal[21] * 180 / 3.1415926})
-                #hand_pos.update({"rh_THJ2": goal[22] * 180 / 3.1415926})
+                #hand_pos.update({"rh_THJ5": goal[19]})
+                #hand_pos.update({"rh_THJ4": goal[20]})
+                #hand_pos.update({"rh_THJ3": goal[21]})
+                #hand_pos.update({"rh_THJ2": goal[22]})
 
-                self.hand_commander.move_to_joint_value_target_unsafe(hand_pos, 0.3, False, angle_degrees=True)
+                self.hand_commander.move_to_joint_value_target_unsafe(hand_pos, 0.3, False, angle_degrees=False)
                 #rospy.sleep(0.5)
 
                 # collision check and manipulate
