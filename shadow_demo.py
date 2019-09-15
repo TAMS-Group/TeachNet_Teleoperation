@@ -21,7 +21,6 @@ from sensor_msgs.msg import Image
 from cv_bridge import CvBridge, CvBridgeError
 from shadow_teleop.srv import *
 
-import pyrealsense2 as rs
 
 parser = argparse.ArgumentParser(description='deepShadowTeleop')
 parser.add_argument('--cuda', action='store_true')
@@ -89,14 +88,10 @@ class Teleoperation():
         self.mgi.set_named_target("open")
         self.mgi.go()
 
-        # get next image after finish one pose
-        self.online_once()
-
-        rospy.spin()
-
     def online_once(self):
-        while True:            
-            img_data = rospy.wait_for_message("/camera/depth/image_raw", Image)
+        while True:     
+            #       /camera/aligned_depth_to_color/image_raw
+            img_data = rospy.wait_for_message("/camera/aligned_depth_to_color/image_raw", Image)
             rospy.loginfo("Got an image ^_^")
             try:
                 img = self.bridge.imgmsg_to_cv2(img_data, desired_encoding="passthrough")
@@ -190,139 +185,12 @@ class Teleoperation():
             x = minv
         return x
 
-class Teleoperation_Intel():
-    def __init__(self):
-        self.mgi = moveit_commander.MoveGroupCommander("right_hand")
-        # self.mgi.set_named_target("open")
-        # self.mgi.go()
-        self.bridge = CvBridge()
-        #self.hand_commander = SrHandCommander(name="right_hand")
-        # self.hand_commander.move_to_joint_value_target_unsafe(start_pos, 1.2, False, angle_degrees=True)
-        
-        # self.pipeline = rs.pipeline()
-        # self.config = rs.config()
-        # self.config.enable_stream(rs.stream.depth, 640, 480, rs.format.z16, 30)
-        # self.pipeline.start(self.config)
-
-    def online_once(self):
-        img_data = rospy.wait_for_message("/camera/aligned_depth_to_color/image_raw", Image)
-        rospy.loginfo("Got an image ^_^")
-        try:
-            img = self.bridge.imgmsg_to_cv2(img_data, desired_encoding="passthrough")
-        except CvBridgeError as e:
-             rospy.logerr(e)
-
-        #frames = self.pipeline.wait_for_frames()
-        #depth_frame = frames.get_depth_frame()
-        #if not depth_frame:
-        #    return
-        #rospy.loginfo("Got an image from realsense SDK ^_^")
-        #img = np.asanyarray(depth_frame.get_data())
-
-        try:
-            # preproces
-            img = seg_hand_depth(img, 500, 1000, 10, 100, 4, 4, 250, True, 300)
-            img = img.astype(np.float32)
-            img = img / 255. * 2. - 1
-
-            img = cv2.resize(img, (100, 100)).astype(np.float32)
-            n = cv2.resize(img, (0, 0), fx=2, fy=2)
-            n1 = cv2.normalize(n, n, alpha=0, beta=1, norm_type=cv2.NORM_MINMAX, dtype=cv2.CV_32F)
-            cv2.imshow("segmented human hand", n1)
-            cv2.waitKey(1)
-
-            # get the clipped joints
-            goal = tuple(self.joint_cal(img, isbio=True))
-
-            # only first finger
-            start = self.mgi.get_current_joint_values()
-            hand_pos = copy.deepcopy(start)
-            hand_pos[4] = goal[4]
-            hand_pos[3] = goal[3]
-            hand_pos[2] = goal[2]
-            #print(goal[4])
-            #self.mgi.set_joint_value_target(hand_pos)
-            #self.mgi.go()
-
-            # interpolate motion trajectories, do collision check then manipulate
-            csl_client = rospy.ServiceProxy('CheckSelfCollision', checkSelfCollision)
-            try:
-                 shadow_pos = csl_client(start, hand_pos)
-                 if shadow_pos.result:
-                     rospy.loginfo("Move Done!")
-                 else:
-                    rospy.logwarn("Failed to move!")
-            except rospy.ServiceException as exc:
-                 rospy.logwarn("Service did not process request: " + str(exc))
-
-            rospy.loginfo("Next one please ---->")
-        except:
-            rospy.loginfo("no images")
-        # rospy.spin_once()
-
-
-    def joint_cal(self, img, isbio=False):
-        # start = rospy.Time.now().to_sec()
-
-        # run the model
-        feature = test(model, img)
-        # network_time = rospy.Time.now().to_sec() - start
-        # print("network_time is ", network_time)
-
-        joint = [0.0, 0.0]
-        joint += feature.tolist()
-        if isbio:
-            joint[5] = 0.3498509706185152
-            joint[10] = 0.3498509706185152
-            joint[14] = 0.3498509706185152
-            joint[18] = 0.3498509706185152
-            joint[23] = 0.3498509706185152
-
-        # joints crop
-        joint[2] = self.clip(joint[2], 0.349, -0.349)
-        joint[3] = self.clip(joint[3], 1.57, 0)
-        joint[4] = self.clip(joint[4], 1.57, 0)
-        joint[5] = self.clip(joint[5], 1.57, 0)
-
-        joint[6] = self.clip(joint[6], 0.785, 0)
-
-        joint[7] = self.clip(joint[7], 0.349, -0.349)
-        joint[8] = self.clip(joint[8], 1.57, 0)
-        joint[9] = self.clip(joint[9], 1.57, 0)
-        joint[10] = self.clip(joint[10], 1.57, 0)
-
-        joint[11] = self.clip(joint[11], 0.349, -0.349)
-        joint[12] = self.clip(joint[12], 1.57, 0)
-        joint[13] = self.clip(joint[13], 1.57, 0)
-        joint[14] = self.clip(joint[14], 1.57, 0)
-
-        joint[15] = self.clip(joint[15], 0.349, -0.349)
-        joint[16] = self.clip(joint[16], 1.57, 0)
-        joint[17] = self.clip(joint[17], 1.57, 0)
-        joint[18] = self.clip(joint[18], 1.57, 0)
-
-        joint[19] = self.clip(joint[19], 1.047, -1.047)
-        joint[20] = self.clip(joint[20], 1.222, 0)
-        joint[21] = self.clip(joint[21], 0.209, -0.209)
-        joint[22] = self.clip(joint[22], 0.524, -0.524)
-        joint[23] = self.clip(joint[23], 1.57, 0)
-
-        return joint
-
-
-    def clip(self, x, maxv=None, minv=None):
-        if maxv is not None and x > maxv:
-            x = maxv
-        if minv is not None and x < minv:
-            x = minv
-        return x
-
 
 def main():
     rospy.init_node('human_teleop_shadow')
-    tele = Teleoperation_Intel()
+    tele = Teleoperation()
     while not rospy.is_shutdown():
-    	tele.online_once()
+        tele.online_once()
 
 
 if __name__ == "__main__":
