@@ -1,0 +1,11 @@
+moveit_setup_assistant_config:
+  URDF:
+    package: sr_description
+    relative_path: robots/shadowhand_motor.urdf.xacro
+    xacro_args: ""
+  SRDF:
+    relative_path: config/shadowhand_motor.srdf
+  CONFIG:
+    author_name: sli
+    author_email: sli@informatik.uni-hamburg.de
+    generated_timestamp: 1599129783

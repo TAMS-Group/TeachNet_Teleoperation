@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="tams_motorhand" >
+
+  <!-- include macro definitions -->
+  <xacro:include filename="$(find sr_description)/hand/xacro/full_hand.urdf.xacro" />
+  <xacro:include filename="$(find sr_description)/other/xacro/gazebo/gazebo.urdf.xacro" />
+  <xacro:include filename="$(find teleop_motorhand)/urdf/biotac.urdf.xacro" />
+  <xacro:macro name="tams_motorhand" params="prefix">
+    <!-- shadow motorhand BioTac -->
+    <xacro:shadowhand muscletrans="false" muscle="false" bio="true" bt_sp="false" ubi="false" eli="false" reflect="1.0" prefix="${prefix}" lf="true" />
+
+    <xacro:biotac prefix="${prefix}" />
+  </xacro:macro>
+
+</robot> 

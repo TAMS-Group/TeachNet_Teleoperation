@@ -1,0 +1,31 @@
+<launch>
+  <!-- By default we do not overwrite the URDF. Change the following to true to change the default behavior -->
+  <arg name="load_robot_description" default="false"/>
+
+  <!-- The name of the parameter under which the URDF is loaded -->
+  <arg name="robot_description" default="robot_description"/>
+
+  <!-- ik solver path -->
+  <arg name="hand_ik_solver_path" default="$(find teleop_motorhand)/config/kinematics_template.yaml"/>
+  
+  <!-- The name of the URDF file to load -->
+  <arg name="hand_urdf" default="$(find sr_description)/robots/shadowhand_motor.urdf.xacro"/>
+  
+  <!-- Load universal robot description format (URDF) -->
+  <param if="$(arg load_robot_description)" name="$(arg robot_description)" command="xacro '$(arg hand_urdf)'"/>
+
+  <!-- The semantic description that corresponds to the URDF -->
+  <!-- <node name="generate_hand_srdf" pkg="sr_moveit_hand_config" type="generate_hand_srdf.py" respawn="false" output="screen" args="" /> -->
+  <param name="$(arg robot_description)_semantic" textfile="$(find teleop_motorhand)/config/shadowhand.srdf" />
+	  
+  <!-- Load updated joint limits (override information from URDF) -->
+  <group ns="$(arg robot_description)_planning">
+    <rosparam command="load" file="$(find teleop_motorhand)/config/joint_limits.yaml"/>
+  </group>
+
+  <!-- Load default settings for kinematics; these settings are overridden by settings in a node's namespace -->
+  <group ns="$(arg robot_description)_kinematics">
+    <rosparam command="load" file="$(find teleop_motorhand)/config/kinematics_bioik_template.yaml"/>
+  </group>
+  
+</launch>

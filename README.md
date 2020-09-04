@@ -71,7 +71,7 @@ alt="video"  border="0" /></a>
   ```
 - Run shadow hand in gazebo and use the our simulation world (./ros/src/teleop_motorhand/worlds/shadowhand_multiview.world).
   ```
-  roslaunch teleop_motorhand shadow.launch
+  roslaunch teleop_motorhand gazebo.launch
   ```
 - Generate dataset by running the code:
   ```

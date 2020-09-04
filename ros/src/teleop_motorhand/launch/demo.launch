@@ -1,0 +1,62 @@
+<launch>
+  <arg name="planning" default="ompl"/>
+  <!-- By default, we are not in debug mode -->
+  <arg name="debug" default="false" />
+  <!-- By default, we do not start a database (it can be large) -->
+  <arg name="db" default="false" />
+  <!-- Allow user to specify database location -->
+  <arg name="db_path" default="$(find teleop_motorhand)/default_warehouse_mongo_db" />
+
+  <!-- hand ik solver possible values sr_hand_kinematics/kdl/trac_ik/bio_ik -->
+  <arg name="hand_ik_solver" default="sr_hand_kinematics"/>
+  <arg name="hand_ik_solver_path" value="$(find teleop_motorhand)/config/kinematics_template.yaml" if="$(eval hand_ik_solver == 'sr_hand_kinematics')" />
+  <arg name="hand_ik_solver_path" value="$(find teleop_motorhand)/config/kinematics_$(arg hand_ik_solver)_template.yaml" unless="$(eval hand_ik_solver == 'sr_hand_kinematics')" />
+
+  <!-- Load the URDF, SRDF and other .yaml configuration files on the param server -->
+  <include file="$(find teleop_motorhand)/launch/planning_context.launch">
+    <arg name="load_robot_description" value="true"/>
+    <arg name="hand_ik_solver_path" value="$(arg hand_ik_solver_path)"/>
+    <arg name="hand_urdf" value="$(find teleop_motorhand)/robots/tams_motorhand.urdf.xacro"/>
+  </include>
+
+  <!-- Broadcast static tf for robot root -->
+  <node name="virtual_joint_broadcaster" pkg="sr_moveit_hand_config" type="virtual_joint_broadcaster.py" output="screen" />
+
+  <!-- We do not have a robot connected, so publish fake joint states -->
+<!--  <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
+    <param name="/use_gui" value="false"/>
+    <rosparam param="/source_list">[/move_group/fake_controller_joint_states]</rosparam>
+  </node>
+-->
+  <!-- Given the published joint states, publish tf for the robot links -->
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" respawn="true" output="screen" />
+
+  <!-- Run the main MoveIt executable without trajectory execution (we do not have controllers configured by default) -->
+  <include file="$(find teleop_motorhand)/launch/move_group.launch">
+    <arg name="hand_ik_solver_path" value="$(arg hand_ik_solver_path)"/>
+    <arg name="allow_trajectory_execution" value="true"/>
+    <arg name="fake_execution" value="true"/>
+    <arg name="info" value="true"/>
+    <arg name="debug" value="$(arg debug)"/>
+    <arg name="publish_monitored_planning_scene" value="true"/>
+    <arg name="pipeline" value="$(arg planning)"/>
+  </include>
+
+
+  <!-- Run Rviz and load the default config to see the state of the move_group node -->
+  <node name="conditional_delayed_rostool_rviz_hand" pkg="sr_utilities_common" type="conditional_delayed_rostool.py" output="screen" required="true">
+    <param name="package_name" value="teleop_motorhand" />
+    <param name="executable_name" value="moveit_rviz.launch" />
+    <rosparam param="params_list">[/robot_description, /robot_description_semantic]</rosparam>
+    <param name="launch_args_list" value="hand_ik_solver_path:=$(arg hand_ik_solver_path)
+    config:=true
+    debug:=$(arg debug)" />
+    <param name="timeout" value="20.0" />
+  </node>
+
+  <!-- If database loading was enabled, start mongodb as well -->
+  <include file="$(find teleop_motorhand)/launch/default_warehouse_db.launch" if="$(arg db)">
+    <arg name="moveit_warehouse_database_path" value="$(arg db_path)"/>
+  </include>
+
+</launch>

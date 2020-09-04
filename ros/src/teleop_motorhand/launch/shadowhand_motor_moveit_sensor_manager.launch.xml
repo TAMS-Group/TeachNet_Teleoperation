@@ -1,0 +1,3 @@
+<launch>
+  <rosparam command="load" file="$(find teleop_motorhand)/config/sensors_rgbd.yaml" />
+</launch>

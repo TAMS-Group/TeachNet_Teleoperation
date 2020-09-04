@@ -1,0 +1,158 @@
+planner_configs:
+  BKPIECEkConfigDefault:
+    border_fraction: 0.9
+    failed_expansion_score_factor: 0.5
+    min_valid_path_fraction: 0.5
+    range: 0.0
+    type: geometric::BKPIECE
+  ESTkConfigDefault:
+    goal_bias: 0.05
+    range: 0.0
+    type: geometric::EST
+  KPIECEkConfigDefault:
+    border_fraction: 0.9
+    failed_expansion_score_factor: 0.5
+    goal_bias: 0.05
+    min_valid_path_fraction: 0.5
+    range: 0.0
+    type: geometric::KPIECE
+  LBKPIECEkConfigDefault:
+    border_fraction: 0.9
+    min_valid_path_fraction: 0.5
+    range: 0.0
+    type: geometric::LBKPIECE
+  PRMkConfigDefault:
+    max_nearest_neighbors: 10
+    type: geometric::PRM
+  PRMstarkConfigDefault:
+    type: geometric::PRMstar
+  RRTConnectkConfigDefault:
+    range: 0.0
+    type: geometric::RRTConnect
+  RRTkConfigDefault:
+    goal_bias: 0.05
+    range: 0.0
+    type: geometric::RRT
+  RRTstarkConfigDefault:
+    delay_collision_checking: 1
+    goal_bias: 0.05
+    range: 0.0
+    type: geometric::RRTstar
+  SBLkConfigDefault:
+    range: 0.0
+    type: geometric::SBL
+  TRRTkConfigDefault:
+    frountierNodeRatio: 0.1
+    frountier_threshold: 0.0
+    goal_bias: 0.05
+    init_temperature: 10e-6
+    k_constant: 0.0
+    max_states_failed: 10
+    min_temperature: 10e-10
+    range: 0.0
+    temp_change_factor: 2.0
+    type: geometric::TRRT
+right_hand:
+  longest_valid_segment_fraction: 0.001
+  planner_configs:
+  - SBLkConfigDefault
+  - ESTkConfigDefault
+  - LBKPIECEkConfigDefault
+  - BKPIECEkConfigDefault
+  - KPIECEkConfigDefault
+  - RRTkConfigDefault
+  - RRTConnectkConfigDefault
+  - RRTstarkConfigDefault
+  - TRRTkConfigDefault
+  - PRMkConfigDefault
+  - PRMstarkConfigDefault
+rh_first_finger:
+  longest_valid_segment_fraction: 0.01
+  planner_configs:
+  - SBLkConfigDefault
+  - ESTkConfigDefault
+  - LBKPIECEkConfigDefault
+  - BKPIECEkConfigDefault
+  - KPIECEkConfigDefault
+  - RRTkConfigDefault
+  - RRTConnectkConfigDefault
+  - RRTstarkConfigDefault
+  - TRRTkConfigDefault
+  - PRMkConfigDefault
+  - PRMstarkConfigDefault
+  projection_evaluator: joints(rh_FFJ4,rh_FFJ3)
+rh_middle_finger:
+  longest_valid_segment_fraction: 0.01
+  planner_configs:
+  - SBLkConfigDefault
+  - ESTkConfigDefault
+  - LBKPIECEkConfigDefault
+  - BKPIECEkConfigDefault
+  - KPIECEkConfigDefault
+  - RRTkConfigDefault
+  - RRTConnectkConfigDefault
+  - RRTstarkConfigDefault
+  - TRRTkConfigDefault
+  - PRMkConfigDefault
+  - PRMstarkConfigDefault
+  projection_evaluator: joints(rh_MFJ4,rh_MFJ3)
+rh_ring_finger:
+  longest_valid_segment_fraction: 0.01
+  planner_configs:
+  - SBLkConfigDefault
+  - ESTkConfigDefault
+  - LBKPIECEkConfigDefault
+  - BKPIECEkConfigDefault
+  - KPIECEkConfigDefault
+  - RRTkConfigDefault
+  - RRTConnectkConfigDefault
+  - RRTstarkConfigDefault
+  - TRRTkConfigDefault
+  - PRMkConfigDefault
+  - PRMstarkConfigDefault
+  projection_evaluator: joints(rh_RFJ4,rh_RFJ3)
+rh_little_finger:
+  longest_valid_segment_fraction: 0.01
+  planner_configs:
+  - SBLkConfigDefault
+  - ESTkConfigDefault
+  - LBKPIECEkConfigDefault
+  - BKPIECEkConfigDefault
+  - KPIECEkConfigDefault
+  - RRTkConfigDefault
+  - RRTConnectkConfigDefault
+  - RRTstarkConfigDefault
+  - TRRTkConfigDefault
+  - PRMkConfigDefault
+  - PRMstarkConfigDefault
+  projection_evaluator: joints(rh_LFJ5,rh_LFJ4)
+rh_thumb:
+  longest_valid_segment_fraction: 0.01
+  planner_configs:
+  - SBLkConfigDefault
+  - ESTkConfigDefault
+  - LBKPIECEkConfigDefault
+  - BKPIECEkConfigDefault
+  - KPIECEkConfigDefault
+  - RRTkConfigDefault
+  - RRTConnectkConfigDefault
+  - RRTstarkConfigDefault
+  - TRRTkConfigDefault
+  - PRMkConfigDefault
+  - PRMstarkConfigDefault
+  projection_evaluator: joints(rh_THJ5,rh_THJ4)
+rh_fingers:
+  longest_valid_segment_fraction: 0.002
+  planner_configs:
+  - SBLkConfigDefault
+  - ESTkConfigDefault
+  - LBKPIECEkConfigDefault
+  - BKPIECEkConfigDefault
+  - KPIECEkConfigDefault
+  - RRTkConfigDefault
+  - RRTConnectkConfigDefault
+  - RRTstarkConfigDefault
+  - TRRTkConfigDefault
+  - PRMkConfigDefault
+  - PRMstarkConfigDefault
+  projection_evaluator: joints(rh_FFJ4,rh_FFJ3)

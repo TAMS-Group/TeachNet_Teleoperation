@@ -1,0 +1,104 @@
+<launch>
+  <!-- This launch file is for shadow hand only -->
+  <arg name="hand_id" default="rh"/>
+  <!-- hand_id is deprecated but still necessary for this file due to the structure of sr_config repository-->
+  <arg if="$(eval arg('hand_id') == 'rh')" name="side" default="right"/>
+  <arg if="$(eval arg('hand_id') == 'lh')" name="side" default="left"/>
+  <!-- Set to hand_e, hand_e_plus or hand_lite or hand_extra_lite -->
+  <arg name="hand_type" default="hand_e"/>
+  <!-- set to false if you want to use real robots, true if you need the gazebo simulation -->
+  <arg name="sim" default="true"/>
+  <!-- Set to true for debugging -->
+  <arg name="debug" default="false"/>
+  <arg name="verbose" default="true" />
+  <!-- Set to true to spawn trajectory controllers for the hands(the trajectory controller overwrites continuously the joint position command, preventing direct control via topics-->
+  <arg name="hand_trajectory" default="true"/>
+  <!-- Set to true to spawn the position controllers for the hands-->
+  <arg name="hand_ctrl" default="true"/>
+  <!-- The control mode PWM (true) or torque (false) -->
+  <!-- Set to true by default for now as torque control is not available yet -->
+  <arg name="pwm_control" default="true"/>
+  <!-- Serial number of the hand to be used-->
+  <arg name="hand_serial" default="554"/>
+  <!-- Allows to specify the ethernet interface/s to be used for ethercat devices. It defaults to the value of the env var ETHERCAT_PORT
+       More than one interface can be specified by concatenating them using underscore as a separator (e.g eth1_eth2_eth3) -->
+  <arg name="eth_port" default="$(optenv ETHERCAT_PORT eth0)"/>
+  <!-- Set to true to allow planning trajectories-->
+  <arg name="use_moveit" default="true"/>
+  <!-- Set to false if you want to start without guis -->
+  <arg name="gui" default="true"/>
+  <!-- the path to the mapping files -->
+  <arg name="mapping_path" default="$(find sr_edc_launch)/mappings/default_mappings/$(arg hand_id)_E_v4.yaml"/>
+  <!-- Set to true if you want to use grasp controller -->
+  <arg name="grasp_controller" default="false"/>
+  <!-- The robot state publisher publishing frequency  -->
+  <arg name="robot_state_pub_frequency" default="250"/>
+  <!-- The joint state publisher publishing frequency  -->
+  <arg name="joint_state_pub_frequency" default="125"/>
+
+  <!-- Set this to true if you run the hardware loop on a remote computer -->
+  <arg name="external_control_loop" default="false"/>
+
+  <!-- Logging. -->
+  <include file="$(find sr_logging_common)/launch/sr_rosbag_log.launch">
+    <arg name="node_name" value="server_record"/>
+    <arg name="log_bag_prefix" value="sr_hand"/>
+    <arg name="log_directory" value="$(optenv HOME)/.ros/log"/>
+    <arg name="log_topics" value='-e ".*(controller|debug_etherCAT_data).*" /joint_states /rosout /diagnostics /mechanism_statistics /journalctl_log'/>
+  </include>  
+
+  <!-- Loads the robot description -->
+  <arg name="robot_description" value="$(find tams_motorhand_description)/robots/tams_motorhand.urdf.xacro" />
+
+  <!-- ik solver possible values sr_hand_kinematics/trac_ik/bio_ik -->
+  <arg name="hand_ik_solver" default="bioik"/>
+
+  <!-- Default hand controller groups -->
+  <arg if="$(arg grasp_controller)" name="hand_controller_group" default="grasp"/>
+  <arg if="$(eval hand_trajectory and not grasp_controller)" name="hand_controller_group" default="trajectory"/>
+  <arg if="$(eval not hand_trajectory and not grasp_controller)" name="hand_controller_group" default="position"/>
+
+  <!-- SIMULATED ROBOTS -->
+  <group if="$(arg sim)">
+    <param name="/use_sim_time" value="true"/>
+    <arg name="world_name" value="$(find teleop_motorhand)/worlds/shadowhand_multiview.world"/>
+    <arg name="paused" value="false"/>
+    <include file="$(find gazebo_ros)/launch/empty_world.launch">
+      <arg name="world_name" default="$(arg world_name)"/>
+      <arg name="gui" default="$(arg gui)"/>
+      <arg name="paused" value="$(arg paused)"/>
+      <arg name="debug" value="$(arg debug)"/>
+      <arg name="verbose" value="$(arg verbose)" />
+    </include>
+    <param name="/hand/mapping/$(arg hand_serial)" value="$(arg hand_id)"/>
+    <param name="/hand/joint_prefix/$(arg hand_serial)" value="$(arg hand_id)_"/>
+    <param name="robot_description" command="xacro $(arg robot_description)"/>
+    <node name="spawn_model" pkg="gazebo_ros" type="spawn_model" args="-urdf -param robot_description -model usrh -z 0.0 " respawn="false" output="screen"/>
+
+    <rosparam command="load" file="$(find sr_description)/hand/config/$(arg hand_id)_controller_gazebo.yaml"/>
+    <include file="$(find ros_ethercat_model)/launch/joint_state_publisher.launch" >
+      <arg name="publish_rate" value="$(arg joint_state_pub_frequency)"/>
+    </include>
+    <!-- Robot state publisher -->
+    <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher">
+      <param name="publish_frequency" type="double" value="$(arg robot_state_pub_frequency)"/>
+      <param name="tf_prefix" type="string" value="" />
+    </node>
+    <!-- Controller -->
+    <group if="$(arg hand_ctrl)">
+      <node name="$(arg hand_id)_controller_spawner" pkg="sr_utilities" type="controller_spawner.py" output="screen">
+        <param name="controller_group" value="$(arg hand_controller_group)"/>
+      </node>
+    </group>
+  </group>
+
+  <!-- MOVEIT -->
+  <group if="$(arg use_moveit)">
+    <include file="$(find teleop_motorhand)/launch/moveit_planning_and_execution.launch">
+      <arg name="hand_ik_solver" value="$(arg hand_ik_solver)"/>
+      <arg name="gui" value="$(arg gui)"/>
+    </include>
+    <include file="$(find teleop_motorhand)/launch/default_warehouse_db.launch"/>
+  </group>
+
+</launch>

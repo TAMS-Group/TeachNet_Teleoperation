@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="biotac_links">
+
+  <xacro:macro name="biotac" params="prefix">
+    <link name="${prefix}ff_biotac_link">
+      <origin xyz="0.0 0.0 0.0"/>
+    </link>
+    <joint name="${prefix}ff_biotac_joint" type="fixed">
+      <child link="${prefix}ff_biotac_link" />
+      <parent link="${prefix}fftip" />
+      <origin xyz="-0.0004 0.0 0.003" rpy="${-pi/2} ${-pi/2} 0.0"/>
+    </joint>
+
+    <link name="${prefix}mf_biotac_link">
+      <origin xyz="0.0 0.0 0.0"/>
+    </link>
+    <joint name="${prefix}mf_biotac_joint" type="fixed">
+      <child link="${prefix}mf_biotac_link" />
+      <parent link="${prefix}mftip" />
+      <origin xyz="-0.0004 0.0 0.003" rpy="${-pi/2} ${-pi/2} 0.0"/>
+    </joint>
+
+    <link name="${prefix}rf_biotac_link">
+      <origin xyz="0.0 0.0 0.0"/>
+    </link>
+    <joint name="${prefix}rf_biotac_joint" type="fixed">
+      <child link="${prefix}rf_biotac_link" />
+      <parent link="${prefix}rftip" />
+      <origin xyz="-0.0004 0.0 0.003" rpy="${-pi/2} ${-pi/2} 0.0"/>
+    </joint>
+
+    <link name="${prefix}lf_biotac_link">
+      <origin xyz="0.0 0.0 0.0"/>
+    </link>
+    <joint name="${prefix}lf_biotac_joint" type="fixed">
+      <child link="${prefix}lf_biotac_link" />
+      <parent link="${prefix}lftip" />
+      <origin xyz="-0.0004 0.0 0.003" rpy="${-pi/2} ${-pi/2} 0.0"/>
+    </joint>
+
+    <link name="${prefix}th_biotac_link">
+      <origin xyz="0.0 0.0 0.0"/>
+    </link>
+    <joint name="${prefix}th_biotac_joint" type="fixed">
+      <child link="${prefix}th_biotac_link" />
+      <parent link="${prefix}thtip" />
+      <origin xyz="-0.0004 0.0007 0.002" rpy="${-pi/2} ${-pi/2} 0.0"/>
+    </joint>
+  </xacro:macro>
+</robot>
