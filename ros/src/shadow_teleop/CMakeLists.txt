@@ -44,9 +44,10 @@ add_dependencies(shadow_forward_kinematics ${catkin_EXPORTED_TARGETS})
 target_link_libraries(shadow_forward_kinematics ${catkin_LIBRARIES} ${OpenCV_LIBS})
 
 add_executable(shadow_fk_service src/shadow_fk_service.cpp)
-add_dependencies(shadow_fk_service ${catkin_EXPORTED_TARGETS} ${PROJECT_NAME}_EXPORTED_TARGETS)
+add_dependencies(shadow_fk_service ${catkin_EXPORTED_TARGETS} ${PROJECT_NAME}_gencpp)
 target_link_libraries(shadow_fk_service ${catkin_LIBRARIES} ${OpenCV_LIBS})
 
 add_executable(interpolate_traj_service src/interpolate_traj_service.cpp)
-add_dependencies(interpolate_traj_service ${catkin_EXPORTED_TARGETS} ${PROJECT_NAME}_EXPORTED_TARGETS)
+add_dependencies(interpolate_traj_service ${catkin_EXPORTED_TARGETS} ${PROJECT_NAME}_gencpp)
 target_link_libraries(interpolate_traj_service ${catkin_LIBRARIES} ${OpenCV_LIBS})
+

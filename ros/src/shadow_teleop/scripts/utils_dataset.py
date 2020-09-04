@@ -95,6 +95,7 @@ def filename2csv():
 
 def readable():
     file_list = glob.glob(os.path.join('data/depth', '*.png'))
+    # file_list = glob.glob(os.path.join('*.png'))
     file_number = len(file_list)
     #from IPython import embed;embed()
     for i in range(0, file_number):

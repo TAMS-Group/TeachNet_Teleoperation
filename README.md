@@ -36,9 +36,10 @@ alt="video"  border="0" /></a>
   - [sr-ros-interface](https://github.com/shadow-robot/sr-ros-interface.git)
   - [sr_tools](https://github.com/shadow-robot/sr_tools.git)
   - [ros_control_robot](https://github.com/shadow-robot/ros_control_robot.git)
-
+  - [ros_numpy](https://github.com/eric-wieser/ros_numpy)
 ### Python Dependency
-- python2.7
+- python3.8 (for the demo_teachnet.py and the other pytorch trainning)
+- python2.7 (for the ROS stuff and demo_moveit.py, demo_robot_safe.py, and demo_robot_unsafe.py)
 - PyTorch
 - mayavi
 - numpy
@@ -120,22 +121,40 @@ alt="video"  border="0" /></a>
 ## RealsenseF200 Realtime Demo
 - Launch camera RealsenseF200 (If you use the other camera which is suitable for close-range tracking, please use corresponding launch file). Or you can download the recorded [example rosbag](https://tams.informatik.uni-hamburg.de/people/sli/data/TeachNet_model/), and play the bag file:
   ```
+  roslaunch realsense2_camera rs_rgbd.launch
+  or
   rosbag play [-l] example.bag
   ```
-- Run Shadow hand in simulation or real world.
+ - Limit your right hand to the viewpoint range of [30&deg;, 120&deg;] and the distance range of [15mm, 40mm] from the camera.
+
+ - Change the correct topic name in demo_teachnet.py based on your camera.
+
+- Run the testing of TeachNet on python3 enviroment
+   ```
+  python demo_teachnet.py --model-path pretrained-model-location [--gpu 1]
+  ```
+
+ ### Demo in simulation
+- Run Shadow hand in simulation
+   ```
+  roslaunch teleop_motorhand demo.launch
+  ```
+- Run the demo code
+  ```
+  python demo_moveit.py
+  ```
+ ### Demo in real world.
+ We provide safe mode demo and unsafe mode demo (demo_robot_safe.py and demo_robot_unsafe.py).
+The unsafe mode uses the SrHandCommander and doesn't check collision, so the response of the robot is fast and low latency.
+- Run the real robot
 - Run the collision check service:
   ```
   rosrun shadow_teleop interpolate_traj_service
   ```
-
-- Run the demo code.
-
-  - Change the correct topic name based on your camera.
-  - Limit your right hand to the viewpoint range of [30&deg;, 120&deg;] and the distance range of [15mm, 40mm] from the camera.
-  ```
-  python shadow_demo.py --model-path pretrained-model-location [--gpu 1]
-  ```
-
+ - Run the demo code
+   ```
+  python demo_robot_safe.py
+  ``` 
 ## Citation
 If you use this work（collobrated with  ）, please cite:
 

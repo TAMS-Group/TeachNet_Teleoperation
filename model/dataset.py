@@ -30,7 +30,9 @@ class ShadowPairedDataset(torch.utils.data.Dataset):
         if is_train:
             self.label = np.load(os.path.join(path, 'joint_train.npy'))
         else:
-            self.label = np.load(os.path.join(path, 'joint_test.npy'))
+            # self.label = np.load(os.path.join(path, 'joint_test.npy'))
+            self.label = np.load(os.path.join(path, 'test.npy'))
+
 
         self.length = len(self.label)
 

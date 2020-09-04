@@ -1,5 +1,4 @@
 #include <ros/ros.h>
-#include <tf/transform_listener.h>
 
 #include <moveit/robot_model_loader/robot_model_loader.h>
 #include <moveit/robot_model/robot_model.h>
@@ -36,7 +35,6 @@ std::vector<std::string> MapPositionlinks {
 
 bool shadow_fk(shadow_teleop::fk::Request &req, shadow_teleop::fk::Response &res)
 {
-
     robot_model_loader::RobotModelLoader robot_model_loader("robot_description");
     robot_model::RobotModelPtr kinematic_model = robot_model_loader.getModel();
     robot_state::RobotStatePtr kinematic_state(new robot_state::RobotState(kinematic_model));
@@ -51,11 +49,9 @@ bool shadow_fk(shadow_teleop::fk::Request &req, shadow_teleop::fk::Response &res
     {
         const Eigen::Affine3d &link_state = kinematic_state->getGlobalLinkTransform(link);
         ROS_INFO_STREAM("Translation: " << link_state.translation());
-        tf::Vector3 link_position(link_state.translation().x(), link_state.translation().y(), link_state.translation().z());
-        current_pos.push_back(link_position.x());
-        current_pos.push_back(link_position.y());
-        current_pos.push_back(link_position.z());
-
+        current_pos.push_back(link_state.translation().x());
+        current_pos.push_back(link_state.translation().y());
+        current_pos.push_back(link_state.translation().z());
     }
     res.pos = current_pos;
     return true;

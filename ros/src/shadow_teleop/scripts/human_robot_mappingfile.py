@@ -8,7 +8,7 @@ class Map_Loader(object):
     def __init__(self, base_path="./data/"):
         # load data
         self.base_path = base_path
-        DataFile = open(base_path + "Human_label/test.txt", "r")
+        DataFile = open(base_path + "Human_label/text_annotation.txt", "r")
 
         lines = DataFile.read().splitlines()
         self.framelist = [ln.split(' ')[0].replace("\t", "") for ln in lines]
@@ -334,7 +334,7 @@ if __name__ == '__main__':
     # cartesian_pos_show(base_path)
     map_loader = Map_Loader(base_path)
     csvSum = open(base_path + "Human_label/shadow_location_tams.csv", "w")
-    writer = csv.writer(csvSum)
+    # writer = csv.writer(csvSum)
     print(len(map_loader.framelist))
     for i in range(0, len(map_loader.framelist)):
         tip_keys, pip_keys, pip_mcp, tip_pip, frame, local_points, shadow_points = map_loader.map(i)
@@ -355,9 +355,9 @@ if __name__ == '__main__':
         #
         mlab.clf
         mlab.figure(bgcolor=(1, 1, 1), size=(1280, 960))
-        show_hand(shadow_points, 'shadow')
+        # show_hand(shadow_points, 'shadow')
         show_hand(local_points, 'human')
-        # mlab.savefig(filename="../data/tams_handshape/" + frame)
-        # mlab.close()
-        mlab.show()
+        mlab.savefig(filename="../data/tams_handshape/" + frame)
+        mlab.close()
+        # mlab.show()
     csvSum.close()

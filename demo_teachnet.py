@@ -1,3 +1,10 @@
+'''
+This is the demo file, which uses Realsense camera and the real robot.
+We use the unsafe mode (We use the unsafe move_to_joint_value_target_unsafe SrHandCommander from sr_robot_commander
+) in SrHandCommander.
+Therefore, there is no collision check and the speed of the robot is fast.
+'''
+
 from __future__ import print_function
 import argparse
 import os
@@ -11,16 +18,13 @@ import torch.nn.functional as F
 import numpy as np
 import cv2
 import csv
-import copy
 from model.model import *
 from utils import seg_hand_depth
 
 import rospy
-import moveit_commander
 from sensor_msgs.msg import Image
-from cv_bridge import CvBridge, CvBridgeError
-from shadow_teleop.srv import *
-
+import ros_numpy
+from std_msgs.msg import Float64MultiArray
 
 parser = argparse.ArgumentParser(description='deepShadowTeleop')
 parser.add_argument('--cuda', action='store_true')
@@ -47,6 +51,14 @@ joint_upper_range = torch.tensor([0.349, 1.571, 1.571, 1.571, 0.785, 0.349, 1.57
                                   1.571, 1.047, 1.222, 0.209, 0.524, 1.571])
 joint_lower_range = torch.tensor([-0.349, 0, 0, 0, 0, -0.349, 0, 0, 0, -0.349, 0, 0, 0,
                                   -0.349, 0, 0, 0, -1.047, 0, -0.209, -0.524, 0])
+
+# starting position for the hand
+start_pos = {"rh_THJ1": 0, "rh_THJ2": 0, "rh_THJ3": 0, "rh_THJ4": 0, "rh_THJ5": 0,
+             "rh_FFJ1": 0, "rh_FFJ2": 0, "rh_FFJ3": 0, "rh_FFJ4": 0,
+             "rh_MFJ1": 0, "rh_MFJ2": 0, "rh_MFJ3": 0, "rh_MFJ4": 0,
+             "rh_RFJ1": 0, "rh_RFJ2": 0, "rh_RFJ3": 0, "rh_RFJ4": 0,
+             "rh_LFJ1": 0, "rh_LFJ2": 0, "rh_LFJ3": 0, "rh_LFJ4": 0, "rh_LFJ5": 0,
+             "rh_WRJ1": 0, "rh_WRJ2": 0}
 
 model = torch.load(args.model_path, map_location='cpu')
 model.device_ids = [args.gpu]
@@ -83,50 +95,33 @@ def test(model, img):
 
 class Teleoperation():
     def __init__(self):
-        self.mgi = moveit_commander.MoveGroupCommander("right_hand")
-        self.bridge = CvBridge()
-        self.mgi.set_named_target("open")
-        self.mgi.go()
+        self.pub = rospy.Publisher('teleop_outputs_joints', Float64MultiArray, queue_size=1)
+        # "/camera/depth/image_raw" or "/camera/aligned_depth_to_color/image_raw"
+        rospy.Subscriber("/camera/aligned_depth_to_color/image_raw", Image, self.callback)
 
-    def online_once(self):
-        while True:     
-            #       /camera/aligned_depth_to_color/image_raw
-            img_data = rospy.wait_for_message("/camera/aligned_depth_to_color/image_raw", Image)
-            rospy.loginfo("Got an image ^_^")
-            try:
-                img = self.bridge.imgmsg_to_cv2(img_data, desired_encoding="passthrough")
-            except CvBridgeError as e:
-                rospy.logerr(e)
+    def callback(self, img_data):
+        rospy.loginfo("Got an image ^_^")
+        img = ros_numpy.numpify(img_data)
+        try:
+            # preproces
+            img = seg_hand_depth(img, 500, 1000, 10, 100, 4, 4, 250, True, 300)
+            img = img.astype(np.float32)
+            img = img / 255. * 2. - 1
+            print(img.shape)
 
-            try:
-                # preproces
-                img = seg_hand_depth(img, 500, 1000, 10, 100, 4, 4, 250, True, 300)
-                img = img.astype(np.float32)
-                img = img / 255. * 2. - 1
+            n = cv2.resize(img, (0, 0), fx=2, fy=2)
+            n1 = cv2.normalize(n, n, alpha=0, beta=1, norm_type=cv2.NORM_MINMAX, dtype=cv2.CV_32F)
+            cv2.imshow("segmented human hand", n1)
+            cv2.waitKey(1)
 
-                n = cv2.resize(img, (0, 0), fx=2, fy=2)
-                n1 = cv2.normalize(n, n, alpha=0, beta=1, norm_type=cv2.NORM_MINMAX, dtype=cv2.CV_32F)
-                cv2.imshow("segmented human hand", n1)
-                cv2.waitKey(1)
+            # get the clipped joints
+            goal = self.joint_cal(img, isbio=True)
 
-                # get the clipped joints
-                goal = self.joint_cal(img, isbio=True)
-                start = self.mgi.get_current_joint_values()
-                
-                # collision check and manipulate
-                csl_client = rospy.ServiceProxy('CheckSelfCollision', checkSelfCollision)
-                try:
-                    shadow_pos = csl_client(start, tuple(goal))
-                    if shadow_pos.result:
-                        rospy.loginfo("Move Done!")
-                    else:
-                       rospy.logwarn("Failed to move!")
-                except rospy.ServiceException as exc:
-                   rospy.logwarn("Service did not process request: " + str(exc))
-
-                rospy.loginfo("Next one please ---->")
-            except:
-                rospy.loginfo("no images")
+            joints_msg = Float64MultiArray()
+            joints_msg.data = goal
+            self.pub.publish(joints_msg)
+        except:
+            rospy.loginfo("no images")
 
 
     def joint_cal(self, img, isbio=False):
@@ -190,7 +185,7 @@ def main():
     rospy.init_node('human_teleop_shadow')
     tele = Teleoperation()
     while not rospy.is_shutdown():
-        tele.online_once()
+    	rospy.spin()
 
 
 if __name__ == "__main__":

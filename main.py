@@ -12,7 +12,7 @@ from tensorboardX import SummaryWriter
 from torch.optim.lr_scheduler import StepLR
 
 from model.dataset import ShadowPairedDataset
-from model.model import TeachingTeleModel, NaiveTeleModel
+from model.model import TeachingTeleModel, NaiveTeleModel, NewTeachingTeleModel
 
 parser = argparse.ArgumentParser(description='deepShadowTeleop')
 parser.add_argument('--tag', type=str, default='default')
@@ -22,11 +22,11 @@ parser.add_argument('--batch-size', type=int, default=1)
 parser.add_argument('--cuda', action='store_true')
 parser.add_argument('--gpu', type=int, default=0)
 parser.add_argument('--lr', type=float, default=0.001)
-parser.add_argument('--load-model', type=str, default='')
+parser.add_argument('--load-model', type=str, default='new_early_teach_teleop.model')
 parser.add_argument('--load-epoch', type=int, default=-1)
 parser.add_argument('--model-path', type=str, default='./assets/learned_models',
                    help='pre-trained model path')
-parser.add_argument('--data-path', type=str, default='./data', help='data path')
+parser.add_argument('--data-path', type=str, default='../shadow_translation_teleop/data/human_shadow_com_nobase', help='data path')
 parser.add_argument('--log-interval', type=int, default=10)
 parser.add_argument('--save-interval', type=int, default=5)
 
@@ -98,7 +98,7 @@ if is_resume or args.mode == 'test':
     model.device_ids = [args.gpu]
     print('load model {}'.format(args.load_model))
 else:
-    model = TeachingTeleModel(input_size=input_size, embedding_size=embedding_size, joint_size=joint_size)
+    model = NewTeachingTeleModel(input_size=input_size, embedding_size=embedding_size, joint_size=joint_size)
     # model = TeachingRENTeleModel(input_size=input_size, embedding_size=embedding_size, joint_size=joint_size)
 
 if args.cuda:
@@ -240,6 +240,7 @@ def test(model, loader):
         test_error_shadow += F.l1_loss(joint_shadow, target, size_average=False)/joint_size
         test_error_human += F.l1_loss(joint_human, target, size_average=False)/joint_size
         res.append((name, joint_human))
+        # res.append(joint_shadow - target)
 
     test_loss_shadow_reg /= len(loader.dataset)
     test_loss_shadow_cons /= len(loader.dataset)
@@ -253,10 +254,14 @@ def test(model, loader):
 
     acc_shadow = [float(c)/float(len(loader.dataset)) for c in correct_shadow]
     acc_human = [float(c)/float(len(loader.dataset)) for c in correct_human]
+
     # f = open('input.csv', 'w')
     # for batch in res:
     #     for name, joint in zip(batch[0], batch[1]):
     #         buf = [name, '0.0', '0.0'] + [str(i) for i in joint.cpu().data.numpy()]
+
+    #     for error in batch:
+    #         buf = [str(i) for i in error.cpu().data.numpy()]
     #         f.write(','.join(buf) + '\n')
 
     return acc_shadow, acc_human, test_error_shadow, test_error_human, test_loss, test_loss_shadow_reg,\

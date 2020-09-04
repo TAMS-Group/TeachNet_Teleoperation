@@ -1,7 +1,17 @@
 #include <ros/ros.h>
 #include <cv_bridge/cv_bridge.h>
-#include <tf/transform_listener.h>
+
+#include <tf2_ros/buffer.h>
+#include <tf2_ros/transform_listener.h>
+#include <tf2/LinearMath/Vector3.h>
+#include <tf2/LinearMath/Scalar.h>
+#include <geometry_msgs/TransformStamped.h>
+#include <tf2_geometry_msgs/tf2_geometry_msgs.h>
+
 #include <sensor_msgs/Image.h>
+#include <message_filters/subscriber.h>
+#include <message_filters/synchronizer.h>
+#include <message_filters/sync_policies/approximate_time.h>
 
 #include <moveit/robot_model_loader/robot_model_loader.h>
 #include <moveit/planning_pipeline/planning_pipeline.h>
@@ -32,39 +42,35 @@
 #include <opencv2/imgproc/imgproc.hpp>
 
 bool take_photo = false;
-bool take_photo1 = false;
-bool take_photo2 = false;
-bool take_photo3 = false;
-bool take_photo4 = false;
-bool take_photo5 = false;
-bool take_photo6 = false;
-bool take_photo7 = false;
-bool take_photo8 = false;
 std::string item;
-std::string depth_img_path_;
-std::string depth_img_path1_;
-std::string depth_img_path2_;
-std::string depth_img_path3_;
-std::string depth_img_path4_;
-std::string depth_img_path5_;
-std::string depth_img_path6_;
-std::string depth_img_path7_;
-std::string depth_img_path8_;
-void depth_Callback(const sensor_msgs::Image::ConstPtr &image_data)
+std::vector<std::string> depth_img_path_;
+
+
+void callback(const sensor_msgs::Image::ConstPtr &image_data1, const sensor_msgs::Image::ConstPtr &image_data2,
+              const sensor_msgs::Image::ConstPtr &image_data3, const sensor_msgs::Image::ConstPtr &image_data4,
+              const sensor_msgs::Image::ConstPtr &image_data5, const sensor_msgs::Image::ConstPtr &image_data6,
+              const sensor_msgs::Image::ConstPtr &image_data7, const sensor_msgs::Image::ConstPtr &image_data8,
+              const sensor_msgs::Image::ConstPtr &image_data9)
 {
     if (take_photo)
     {
         cv_bridge::CvImagePtr cv_ptr;
         try
         {
+            std::vector<sensor_msgs::Image::ConstPtr> images = {image_data1, image_data2, image_data3, image_data4,
+                    image_data5, image_data6, image_data7, image_data8, image_data9};
             //cv_ptr = cv_bridge::toCvCopy(image_data,sensor_msgs::image_encodings::RGB8);
-            if (image_data->encoding == "32FC1")
+            if (image_data1->encoding == "32FC1")
             {
-                cv_ptr = cv_bridge::toCvCopy(image_data,sensor_msgs::image_encodings::TYPE_32FC1);
-                cv::Mat image = cv_ptr->image;
-                image.convertTo(image, CV_16UC1, 1000);
-                cv::imwrite(depth_img_path_ + item, image);
+                for (int i=0; i<9; i++)
+                {
+                    cv_ptr = cv_bridge::toCvCopy(images[i],sensor_msgs::image_encodings::TYPE_32FC1);
+                    cv::Mat image = cv_ptr->image;
+                    image.convertTo(image, CV_16UC1, 1000);
+                    cv::imwrite(depth_img_path_[i] + item, image);
+                }
                 take_photo = false;
+                std::cout << "==============> save images finish"<< std::endl;
             }
         }
         catch (cv_bridge::Exception& e)
@@ -75,238 +81,53 @@ void depth_Callback(const sensor_msgs::Image::ConstPtr &image_data)
     }
 }
 
-void depth_Callback1(const sensor_msgs::Image::ConstPtr &image_data)
-{
-    if (take_photo1)
-    {
-        cv_bridge::CvImagePtr cv_ptr;
-        try
-        {
-            //cv_ptr = cv_bridge::toCvCopy(image_data,sensor_msgs::image_encodings::RGB8);
-            if (image_data->encoding == "32FC1")
-            {
-                 cv_ptr = cv_bridge::toCvCopy(image_data,sensor_msgs::image_encodings::TYPE_32FC1);
-                 cv::Mat image = cv_ptr->image;
-            	 image.convertTo(image, CV_16UC1, 1000);
-            	 cv::imwrite(depth_img_path1_ + item, image);
-                 take_photo1 = false;
-            }
-        }
-        catch (cv_bridge::Exception& e)
-        {
-            ROS_ERROR("cv_bridge exception: %s", e.what());
-            return;
-        }
-    }
-}
-
-void depth_Callback2(const sensor_msgs::Image::ConstPtr &image_data)
-{
-    if (take_photo2)
-    {
-        cv_bridge::CvImagePtr cv_ptr;
-        try
-        {
-            //cv_ptr = cv_bridge::toCvCopy(image_data,sensor_msgs::image_encodings::RGB8);
-            if (image_data->encoding == "32FC1")
-            {
-                  cv_ptr = cv_bridge::toCvCopy(image_data,sensor_msgs::image_encodings::TYPE_32FC1);
-                  cv::Mat image = cv_ptr->image;
-                  image.convertTo(image, CV_16UC1, 1000);
-                  cv::imwrite(depth_img_path2_ + item , image);
-                  take_photo2 = false;
-            }
-        }
-        catch (cv_bridge::Exception& e)
-        {
-            ROS_ERROR("cv_bridge exception: %s", e.what());
-            return;
-        }
-    }
-}
-
-void depth_Callback3(const sensor_msgs::Image::ConstPtr &image_data)
-{
-    if (take_photo3)
-    {
-        cv_bridge::CvImagePtr cv_ptr;
-        try
-        {
-            //cv_ptr = cv_bridge::toCvCopy(image_data,sensor_msgs::image_encodings::RGB8);
-            if (image_data->encoding == "32FC1")
-            {
-                cv_ptr = cv_bridge::toCvCopy(image_data,sensor_msgs::image_encodings::TYPE_32FC1);
-                cv::Mat image = cv_ptr->image;
-                image.convertTo(image, CV_16UC1, 1000);
-                cv::imwrite(depth_img_path3_ + item , image);
-                take_photo3 = false;
-            }
-        }
-        catch (cv_bridge::Exception& e)
-        {
-            ROS_ERROR("cv_bridge exception: %s", e.what());
-            return;
-        }
-    }
-}
-
-void depth_Callback4(const sensor_msgs::Image::ConstPtr &image_data)
-{
-    if (take_photo4)
-    {
-        cv_bridge::CvImagePtr cv_ptr;
-        try
-        {
-            //cv_ptr = cv_bridge::toCvCopy(image_data,sensor_msgs::image_encodings::RGB8);
-            if (image_data->encoding == "32FC1")
-            {
-                cv_ptr = cv_bridge::toCvCopy(image_data,sensor_msgs::image_encodings::TYPE_32FC1);
-                cv::Mat image = cv_ptr->image;
-                image.convertTo(image, CV_16UC1, 1000);
-                cv::imwrite(depth_img_path4_ + item , image);
-                take_photo4 = false;
-            }
-        }
-        catch (cv_bridge::Exception& e)
-        {
-            ROS_ERROR("cv_bridge exception: %s", e.what());
-            return;
-        }
-    }
-}
-
-void depth_Callback5(const sensor_msgs::Image::ConstPtr &image_data)
-{
-    if (take_photo5)
-    {
-        cv_bridge::CvImagePtr cv_ptr;
-        try
-        {
-            //cv_ptr = cv_bridge::toCvCopy(image_data,sensor_msgs::image_encodings::RGB8);
-            if (image_data->encoding == "32FC1")
-            {
-                cv_ptr = cv_bridge::toCvCopy(image_data,sensor_msgs::image_encodings::TYPE_32FC1);
-                cv::Mat image = cv_ptr->image;
-                image.convertTo(image, CV_16UC1, 1000);
-                cv::imwrite(depth_img_path5_ + item , image);
-                take_photo5 = false;
-            }
-        }
-        catch (cv_bridge::Exception& e)
-        {
-            ROS_ERROR("cv_bridge exception: %s", e.what());
-            return;
-        }
-    }
-}
-
-void depth_Callback6(const sensor_msgs::Image::ConstPtr &image_data)
-{
-    if (take_photo6)
-    {
-        cv_bridge::CvImagePtr cv_ptr;
-        try
-        {
-            //cv_ptr = cv_bridge::toCvCopy(image_data,sensor_msgs::image_encodings::RGB8);
-            if (image_data->encoding == "32FC1")
-            {
-                cv_ptr = cv_bridge::toCvCopy(image_data,sensor_msgs::image_encodings::TYPE_32FC1);
-                cv::Mat image = cv_ptr->image;
-                image.convertTo(image, CV_16UC1, 1000);
-                cv::imwrite(depth_img_path6_ + item , image);
-                take_photo6 = false;
-            }
-        }
-        catch (cv_bridge::Exception& e)
-        {
-            ROS_ERROR("cv_bridge exception: %s", e.what());
-            return;
-        }
-    }
-}
-
-void depth_Callback7(const sensor_msgs::Image::ConstPtr &image_data)
-{
-    if (take_photo7)
-    {
-        cv_bridge::CvImagePtr cv_ptr;
-        try
-        {
-            //cv_ptr = cv_bridge::toCvCopy(image_data,sensor_msgs::image_encodings::RGB8);
-            if (image_data->encoding == "32FC1")
-            {
-                cv_ptr = cv_bridge::toCvCopy(image_data,sensor_msgs::image_encodings::TYPE_32FC1);
-                cv::Mat image = cv_ptr->image;
-                image.convertTo(image, CV_16UC1, 1000);
-                cv::imwrite(depth_img_path7_ + item , image);
-                take_photo7 = false;
-            }
-        }
-        catch (cv_bridge::Exception& e)
-        {
-            ROS_ERROR("cv_bridge exception: %s", e.what());
-            return;
-        }
-    }
-}
-
-void depth_Callback8(const sensor_msgs::Image::ConstPtr &image_data)
-{
-    if (take_photo8)
-    {
-        cv_bridge::CvImagePtr cv_ptr;
-        try
-        {
-            //cv_ptr = cv_bridge::toCvCopy(image_data,sensor_msgs::image_encodings::RGB8);
-            if (image_data->encoding == "32FC1")
-            {
-                cv_ptr = cv_bridge::toCvCopy(image_data,sensor_msgs::image_encodings::TYPE_32FC1);
-                cv::Mat image = cv_ptr->image;
-                image.convertTo(image, CV_16UC1, 1000);
-                cv::imwrite(depth_img_path8_ + item , image);
-                take_photo8 = false;
-            }
-        }
-        catch (cv_bridge::Exception& e)
-        {
-            ROS_ERROR("cv_bridge exception: %s", e.what());
-            return;
-        }
-    }
-}
 
 int main(int argc, char** argv)
 {
     ros::init(argc, argv, "bio_ik_human_robot_mapping", 1);
     ros::NodeHandle nh;
     ros::NodeHandle pnh("~");
-    ros::AsyncSpinner spinner(1);
+    ros::AsyncSpinner spinner(5);
     spinner.start();
-    tf::TransformListener tf_listener;
+    tf2_ros::Buffer tfBuffer;
+    tf2_ros::TransformListener tfListener(tfBuffer);
 
     std::string mapfile_;
     std::string jointsfile_;
     pnh.getParam("mapfile", mapfile_);
-    pnh.getParam("depth_img_path", depth_img_path_);
-    pnh.getParam("depth_img_path1", depth_img_path1_);
-    pnh.getParam("depth_img_path2", depth_img_path2_);
-    pnh.getParam("depth_img_path3", depth_img_path3_);
-    pnh.getParam("depth_img_path4", depth_img_path4_);
-    pnh.getParam("depth_img_path5", depth_img_path5_);
-    pnh.getParam("depth_img_path6", depth_img_path6_);
-    pnh.getParam("depth_img_path7", depth_img_path7_);
-    pnh.getParam("depth_img_path8", depth_img_path8_);
     pnh.getParam("jointsfile", jointsfile_);
 
-    ros::Subscriber sub_depth = nh.subscribe("/camera/depth/image_raw", 1, depth_Callback);
-    ros::Subscriber sub_depth1 = nh.subscribe("/camera1/depth/image_raw", 1, depth_Callback1);
-    ros::Subscriber sub_depth2 = nh.subscribe("/camera2/depth/image_raw", 1, depth_Callback2);
-    ros::Subscriber sub_depth3 = nh.subscribe("/camera3/depth/image_raw", 1, depth_Callback3);
-    ros::Subscriber sub_depth4 = nh.subscribe("/camera4/depth/image_raw", 1, depth_Callback4);
-    ros::Subscriber sub_depth5 = nh.subscribe("/camera5/depth/image_raw", 1, depth_Callback5);
-    ros::Subscriber sub_depth6 = nh.subscribe("/camera6/depth/image_raw", 1, depth_Callback6);
-    ros::Subscriber sub_depth7 = nh.subscribe("/camera7/depth/image_raw", 1, depth_Callback7);
-    ros::Subscriber sub_depth8 = nh.subscribe("/camera8/depth/image_raw", 1, depth_Callback8);
+    std::string depth_img_path;
+    for (int i=1; i<10; i++){
+        pnh.getParam("depth_img_path" + std::to_string(i), depth_img_path);
+        depth_img_path_.push_back(depth_img_path);
+    }
+
+    std::string depth_topic1 = "/camera1/depth/image_raw";
+    std::string depth_topic2 = "/camera2/depth/image_raw";
+    std::string depth_topic3 = "/camera3/depth/image_raw";
+    std::string depth_topic4 = "/camera4/depth/image_raw";
+    std::string depth_topic5 = "/camera5/depth/image_raw";
+    std::string depth_topic6 = "/camera6/depth/image_raw";
+    std::string depth_topic7 = "/camera7/depth/image_raw";
+    std::string depth_topic8 = "/camera8/depth/image_raw";
+    std::string depth_topic9 = "/camera9/depth/image_raw";
+
+    message_filters::Subscriber<sensor_msgs::Image> image1_sub(nh, depth_topic1, 1);
+    message_filters::Subscriber<sensor_msgs::Image> image2_sub(nh, depth_topic2, 1);
+    message_filters::Subscriber<sensor_msgs::Image> image3_sub(nh, depth_topic3, 1);
+    message_filters::Subscriber<sensor_msgs::Image> image4_sub(nh, depth_topic4, 1);
+    message_filters::Subscriber<sensor_msgs::Image> image5_sub(nh, depth_topic5, 1);
+    message_filters::Subscriber<sensor_msgs::Image> image6_sub(nh, depth_topic6, 1);
+    message_filters::Subscriber<sensor_msgs::Image> image7_sub(nh, depth_topic7, 1);
+    message_filters::Subscriber<sensor_msgs::Image> image8_sub(nh, depth_topic8, 1);
+    message_filters::Subscriber<sensor_msgs::Image> image9_sub(nh, depth_topic9, 1);
+
+    typedef message_filters::sync_policies::ApproximateTime<sensor_msgs::Image, sensor_msgs::Image, sensor_msgs::Image, sensor_msgs::Image,
+                                            sensor_msgs::Image, sensor_msgs::Image, sensor_msgs::Image, sensor_msgs::Image, sensor_msgs::Image> MySyncPolicy;
+
+    message_filters::Synchronizer<MySyncPolicy> sync(MySyncPolicy(10), image1_sub, image2_sub, image3_sub, image4_sub, image5_sub, image6_sub, image7_sub, image8_sub, image9_sub);
+    sync.registerCallback(boost::bind(&callback, _1, _2, _3, _4, _5, _6, _7, _8, _9));
 
     std::string group_name = "right_hand";
     moveit::planning_interface::MoveGroupInterface mgi(group_name);
@@ -325,12 +146,11 @@ int main(int argc, char** argv)
     collision_detection::CollisionResult collision_result;
     std::vector<std::string> collision_pairs;
 
-    ROS_WARN_STREAM("move to 'open' pose");
-    mgi.setNamedTarget("open");
-    mgi.move();
+//    ROS_WARN_STREAM("move to 'open' pose");
+//    mgi.setNamedTarget("open");
+//    mgi.move();
 
     double timeout = 0.2;
-    int attempts = 5;
     std::vector<std::string> MapPositionlinks {
       "rh_thtip",
       "rh_fftip",
@@ -343,19 +163,17 @@ int main(int argc, char** argv)
       "rh_rfmiddle",
       "rh_lfmiddle"
     };
-    std::vector<std::string> MapDirectionlinks1 {
+    std::vector<std::string> MapDirectionlinks {
       "rh_thproximal",
       "rh_ffproximal",
       "rh_mfproximal",
       "rh_rfproximal",
       "rh_lfproximal",
-    };
-    std::vector<std::string> MapDirectionlinks2 {
       "rh_thmiddle"
     };
+
     std::vector <float> MapPositionweights {1,1,1,1,1,0.2,0.2,0.2,0.2,0.2};
-    std::vector <float> MapDirectionweights1{0.1,0.1,0.1,0.1,0.1};
-    std::vector <float> MapDirectionweights2{0.1};
+    std::vector <float> MapDirectionweights{0.1,0.1,0.1,0.1,0.1, 0.1};
 
     std::ifstream mapfile(mapfile_);
     std::string line, items;
@@ -382,60 +200,48 @@ int main(int argc, char** argv)
         for (int j = 0; j< MapPositionlinks.size(); j++)
         {
             int t = j * 3;
-            tf::Vector3 position = tf::Vector3(csvItem[t], csvItem[t+1], csvItem[t+2]);
 
             // transform position from current rh_wrist into base_frame
-            tf::Stamped<tf::Point> stamped_in(position, ros::Time::now(), "rh_wrist");
-            tf::Stamped<tf::Vector3> stamped_out;
-            tf_listener.waitForTransform(base_frame, "rh_wrist", ros::Time::now(), ros::Duration(5.0));
-            tf_listener.transformPoint(base_frame, stamped_in, stamped_out);
-            tf::Vector3 Mapposition = stamped_out;
-            Mapposition.setZ(Mapposition.z() + 0.04);
+            geometry_msgs::PointStamped stamped_in;
+            stamped_in.header.frame_id = "rh_wrist";
+            stamped_in.point.x = csvItem[t];
+            stamped_in.point.y = csvItem[t+1];
+            stamped_in.point.z = csvItem[t+2];
+
+            geometry_msgs::PointStamped stamped_out;
+            tfBuffer.transform(stamped_in, stamped_out, base_frame);
+            tf2::Vector3 Mapposition (stamped_out.point.x, stamped_out.point.y, stamped_out.point.z);
 
             ik_options.goals.emplace_back(new bio_ik::PositionGoal(MapPositionlinks[j], Mapposition, MapPositionweights[j]));
         }
 
-        for (int j = 0; j< MapDirectionlinks1.size(); j++)
+        for (int j = 0; j< MapDirectionlinks.size(); j++)
         {
             int t = 30 + j * 3;
-            tf::Vector3 proximal_direction = (tf::Vector3(csvItem[t], csvItem[t+1], csvItem[t+2])).normalized();
 
-            // transform position from current rh_wrist into base_frame
-            tf::Stamped<tf::Point> stamped_in(proximal_direction, ros::Time::now(), "rh_wrist");
-            tf::Stamped<tf::Vector3> stamped_out;
-            tf_listener.waitForTransform(base_frame, "rh_wrist", ros::Time::now(), ros::Duration(5.0));
-            tf_listener.transformVector(base_frame, stamped_in, stamped_out);
-            tf::Vector3 Mapdirection = stamped_out;
+            geometry_msgs::PointStamped stamped_in;
+            stamped_in.header.frame_id = "rh_wrist";
+            stamped_in.point.x = csvItem[t];
+            stamped_in.point.y = csvItem[t+1];
+            stamped_in.point.z = csvItem[t+2];
 
-            ik_options.goals.emplace_back(new bio_ik::DirectionGoal(MapDirectionlinks1[j], tf::Vector3(0,0,1), Mapdirection.normalized(), MapDirectionweights1[j]));
-        }
+            geometry_msgs::PointStamped stamped_out;
+            tfBuffer.transform(stamped_in, stamped_out, base_frame);
+            tf2::Vector3 Mapdirection (stamped_out.point.x, stamped_out.point.y, stamped_out.point.z);
 
-        for (int j = 0; j< MapDirectionlinks2.size(); j++)
-        {
-            int t = 45 + j*3;
-            tf::Vector3 dummy_direction = (tf::Vector3(csvItem[t], csvItem[t+1], csvItem[t+2])).normalized();
-
-            // transform position from current rh_wrist into base_frame
-            tf::Stamped<tf::Point> stamped_in(dummy_direction, ros::Time::now(), "rh_wrist");
-            tf::Stamped<tf::Vector3> stamped_out;
-            tf_listener.waitForTransform(base_frame, "rh_wrist", ros::Time::now(), ros::Duration(5.0));
-            tf_listener.transformVector(base_frame, stamped_in, stamped_out);
-            tf::Vector3 Mapdirection = stamped_out;
-
-            ik_options.goals.emplace_back(new bio_ik::DirectionGoal(MapDirectionlinks2[j], tf::Vector3(0,0,1), Mapdirection.normalized(), MapDirectionweights2[j]));
+            ik_options.goals.emplace_back(new bio_ik::DirectionGoal(MapDirectionlinks[j], tf2::Vector3(0,0,1), Mapdirection.normalized(), MapDirectionweights[j]));
         }
 
         robot_state = current_state;
         // set ik solver
         bool found_ik =robot_state.setFromIK(
                           joint_model_group,           // active Shadow joints
-                          EigenSTL::vector_Affine3d(), // no explicit poses here
+                          EigenSTL::vector_Isometry3d(), // no explicit poses here
                           std::vector<std::string>(),
-                          attempts, timeout,
+                          timeout,
                           moveit::core::GroupStateValidityCallbackFn(),
                           ik_options
                         );
-
         // move to the solution position
         std::vector<double> joint_values;
         moveit::planning_interface::MoveGroupInterface::Plan shadow_plan;
@@ -472,9 +278,9 @@ int main(int argc, char** argv)
                  // set ik solver again
                  bool refound_ik =robot_state.setFromIK(
                                    joint_model_group,           // active Shadow joints
-                                   EigenSTL::vector_Affine3d(), // no explicit poses here
+                                   EigenSTL::vector_Isometry3d(), // no explicit poses here
                                    std::vector<std::string>(),
-                                   5, timeout + 0.1,
+                                   timeout+0.1,
                                    moveit::core::GroupStateValidityCallbackFn(),
                                    ik_options
                                  );
@@ -519,20 +325,12 @@ int main(int argc, char** argv)
                 continue;
             }
 
-            std::cout << "Moved to " << item <<". Take photo now. ";
+            std::cout << "Moved to " << item <<". Take photo now. " << std::endl;
             // ros::Duration(1).sleep();
             take_photo = true;
-            take_photo1 = true;
-            take_photo2 = true;
-            take_photo3 = true;
-            take_photo4 = true;
-            take_photo5 = true;
-            take_photo6 = true;
-            take_photo7 = true;
-            take_photo8 = true;
 
             // can not move robot when taking photoes.
-            while (take_photo || take_photo1 || take_photo2 || take_photo3 || take_photo4 || take_photo5 || take_photo6 || take_photo7 || take_photo8 )
+            while (take_photo)
                 ros::Duration(0.1).sleep();
 
             // save joint angles
