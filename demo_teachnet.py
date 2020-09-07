@@ -107,7 +107,6 @@ class Teleoperation():
             img = seg_hand_depth(img, 500, 1000, 10, 100, 4, 4, 250, True, 300)
             img = img.astype(np.float32)
             img = img / 255. * 2. - 1
-            print(img.shape)
 
             n = cv2.resize(img, (0, 0), fx=2, fy=2)
             n1 = cv2.normalize(n, n, alpha=0, beta=1, norm_type=cv2.NORM_MINMAX, dtype=cv2.CV_32F)
