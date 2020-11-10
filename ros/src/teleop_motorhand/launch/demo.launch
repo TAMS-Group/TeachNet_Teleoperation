@@ -8,9 +8,8 @@
   <arg name="db_path" default="$(find teleop_motorhand)/default_warehouse_mongo_db" />
 
   <!-- hand ik solver possible values sr_hand_kinematics/kdl/trac_ik/bio_ik -->
-  <arg name="hand_ik_solver" default="sr_hand_kinematics"/>
-  <arg name="hand_ik_solver_path" value="$(find teleop_motorhand)/config/kinematics_template.yaml" if="$(eval hand_ik_solver == 'sr_hand_kinematics')" />
-  <arg name="hand_ik_solver_path" value="$(find teleop_motorhand)/config/kinematics_$(arg hand_ik_solver)_template.yaml" unless="$(eval hand_ik_solver == 'sr_hand_kinematics')" />
+  <arg name="hand_ik_solver" default="bio_ik"/>
+  <arg name="hand_ik_solver_path" value="$(find teleop_motorhand)/config/kinematics.yaml" />
 
   <!-- Load the URDF, SRDF and other .yaml configuration files on the param server -->
   <include file="$(find teleop_motorhand)/launch/planning_context.launch">
@@ -23,11 +22,11 @@
   <node name="virtual_joint_broadcaster" pkg="sr_moveit_hand_config" type="virtual_joint_broadcaster.py" output="screen" />
 
   <!-- We do not have a robot connected, so publish fake joint states -->
-<!--  <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
+  <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
     <param name="/use_gui" value="false"/>
     <rosparam param="/source_list">[/move_group/fake_controller_joint_states]</rosparam>
   </node>
--->
+
   <!-- Given the published joint states, publish tf for the robot links -->
   <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" respawn="true" output="screen" />
 

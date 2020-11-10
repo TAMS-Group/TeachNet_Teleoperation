@@ -1,0 +1,117 @@
+controller_list:
+  - name: fake_right_hand_controller
+    joints:
+      - rh_WRJ2
+      - rh_WRJ1
+      - rh_FFJ4
+      - rh_FFJ3
+      - rh_FFJ2
+      - rh_FFJ1
+      - rh_LFJ5
+      - rh_LFJ4
+      - rh_LFJ3
+      - rh_LFJ2
+      - rh_LFJ1
+      - rh_MFJ4
+      - rh_MFJ3
+      - rh_MFJ2
+      - rh_MFJ1
+      - rh_RFJ4
+      - rh_RFJ3
+      - rh_RFJ2
+      - rh_RFJ1
+      - rh_THJ5
+      - rh_THJ4
+      - rh_THJ3
+      - rh_THJ2
+      - rh_THJ1
+  - name: fake_rh_manipulator_controller
+    joints:
+      - rh_WRJ2
+      - rh_WRJ1
+  - name: fake_rh_first_finger_controller
+    joints:
+      - rh_FFJ4
+      - rh_FFJ3
+      - rh_FFJ2
+      - rh_FFJ1
+  - name: fake_rh_first_finger_ee_controller
+    joints:
+      []
+  - name: fake_rh_middle_finger_controller
+    joints:
+      - rh_MFJ4
+      - rh_MFJ3
+      - rh_MFJ2
+      - rh_MFJ1
+  - name: fake_rh_middle_finger_ee_controller
+    joints:
+      []
+  - name: fake_rh_ring_finger_controller
+    joints:
+      - rh_RFJ4
+      - rh_RFJ3
+      - rh_RFJ2
+      - rh_RFJ1
+  - name: fake_rh_ring_finger_ee_controller
+    joints:
+      []
+  - name: fake_rh_little_finger_controller
+    joints:
+      - rh_LFJ5
+      - rh_LFJ4
+      - rh_LFJ3
+      - rh_LFJ2
+      - rh_LFJ1
+  - name: fake_rh_little_finger_ee_controller
+    joints:
+      []
+  - name: fake_rh_thumb_controller
+    joints:
+      - rh_THJ5
+      - rh_THJ4
+      - rh_THJ3
+      - rh_THJ2
+      - rh_THJ1
+  - name: fake_rh_thumb_ee_controller
+    joints:
+      []
+  - name: fake_rh_fingers_controller
+    joints:
+      - rh_FFJ4
+      - rh_FFJ3
+      - rh_FFJ2
+      - rh_FFJ1
+      - rh_LFJ5
+      - rh_LFJ4
+      - rh_LFJ3
+      - rh_LFJ2
+      - rh_LFJ1
+      - rh_MFJ4
+      - rh_MFJ3
+      - rh_MFJ2
+      - rh_MFJ1
+      - rh_RFJ4
+      - rh_RFJ3
+      - rh_RFJ2
+      - rh_RFJ1
+      - rh_THJ5
+      - rh_THJ4
+      - rh_THJ3
+      - rh_THJ2
+      - rh_THJ1
+initial:  # Define initial robot poses.
+  - group: right_hand
+    pose: open
+  - group: rh_first_finger
+    pose: first_finger_open
+  - group: rh_middle_finger
+    pose: middle_finger_open
+  - group: rh_ring_finger
+    pose: ring_finger_open
+  - group: rh_little_finger
+    pose: little_finger_open
+  - group: rh_thumb
+    pose: thumb_open
+  - group: rh_fingers
+    pose: fingers_open

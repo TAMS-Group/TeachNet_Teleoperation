@@ -33,4 +33,3 @@ right_hand:
   #kinematics_solver: hand_kinematics/HandKinematicsPlugin
   kinematics_solver_search_resolution: 0.005
   kinematics_solver_timeout: 0.1
-  kinematics_solver_attempts: 1

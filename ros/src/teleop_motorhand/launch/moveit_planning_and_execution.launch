@@ -6,10 +6,9 @@
   <arg name="gui" default="true"/>
 
   <!-- ik solver possible values sr_hand_kinematics/trac_ik/bio_ik -->
-  <arg name="hand_ik_solver" default="sr_hand_kinematics"/>
-  <arg name="hand_ik_solver_path" value="$(find teleop_motorhand)/config/kinematics_template.yaml" if="$(eval hand_ik_solver == 'sr_hand_kinematics')" />
-  <arg name="hand_ik_solver_path" value="$(find teleop_motorhand)/config/kinematics_$(arg hand_ik_solver)_template.yaml" unless="$(eval hand_ik_solver == 'sr_hand_kinematics')" />
-  
+  <arg name="hand_ik_solver" default="bio_ik"/>
+  <arg name="hand_ik_solver_path" value="$(find teleop_motorhand)/config/kinematics.yaml" />
+
   <!-- Broadcast static tf for robot root -->
   <node name="virtual_joint_broadcaster" pkg="sr_moveit_hand_config" type="virtual_joint_broadcaster.py" output="screen" />
   

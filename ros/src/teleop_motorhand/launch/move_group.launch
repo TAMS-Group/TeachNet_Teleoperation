@@ -19,7 +19,7 @@
   <arg name="publish_monitored_planning_scene" default="true"/>
 
   <!-- ik solver path -->
-  <arg name="hand_ik_solver_path" default="$(find teleop_motorhand)/config/kinematics_template.yaml"/>
+  <arg name="hand_ik_solver_path" default="$(find teleop_motorhand)/config/kinematics.yaml"/>
 
   <!-- Planning Functionality -->
   <include ns="move_group" file="$(find teleop_motorhand)/launch/planning_pipeline.launch.xml">
@@ -28,7 +28,7 @@
   
   <!-- Inverse Kinematics -->
   <group ns="move_group">
-    <rosparam command="load" file="$(find teleop_motorhand)/config/kinematics_bioik_template.yaml"/>
+    <rosparam command="load" file="$(find teleop_motorhand)/config/kinematics.yaml"/>
   </group>
 
   <!-- Trajectory Execution Functionality -->

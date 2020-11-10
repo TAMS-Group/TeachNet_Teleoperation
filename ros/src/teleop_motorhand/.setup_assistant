@@ -1,10 +1,10 @@
 moveit_setup_assistant_config:
   URDF:
-    package: sr_description
-    relative_path: robots/shadowhand_motor.urdf.xacro
+    package: teleop_motorhand
+    relative_path: robots/tams_motorhand.urdf.xacro
     xacro_args: ""
   SRDF:
-    relative_path: config/shadowhand_motor.srdf
+    relative_path: config/tams_motorhand.srdf
   CONFIG:
     author_name: sli
     author_email: sli@informatik.uni-hamburg.de
