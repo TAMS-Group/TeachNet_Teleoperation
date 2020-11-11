@@ -5,11 +5,11 @@ Panels:
     Property Tree Widget:
       Expanded:
         - /Global Options1
-        - /MotionPlanning1
-        - /MotionPlanning1/Scene Robot1
-        - /Camera1
+        - /MotionPlanning1/Planning Request1
+        - /MarkerArray1
+        - /TF1/Frames1
       Splitter Ratio: 0.7425600290298462
-    Tree Height: 529
+    Tree Height: 961
   - Class: rviz/Help
     Name: Help
   - Class: rviz/Views
@@ -295,7 +295,7 @@ Visualization Manager:
         Goal State Color: 250; 128; 0
         Interactive Marker Size: 0.029999999329447746
         Joint Violation Color: 255; 0; 255
-        Planning Group: rh_fingers
+        Planning Group: right_hand
         Query Goal State: false
         Query Start State: false
         Show Workspace: false
@@ -530,7 +530,7 @@ Visualization Manager:
       Update Topic: /interactive_finger_control/update
       Value: false
     - Class: rviz/Camera
-      Enabled: true
+      Enabled: false
       Image Rendering: background and overlay
       Image Topic: /camera1/depth/image_raw
       Name: Camera
@@ -538,18 +538,42 @@ Visualization Manager:
       Queue Size: 2
       Transport Hint: raw
       Unreliable: false
-      Value: true
+      Value: false
       Visibility:
+        "": true
         Grid: true
         InteractiveMarkers: true
+        MarkerArray: true
         MotionPlanning: true
         Value: true
       Zoom Factor: 1
+    - Class: rviz/MarkerArray
+      Enabled: true
+      Marker Topic: /opengl_shadow_bioik_dataset_generator/robot_keypoints
+      Name: MarkerArray
+      Namespaces:
+        {}
+      Queue Size: 100
+      Value: true
+    - Class: rviz/TF
+      Enabled: false
+      Frame Timeout: 15
+      Frames:
+        All Enabled: false
+      Marker Scale: 1
+      Name: TF
+      Show Arrows: true
+      Show Axes: true
+      Show Names: true
+      Tree:
+        {}
+      Update Interval: 0
+      Value: false
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
     Default Light: true
-    Fixed Frame: camera_link1
+    Fixed Frame: world
     Frame Rate: 30
   Name: root
   Tools:
@@ -561,7 +585,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/XYOrbit
-      Distance: 0.971705973148346
+      Distance: 1.177659034729004
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -576,10 +600,10 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.06979736685752869
+      Pitch: 0.09479726850986481
       Target Frame: forearm
       Value: XYOrbit (rviz)
-      Yaw: 4.554924964904785
+      Yaw: 4.919923782348633
     Saved: ~
 Window Geometry:
   Camera:
@@ -595,7 +619,7 @@ Window Geometry:
     collapsed: false
   MotionPlanning - Trajectory Slider:
     collapsed: false
-  QMainWindow State: 000000ff00000000fd0000000100000000000002c90000042cfc0200000007fc000000470000027c000001ef01000023fa000000010100000002fb0000001c004d006f00740069006f006e0050006c0061006e006e0069006e00670100000000ffffffff000002c800fffffffb000000100044006900730070006c0061007900730100000000000002c80000016100fffffffb0000000800480065006c00700000000342000000bb0000008400fffffffb0000000a0056006900650077007300000003b0000000b0000000c200fffffffb0000000c00430061006d00650072006100000002ff000001610000000000000000fb0000001e004d006f00740069006f006e00200050006c0061006e006e0069006e006701000002330000019e0000000000000000fb00000044004d006f00740069006f006e0050006c0061006e006e0069006e00670020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000004d00fffffffb0000000c00430061006d00650072006101000002ca000001a90000001900ffffff000004690000042c00000001000000020000000100000002fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
+  QMainWindow State: 000000ff00000000fd0000000100000000000002c90000042cfc0200000007fc000000470000042c000001ef01000023fa000000010100000002fb0000001c004d006f00740069006f006e0050006c0061006e006e0069006e00670100000000ffffffff000002c800fffffffb000000100044006900730070006c0061007900730100000000000002c80000016100fffffffb0000000800480065006c00700000000342000000bb0000008400fffffffb0000000a0056006900650077007300000003b0000000b0000000c200fffffffb0000000c00430061006d00650072006100000002ff000001610000001900fffffffb0000001e004d006f00740069006f006e00200050006c0061006e006e0069006e006701000002330000019e0000000000000000fb00000044004d006f00740069006f006e0050006c0061006e006e0069006e00670020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000004d00fffffffb0000000c00430061006d00650072006101000002ca000001a90000000000000000000004690000042c00000001000000020000000100000002fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
   Views:
     collapsed: false
   Width: 1849
