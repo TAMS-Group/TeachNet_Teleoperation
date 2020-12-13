@@ -161,7 +161,6 @@ Safe mode:
    ```
   python demo_robot_safe.py
   ``` 
-  
 Unsafe mode:
 
  - Run the demo code on python2 enviroment
