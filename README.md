@@ -118,7 +118,9 @@ alt="video"  border="0" /></a>
     ```
 
 ## Pretrained Models:
+- creat a folder called "weights" under './'
 - Download [pretrained models](https://tams.informatik.uni-hamburg.de/people/sli/data/TeachNet_model/) for real-time test.
+- put the [pretrained models](https://tams.informatik.uni-hamburg.de/people/sli/data/TeachNet_model/) into "weights" folder
 
 
 ## RealsenseF200 Realtime Demo
@@ -134,7 +136,7 @@ alt="video"  border="0" /></a>
 
 - Run the testing of TeachNet on python3 enviroment
    ```
-  python demo_teachnet.py --model-path pretrained-model-location [--gpu 1]
+  python demo_teachnet.py [--model-path pretrained-model-location --cuda --gpu 0]
   ```
 
  ### Demo in simulation
