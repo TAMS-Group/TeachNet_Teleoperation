@@ -37,17 +37,20 @@ alt="video"  border="0" /></a>
   - [sr_tools](https://github.com/shadow-robot/sr_tools.git)
   - [ros_control_robot](https://github.com/shadow-robot/ros_control_robot.git)
   - [ros_numpy](https://github.com/eric-wieser/ros_numpy)
+  - realsense2_camera
 ### Python Dependency
 - python3.8 (for the demo_teachnet.py and the other pytorch trainning)
 - python2.7 (for the ROS stuff and demo_moveit.py, demo_robot_safe.py, and demo_robot_unsafe.py)
 - PyTorch
-- mayavi
 - numpy
 - tensorboard
 - matplotlib
 - pickle
 - pandas
 - seaborn
+- numba
+- rospkg
+- opencv-python
 
 ### Camera Drive
 - librealsense
@@ -139,7 +142,7 @@ alt="video"  border="0" /></a>
    ```
   roslaunch teleop_motorhand demo.launch
   ```
-- Run the demo code
+- Run the demo code on python2 enviroment
   ```
   python demo_moveit.py
   ```
@@ -147,14 +150,24 @@ alt="video"  border="0" /></a>
  We provide safe mode demo and unsafe mode demo (demo_robot_safe.py and demo_robot_unsafe.py).
 The unsafe mode uses the SrHandCommander and doesn't check collision, so the response of the robot is fast and low latency.
 - Run the real robot
+
+Safe mode:
+
 - Run the collision check service:
   ```
   rosrun shadow_teleop interpolate_traj_service
   ```
- - Run the demo code
+ - Run the demo code on python2 enviroment
    ```
   python demo_robot_safe.py
   ``` 
+  
+Unsafe mode:
+
+ - Run the demo code on python2 enviroment
+   ```
+  python demo_robot_unsafe.py
+  ```  
 ## Citation
 If you use this work（collobrated with  ）, please cite:
 
