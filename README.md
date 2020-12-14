@@ -160,13 +160,13 @@ Safe mode:
   rosrun shadow_teleop interpolate_traj_service
   ```
  - Run the demo code on python2 enviroment
-   ```
+  ```
   python demo_robot_safe.py
   ``` 
 Unsafe mode:
 
  - Run the demo code on python2 enviroment
-   ```
+  ```
   python demo_robot_unsafe.py
   ```  
 ## Citation
