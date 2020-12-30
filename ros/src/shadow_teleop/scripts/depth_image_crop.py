@@ -61,8 +61,9 @@ def main():
         print(height)
         # h_img.show()
 
-        # resized to 100*100 pixels
-        h_img = h_img.resize((100, 100))
+        # resized to 100*100 pixels or you can choose not
+        # if resize, must choose Image.NEAREST.
+        h_img = h_img.resize((100, 100), resample=Image.NEAREST)
 
         # a = cv2.imread("../data/training/crop100/" + frame,cv2.IMREAD_ANYDEPTH)
         # print(a.shape)
