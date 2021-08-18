@@ -98,27 +98,33 @@ class Teleoperation():
         self.pub = rospy.Publisher('teleop_outputs_joints', Float64MultiArray, queue_size=1)
         # "/camera/depth/image_raw" or "/camera/aligned_depth_to_color/image_raw"
         rospy.Subscriber("/camera/aligned_depth_to_color/image_raw", Image, self.callback)
+        self.pub_seg_img = rospy.Publisher('segmented_image', Image, queue_size=5)
+        self.rate = rospy.Rate(50)
+        self.img = None
+        while not rospy.is_shutdown():
+            self.hand_joint()
 
     def callback(self, img_data):
-        rospy.loginfo("Got an image ^_^")
-        img = ros_numpy.numpify(img_data)
+        self.img = ros_numpy.numpify(img_data)
+
+    def hand_jointk(self):
         try:
-            # preproces
-            img = seg_hand_depth(img, 500, 1000, 10, 100, 4, 4, 250, True, 300)
-            img = img.astype(np.float32)
-            img = img / 255. * 2. - 1
+            if self.img is not None:
+                # preproces
+                img = seg_hand_depth(self.img, 500, 1000, 10, 100, 4, 4, 250, True, 300)
 
-            n = cv2.resize(img, (0, 0), fx=2, fy=2)
-            n1 = cv2.normalize(n, n, alpha=0, beta=1, norm_type=cv2.NORM_MINMAX, dtype=cv2.CV_32F)
-            cv2.imshow("segmented human hand", n1)
-            cv2.waitKey(1)
+                seg_img_msg = ros_numpy.msgify(Image, img, encoding='16UC1')
+                self.pub_seg_img.publish(seg_img_msg)
 
-            # get the clipped joints
-            goal = self.joint_cal(img, isbio=True)
+                img = img.astype(np.float32)
+                img = img / 255. * 2. - 1
 
-            joints_msg = Float64MultiArray()
-            joints_msg.data = goal
-            self.pub.publish(joints_msg)
+               # get the clipped joints
+                goal = self.joint_cal(img, isbio=True)
+                joints_msg = Float64MultiArray()
+                joints_msg.data = goal
+                self.pub.publish(joints_msg)
+                self.rate.sleep()
         except:
             rospy.loginfo("no images")
 
@@ -183,8 +189,7 @@ class Teleoperation():
 def main():
     rospy.init_node('human_teleop_shadow')
     tele = Teleoperation()
-    while not rospy.is_shutdown():
-    	rospy.spin()
+    rospy.spin()
 
 
 if __name__ == "__main__":

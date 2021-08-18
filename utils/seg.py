@@ -177,6 +177,9 @@ def seg_hand_depth(img, gap=100, thresh=500, padding=10, output_size=100, scale=
         label[:, 1] = label[:, 1] - x_min
         label[:, 0] *= (float(output_size) / (y_max - y_min + 1))
         label[:, 1] *= (float(output_size) / (x_max - x_min + 1))
+        # if need normalized label
+        # label[:, 2] = (label[:, 2] - avg_depth) / (box_z / 2)
+        # label[:, 2] = ((label[:, 2] + 1) / 2.) * 255.  # [0, 255]
         label = label.round().astype(np.int32)
         return output, label, np.array([x_max, x_min, y_max, y_min])
     else:
