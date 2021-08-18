@@ -13,5 +13,9 @@ name="tams_motorhand">
     <child link="rh_forearm" />
     <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
   </joint>
+  <!-- <joint name="rh_world_joint" type="floating">
+    <parent link="world" />
+    <child link="rh_forearm" />
+  </joint> -->
   <xacro:tams_motorhand prefix="rh_" />
 </robot>

@@ -39,7 +39,39 @@
         <joint name="rh_LFtip" />
         <joint name="rh_WRJ2" />
         <joint name="rh_WRJ1" />
-        <!--<joint name="rh_forearm_floating" />-->
+    </group>
+    <group name="right_hand_floating">
+      <joint name="rh_THJ5"/>
+      <joint name="rh_THJ4"/>
+      <joint name="rh_THJ3"/>
+      <joint name="rh_THJ2"/>
+      <joint name="rh_THJ1"/>
+      <joint name="rh_thtip"/>
+      <joint name="rh_FFJ4"/>
+      <joint name="rh_FFJ3"/>
+      <joint name="rh_FFJ2"/>
+      <joint name="rh_FFJ1"/>
+      <joint name="rh_FFtip"/>
+      <joint name="rh_MFJ4"/>
+      <joint name="rh_MFJ3"/>
+      <joint name="rh_MFJ2"/>
+      <joint name="rh_MFJ1"/>
+      <joint name="rh_MFtip"/>
+      <joint name="rh_RFJ4"/>
+      <joint name="rh_RFJ3"/>
+      <joint name="rh_RFJ2"/>
+      <joint name="rh_RFJ1"/>
+      <joint name="rh_RFtip"/>
+      <!-- Little finger special case -->
+      <joint name="rh_LFJ5"/>
+      <joint name="rh_LFJ4"/>
+      <joint name="rh_LFJ3"/>
+      <joint name="rh_LFJ2"/>
+      <joint name="rh_LFJ1"/>
+      <joint name="rh_LFtip"/>
+      <joint name="rh_WRJ2"/>
+      <joint name="rh_WRJ1"/>
+      <joint name="rh_world_joint"/>
     </group>
     <group name="rh_manipulator">
         <chain base_link="rh_forearm" tip_link="rh_manipulator" />
@@ -303,312 +335,253 @@
     <end_effector name="rh_lftip_ee" parent_link="rh_lftip" group="rh_little_finger_ee" parent_group="rh_little_finger" />
     <end_effector name="rh_thtip_ee" parent_link="rh_thtip" group="rh_thumb_ee" parent_group="rh_thumb" />
     <end_effector name="rh_manipulator_ee" parent_link="rh_manipulator" group="rh_fingers" parent_group="rh_manipulator" />
-    <!--VIRTUAL JOINT: Purpose: this element defines a virtual joint between a robot link and an external frame of reference (considered fixed with respect to the robot)-->
-    <!--<virtual_joint name="rh_forearm_floating" type="floating" parent_frame="world" child_link="rh_forearm" />-->
     <!--DISABLE COLLISIONS: By default it is assumed that any link of the robot could potentially come into collision with any other link in the robot. This tag disables collision checking between a specified pair of links. -->
-    <disable_collisions link1="rh_forearm" link2="rh_wrist" reason="Adjacent" />
-    <disable_collisions link1="rh_palm" link2="rh_wrist" reason="Adjacent" />
-    <disable_collisions link1="rh_forearm" link2="rh_palm" reason="Never" />
-    <disable_collisions link1="rh_palm" link2="rh_manipulator" reason="Never" />
-    <disable_collisions link1="rh_ffdistal" link2="rh_ffmiddle" reason="Adjacent" />
     <disable_collisions link1="rh_ffdistal" link2="rh_ffknuckle" reason="Never" />
+    <disable_collisions link1="rh_ffdistal" link2="rh_ffmiddle" reason="Adjacent" />
     <disable_collisions link1="rh_ffdistal" link2="rh_ffproximal" reason="Never" />
     <disable_collisions link1="rh_ffdistal" link2="rh_forearm" reason="Never" />
+    <disable_collisions link1="rh_ffdistal" link2="rh_lfknuckle" reason="Never" />
+    <disable_collisions link1="rh_ffdistal" link2="rh_lfmetacarpal" reason="Never" />
+    <disable_collisions link1="rh_ffdistal" link2="rh_lfmiddle" reason="Never" />
+    <disable_collisions link1="rh_ffdistal" link2="rh_lfproximal" reason="Never" />
+    <disable_collisions link1="rh_ffdistal" link2="rh_mfknuckle" reason="Never" />
     <disable_collisions link1="rh_ffdistal" link2="rh_palm" reason="Never" />
-    <disable_collisions link1="rh_ffdistal" link2="rh_wrist" reason="Never" />
-    <disable_collisions link1="rh_ffknuckle" link2="rh_wrist" reason="Never" />
-    <disable_collisions link1="rh_ffproximal" link2="rh_wrist" reason="Never" />
-    <disable_collisions link1="rh_ffmiddle" link2="rh_wrist" reason="Never" />
-    <disable_collisions link1="rh_ffknuckle" link2="rh_ffproximal" reason="Adjacent" />
-    <disable_collisions link1="rh_ffknuckle" link2="rh_ffmiddle" reason="Never" />
-    <disable_collisions link1="rh_ffknuckle" link2="rh_forearm" reason="Never" />
-    <disable_collisions link1="rh_ffknuckle" link2="rh_palm" reason="Adjacent" />
-    <disable_collisions link1="rh_ffmiddle" link2="rh_ffproximal" reason="Adjacent" />
-    <disable_collisions link1="rh_ffmiddle" link2="rh_forearm" reason="Never" />
-    <disable_collisions link1="rh_ffmiddle" link2="rh_palm" reason="Never" />
-    <disable_collisions link1="rh_ffproximal" link2="rh_forearm" reason="Never" />
-    <disable_collisions link1="rh_ffproximal" link2="rh_palm" reason="Never" />
-    <disable_collisions link1="rh_forearm" link2="rh_ffdistal" reason="Never" />
-    <disable_collisions link1="rh_forearm" link2="rh_ffknuckle" reason="Never" />
-    <disable_collisions link1="rh_forearm" link2="rh_ffmiddle" reason="Never" />
-    <disable_collisions link1="rh_forearm" link2="rh_ffproximal" reason="Never" />
-    <disable_collisions link1="rh_mfdistal" link2="rh_mfmiddle" reason="Adjacent" />
-    <disable_collisions link1="rh_mfdistal" link2="rh_mfknuckle" reason="Never" />
-    <disable_collisions link1="rh_mfdistal" link2="rh_mfproximal" reason="Never" />
-    <disable_collisions link1="rh_mfdistal" link2="rh_forearm" reason="Never" />
-    <disable_collisions link1="rh_mfdistal" link2="rh_palm" reason="Never" />
-    <disable_collisions link1="rh_mfdistal" link2="rh_wrist" reason="Never" />
-    <disable_collisions link1="rh_mfknuckle" link2="rh_wrist" reason="Never" />
-    <disable_collisions link1="rh_mfproximal" link2="rh_wrist" reason="Never" />
-    <disable_collisions link1="rh_mfmiddle" link2="rh_wrist" reason="Never" />
-    <disable_collisions link1="rh_mfknuckle" link2="rh_mfproximal" reason="Adjacent" />
-    <disable_collisions link1="rh_mfknuckle" link2="rh_mfmiddle" reason="Never" />
-    <disable_collisions link1="rh_mfknuckle" link2="rh_forearm" reason="Never" />
-    <disable_collisions link1="rh_mfknuckle" link2="rh_palm" reason="Adjacent" />
-    <disable_collisions link1="rh_mfmiddle" link2="rh_mfproximal" reason="Adjacent" />
-    <disable_collisions link1="rh_mfmiddle" link2="rh_forearm" reason="Never" />
-    <disable_collisions link1="rh_mfmiddle" link2="rh_palm" reason="Never" />
-    <disable_collisions link1="rh_mfproximal" link2="rh_forearm" reason="Never" />
-    <disable_collisions link1="rh_mfproximal" link2="rh_palm" reason="Never" />
-    <disable_collisions link1="rh_forearm" link2="rh_mfdistal" reason="Never" />
-    <disable_collisions link1="rh_forearm" link2="rh_mfknuckle" reason="Never" />
-    <disable_collisions link1="rh_forearm" link2="rh_mfmiddle" reason="Never" />
-    <disable_collisions link1="rh_forearm" link2="rh_mfproximal" reason="Never" />
-    <disable_collisions link1="rh_rfdistal" link2="rh_rfmiddle" reason="Adjacent" />
-    <disable_collisions link1="rh_rfdistal" link2="rh_rfknuckle" reason="Never" />
-    <disable_collisions link1="rh_rfdistal" link2="rh_rfproximal" reason="Never" />
-    <disable_collisions link1="rh_rfdistal" link2="rh_forearm" reason="Never" />
-    <disable_collisions link1="rh_rfdistal" link2="rh_palm" reason="Never" />
-    <disable_collisions link1="rh_rfdistal" link2="rh_wrist" reason="Never" />
-    <disable_collisions link1="rh_rfknuckle" link2="rh_wrist" reason="Never" />
-    <disable_collisions link1="rh_rfproximal" link2="rh_wrist" reason="Never" />
-    <disable_collisions link1="rh_rfmiddle" link2="rh_wrist" reason="Never" />
-    <disable_collisions link1="rh_rfknuckle" link2="rh_rfproximal" reason="Adjacent" />
-    <disable_collisions link1="rh_rfknuckle" link2="rh_rfmiddle" reason="Never" />
-    <disable_collisions link1="rh_rfknuckle" link2="rh_forearm" reason="Never" />
-    <disable_collisions link1="rh_rfknuckle" link2="rh_palm" reason="Adjacent" />
-    <disable_collisions link1="rh_rfmiddle" link2="rh_rfproximal" reason="Adjacent" />
-    <disable_collisions link1="rh_rfmiddle" link2="rh_forearm" reason="Never" />
-    <disable_collisions link1="rh_rfmiddle" link2="rh_palm" reason="Never" />
-    <disable_collisions link1="rh_rfproximal" link2="rh_forearm" reason="Never" />
-    <disable_collisions link1="rh_rfproximal" link2="rh_palm" reason="Never" />
-    <disable_collisions link1="rh_forearm" link2="rh_rfdistal" reason="Never" />
-    <disable_collisions link1="rh_forearm" link2="rh_rfknuckle" reason="Never" />
-    <disable_collisions link1="rh_forearm" link2="rh_rfmiddle" reason="Never" />
-    <disable_collisions link1="rh_forearm" link2="rh_rfproximal" reason="Never" />
-    <disable_collisions link1="rh_lfdistal" link2="rh_lfmiddle" reason="Adjacent" />
-    <disable_collisions link1="rh_lfdistal" link2="rh_lfknuckle" reason="Never" />
-    <disable_collisions link1="rh_lfdistal" link2="rh_lfproximal" reason="Never" />
-    <disable_collisions link1="rh_lfdistal" link2="rh_forearm" reason="Never" />
-    <disable_collisions link1="rh_lfdistal" link2="rh_palm" reason="Never" />
-    <disable_collisions link1="rh_lfdistal" link2="rh_wrist" reason="Never" />
-    <disable_collisions link1="rh_lfknuckle" link2="rh_wrist" reason="Never" />
-    <disable_collisions link1="rh_lfproximal" link2="rh_wrist" reason="Never" />
-    <disable_collisions link1="rh_lfmiddle" link2="rh_wrist" reason="Never" />
-    <disable_collisions link1="rh_lfknuckle" link2="rh_lfproximal" reason="Adjacent" />
-    <disable_collisions link1="rh_lfknuckle" link2="rh_lfmiddle" reason="Never" />
-    <disable_collisions link1="rh_lfknuckle" link2="rh_forearm" reason="Never" />
-    <disable_collisions link1="rh_lfknuckle" link2="rh_palm" reason="Adjacent" />
-    <disable_collisions link1="rh_lfmiddle" link2="rh_lfproximal" reason="Adjacent" />
-    <disable_collisions link1="rh_lfmiddle" link2="rh_forearm" reason="Never" />
-    <disable_collisions link1="rh_lfmiddle" link2="rh_palm" reason="Never" />
-    <disable_collisions link1="rh_lfproximal" link2="rh_forearm" reason="Never" />
-    <disable_collisions link1="rh_lfproximal" link2="rh_palm" reason="Never" />
-    <disable_collisions link1="rh_lfmetacarpal" link2="rh_forearm" reason="Never" />
-    <disable_collisions link1="rh_lfmetacarpal" link2="rh_wrist" reason="Never" />
-    <disable_collisions link1="rh_lfmetacarpal" link2="rh_palm" reason="Adjacent" />
-    <disable_collisions link1="rh_lfmetacarpal" link2="rh_lfmiddle" reason="Never" />
-    <disable_collisions link1="rh_lfmetacarpal" link2="rh_lfproximal" reason="Never" />
-    <disable_collisions link1="rh_lfdistal" link2="rh_lfmetacarpal" reason="Never" />
-    <disable_collisions link1="rh_lfknuckle" link2="rh_lfmetacarpal" reason="Adjacent" />
-    <disable_collisions link1="rh_forearm" link2="rh_lfmetacarpal" reason="Never" />
-    <disable_collisions link1="rh_forearm" link2="rh_lfdistal" reason="Never" />
-    <disable_collisions link1="rh_forearm" link2="rh_lfknuckle" reason="Never" />
-    <disable_collisions link1="rh_forearm" link2="rh_lfmiddle" reason="Never" />
-    <disable_collisions link1="rh_forearm" link2="rh_lfproximal" reason="Never" />
-    <disable_collisions link1="rh_forearm" link2="rh_thbase" reason="Never" />
-    <disable_collisions link1="rh_forearm" link2="rh_thdistal" reason="Never" />
-    <disable_collisions link1="rh_forearm" link2="rh_thhub" reason="Never" />
-    <disable_collisions link1="rh_forearm" link2="rh_thmiddle" reason="Never" />
-    <disable_collisions link1="rh_forearm" link2="rh_thproximal" reason="Never" />
-    <disable_collisions link1="rh_palm" link2="rh_thproximal" reason="Adjacent" />
-    <disable_collisions link1="rh_palm" link2="rh_thbase" reason="Adjacent" />
-    <disable_collisions link1="rh_palm" link2="rh_thhub" reason="Never" />
-    <disable_collisions link1="rh_palm" link2="rh_thmiddle" reason="Never" />
-    <disable_collisions link1="rh_thmiddle" link2="rh_wrist" reason="Never" />
-    <disable_collisions link1="rh_thproximal" link2="rh_wrist" reason="Never" />
-    <disable_collisions link1="rh_thhub" link2="rh_wrist" reason="Never" />
-    <disable_collisions link1="rh_thbase" link2="rh_wrist" reason="Never" />
-    <disable_collisions link1="rh_thdistal" link2="rh_wrist" reason="Never" />
-    <disable_collisions link1="rh_thbase" link2="rh_thdistal" reason="Never" />
-    <disable_collisions link1="rh_thbase" link2="rh_thhub" reason="Never" />
-    <disable_collisions link1="rh_thbase" link2="rh_thmiddle" reason="Never" />
-    <disable_collisions link1="rh_thbase" link2="rh_thproximal" reason="Adjacent" />
-    <disable_collisions link1="rh_thdistal" link2="rh_thhub" reason="Never" />
-    <disable_collisions link1="rh_thdistal" link2="rh_thmiddle" reason="Adjacent" />
-    <disable_collisions link1="rh_thdistal" link2="rh_thproximal" reason="Never" />
-    <disable_collisions link1="rh_thhub" link2="rh_thmiddle" reason="Adjacent" />
-    <disable_collisions link1="rh_thhub" link2="rh_thproximal" reason="Adjacent" />
-    <disable_collisions link1="rh_thmiddle" link2="rh_thproximal" reason="Never" />
+    <disable_collisions link1="rh_ffdistal" link2="rh_rfknuckle" reason="Never" />
+    <disable_collisions link1="rh_ffdistal" link2="rh_rfmiddle" reason="Never" />
+    <disable_collisions link1="rh_ffdistal" link2="rh_rfproximal" reason="Never" />
     <disable_collisions link1="rh_ffdistal" link2="rh_thbase" reason="Never" />
-    <disable_collisions link1="rh_ffdistal" link2="rh_thhub" reason="Never" />
+    <disable_collisions link1="rh_ffdistal" link2="rh_wrist" reason="Never" />
+    <disable_collisions link1="rh_ffknuckle" link2="rh_ffmiddle" reason="Never" />
+    <disable_collisions link1="rh_ffknuckle" link2="rh_ffproximal" reason="Adjacent" />
+    <disable_collisions link1="rh_ffknuckle" link2="rh_forearm" reason="Never" />
+    <disable_collisions link1="rh_ffknuckle" link2="rh_lfdistal" reason="Never" />
+    <disable_collisions link1="rh_ffknuckle" link2="rh_lfknuckle" reason="Never" />
+    <disable_collisions link1="rh_ffknuckle" link2="rh_lfmetacarpal" reason="Never" />
+    <disable_collisions link1="rh_ffknuckle" link2="rh_lfmiddle" reason="Never" />
+    <disable_collisions link1="rh_ffknuckle" link2="rh_lfproximal" reason="Never" />
+    <disable_collisions link1="rh_ffknuckle" link2="rh_mfdistal" reason="Never" />
+    <disable_collisions link1="rh_ffknuckle" link2="rh_mfknuckle" reason="Never" />
+    <disable_collisions link1="rh_ffknuckle" link2="rh_mfmiddle" reason="Never" />
+    <disable_collisions link1="rh_ffknuckle" link2="rh_mfproximal" reason="Never" />
+    <disable_collisions link1="rh_ffknuckle" link2="rh_palm" reason="Adjacent" />
+    <disable_collisions link1="rh_ffknuckle" link2="rh_rfdistal" reason="Never" />
+    <disable_collisions link1="rh_ffknuckle" link2="rh_rfknuckle" reason="Never" />
+    <disable_collisions link1="rh_ffknuckle" link2="rh_rfmiddle" reason="Never" />
+    <disable_collisions link1="rh_ffknuckle" link2="rh_rfproximal" reason="Never" />
     <disable_collisions link1="rh_ffknuckle" link2="rh_thbase" reason="Never" />
     <disable_collisions link1="rh_ffknuckle" link2="rh_thdistal" reason="Never" />
     <disable_collisions link1="rh_ffknuckle" link2="rh_thhub" reason="Never" />
     <disable_collisions link1="rh_ffknuckle" link2="rh_thmiddle" reason="Never" />
     <disable_collisions link1="rh_ffknuckle" link2="rh_thproximal" reason="Never" />
+    <disable_collisions link1="rh_ffknuckle" link2="rh_wrist" reason="Never" />
+    <disable_collisions link1="rh_ffmiddle" link2="rh_ffproximal" reason="Adjacent" />
+    <disable_collisions link1="rh_ffmiddle" link2="rh_forearm" reason="Never" />
+    <disable_collisions link1="rh_ffmiddle" link2="rh_lfdistal" reason="Never" />
+    <disable_collisions link1="rh_ffmiddle" link2="rh_lfknuckle" reason="Never" />
+    <disable_collisions link1="rh_ffmiddle" link2="rh_lfmetacarpal" reason="Never" />
+    <disable_collisions link1="rh_ffmiddle" link2="rh_lfmiddle" reason="Never" />
+    <disable_collisions link1="rh_ffmiddle" link2="rh_lfproximal" reason="Never" />
+    <disable_collisions link1="rh_ffmiddle" link2="rh_mfknuckle" reason="Never" />
+    <disable_collisions link1="rh_ffmiddle" link2="rh_palm" reason="Never" />
+    <disable_collisions link1="rh_ffmiddle" link2="rh_rfdistal" reason="Never" />
+    <disable_collisions link1="rh_ffmiddle" link2="rh_rfknuckle" reason="Never" />
+    <disable_collisions link1="rh_ffmiddle" link2="rh_rfmiddle" reason="Never" />
+    <disable_collisions link1="rh_ffmiddle" link2="rh_rfproximal" reason="Never" />
     <disable_collisions link1="rh_ffmiddle" link2="rh_thbase" reason="Never" />
     <disable_collisions link1="rh_ffmiddle" link2="rh_thhub" reason="Never" />
-    <disable_collisions link1="rh_ffmiddle" link2="rh_thproximal" reason="Never" />
     <disable_collisions link1="rh_ffmiddle" link2="rh_thmiddle" reason="Never" />
-    <disable_collisions link1="rh_ffmiddle" link2="rh_thdistal" reason="Adjacent" />
-    <disable_collisions link1="rh_ffdistal" link2="rh_thmiddle" reason="Never" />
-    <disable_collisions link1="rh_ffdistal" link2="rh_thproximal" reason="Never" />
-    <disable_collisions link1="rh_ffdistal" link2="rh_thdistal" reason="Adjacent" />
+    <disable_collisions link1="rh_ffmiddle" link2="rh_thproximal" reason="Never" />
+    <disable_collisions link1="rh_ffmiddle" link2="rh_wrist" reason="Never" />
+    <disable_collisions link1="rh_ffproximal" link2="rh_forearm" reason="Never" />
+    <disable_collisions link1="rh_ffproximal" link2="rh_lfdistal" reason="Never" />
+    <disable_collisions link1="rh_ffproximal" link2="rh_lfknuckle" reason="Never" />
+    <disable_collisions link1="rh_ffproximal" link2="rh_lfmetacarpal" reason="Never" />
+    <disable_collisions link1="rh_ffproximal" link2="rh_lfmiddle" reason="Never" />
+    <disable_collisions link1="rh_ffproximal" link2="rh_lfproximal" reason="Never" />
+    <disable_collisions link1="rh_ffproximal" link2="rh_mfknuckle" reason="Never" />
+    <disable_collisions link1="rh_ffproximal" link2="rh_mfmiddle" reason="Never" />
+    <disable_collisions link1="rh_ffproximal" link2="rh_palm" reason="Never" />
+    <disable_collisions link1="rh_ffproximal" link2="rh_rfdistal" reason="Never" />
+    <disable_collisions link1="rh_ffproximal" link2="rh_rfknuckle" reason="Never" />
+    <disable_collisions link1="rh_ffproximal" link2="rh_rfmiddle" reason="Never" />
+    <disable_collisions link1="rh_ffproximal" link2="rh_rfproximal" reason="Never" />
     <disable_collisions link1="rh_ffproximal" link2="rh_thbase" reason="Never" />
     <disable_collisions link1="rh_ffproximal" link2="rh_thhub" reason="Never" />
     <disable_collisions link1="rh_ffproximal" link2="rh_thmiddle" reason="Never" />
     <disable_collisions link1="rh_ffproximal" link2="rh_thproximal" reason="Never" />
-    <disable_collisions link1="rh_ffproximal" link2="rh_thdistal" reason="Adjacent" />
-    <disable_collisions link1="rh_mfdistal" link2="rh_thbase" reason="Never" />
-    <disable_collisions link1="rh_mfdistal" link2="rh_thhub" reason="Never" />
-    <disable_collisions link1="rh_mfknuckle" link2="rh_thbase" reason="Never" />
-    <disable_collisions link1="rh_mfknuckle" link2="rh_thdistal" reason="Never" />
-    <disable_collisions link1="rh_mfknuckle" link2="rh_thhub" reason="Never" />
-    <disable_collisions link1="rh_mfknuckle" link2="rh_thmiddle" reason="Never" />
-    <disable_collisions link1="rh_mfknuckle" link2="rh_thproximal" reason="Never" />
-    <disable_collisions link1="rh_mfmiddle" link2="rh_thbase" reason="Never" />
-    <disable_collisions link1="rh_mfmiddle" link2="rh_thhub" reason="Never" />
-    <disable_collisions link1="rh_mfmiddle" link2="rh_thproximal" reason="Never" />
-    <disable_collisions link1="rh_mfmiddle" link2="rh_thmiddle" reason="Never" />
-    <disable_collisions link1="rh_mfmiddle" link2="rh_thdistal" reason="Adjacent" />
-    <disable_collisions link1="rh_mfdistal" link2="rh_thmiddle" reason="Never" />
-    <disable_collisions link1="rh_mfdistal" link2="rh_thproximal" reason="Never" />
-    <disable_collisions link1="rh_mfdistal" link2="rh_thdistal" reason="Adjacent" />
-    <disable_collisions link1="rh_mfdistal" link2="rh_thproximal" reason="Never" />
-    <disable_collisions link1="rh_mfproximal" link2="rh_thbase" reason="Never" />
-    <disable_collisions link1="rh_mfproximal" link2="rh_thhub" reason="Never" />
-    <disable_collisions link1="rh_mfproximal" link2="rh_thmiddle" reason="Never" />
-    <disable_collisions link1="rh_mfproximal" link2="rh_thproximal" reason="Never" />
-    <disable_collisions link1="rh_mfproximal" link2="rh_thdistal" reason="Adjacent" />
-    <disable_collisions link1="rh_rfdistal" link2="rh_thbase" reason="Never" />
-    <disable_collisions link1="rh_rfdistal" link2="rh_thhub" reason="Never" />
-    <disable_collisions link1="rh_rfknuckle" link2="rh_thbase" reason="Never" />
-    <disable_collisions link1="rh_rfknuckle" link2="rh_thdistal" reason="Never" />
-    <disable_collisions link1="rh_rfknuckle" link2="rh_thhub" reason="Never" />
-    <disable_collisions link1="rh_rfknuckle" link2="rh_thmiddle" reason="Never" />
-    <disable_collisions link1="rh_rfknuckle" link2="rh_thproximal" reason="Never" />
-    <disable_collisions link1="rh_rfmiddle" link2="rh_thbase" reason="Never" />
-    <disable_collisions link1="rh_rfmiddle" link2="rh_thhub" reason="Never" />
-    <disable_collisions link1="rh_rfmiddle" link2="rh_thproximal" reason="Never" />
-    <disable_collisions link1="rh_rfmiddle" link2="rh_thmiddle" reason="Never" />
-    <disable_collisions link1="rh_rfmiddle" link2="rh_thdistal" reason="Adjacent" />
-    <disable_collisions link1="rh_rfdistal" link2="rh_thmiddle" reason="Never" />
-    <disable_collisions link1="rh_rfdistal" link2="rh_thproximal" reason="Never" />
-    <disable_collisions link1="rh_rfdistal" link2="rh_thdistal" reason="Adjacent" />
-    <disable_collisions link1="rh_rfdistal" link2="rh_thproximal" reason="Never" />
-    <disable_collisions link1="rh_rfproximal" link2="rh_thbase" reason="Never" />
-    <disable_collisions link1="rh_rfproximal" link2="rh_thhub" reason="Never" />
-    <disable_collisions link1="rh_rfproximal" link2="rh_thmiddle" reason="Never" />
-    <disable_collisions link1="rh_rfproximal" link2="rh_thproximal" reason="Never" />
-    <disable_collisions link1="rh_rfproximal" link2="rh_thdistal" reason="Adjacent" />
+    <disable_collisions link1="rh_ffproximal" link2="rh_wrist" reason="Never" />
+    <disable_collisions link1="rh_forearm" link2="rh_lfdistal" reason="Never" />
+    <disable_collisions link1="rh_forearm" link2="rh_lfknuckle" reason="Never" />
+    <disable_collisions link1="rh_forearm" link2="rh_lfmetacarpal" reason="Never" />
+    <disable_collisions link1="rh_forearm" link2="rh_lfmiddle" reason="Never" />
+    <disable_collisions link1="rh_forearm" link2="rh_lfproximal" reason="Never" />
+    <disable_collisions link1="rh_forearm" link2="rh_mfdistal" reason="Never" />
+    <disable_collisions link1="rh_forearm" link2="rh_mfknuckle" reason="Never" />
+    <disable_collisions link1="rh_forearm" link2="rh_mfmiddle" reason="Never" />
+    <disable_collisions link1="rh_forearm" link2="rh_mfproximal" reason="Never" />
+    <disable_collisions link1="rh_forearm" link2="rh_palm" reason="Never" />
+    <disable_collisions link1="rh_forearm" link2="rh_rfdistal" reason="Never" />
+    <disable_collisions link1="rh_forearm" link2="rh_rfknuckle" reason="Never" />
+    <disable_collisions link1="rh_forearm" link2="rh_rfmiddle" reason="Never" />
+    <disable_collisions link1="rh_forearm" link2="rh_rfproximal" reason="Never" />
+    <disable_collisions link1="rh_forearm" link2="rh_thbase" reason="Never" />
+    <disable_collisions link1="rh_forearm" link2="rh_thdistal" reason="Never" />
+    <disable_collisions link1="rh_forearm" link2="rh_thhub" reason="Never" />
+    <disable_collisions link1="rh_forearm" link2="rh_thmiddle" reason="Never" />
+    <disable_collisions link1="rh_forearm" link2="rh_thproximal" reason="Never" />
+    <disable_collisions link1="rh_forearm" link2="rh_wrist" reason="Adjacent" />
+    <disable_collisions link1="rh_lfdistal" link2="rh_lfknuckle" reason="Never" />
+    <disable_collisions link1="rh_lfdistal" link2="rh_lfmetacarpal" reason="Never" />
+    <disable_collisions link1="rh_lfdistal" link2="rh_lfmiddle" reason="Adjacent" />
+    <disable_collisions link1="rh_lfdistal" link2="rh_lfproximal" reason="Never" />
+    <disable_collisions link1="rh_lfdistal" link2="rh_mfknuckle" reason="Never" />
+    <disable_collisions link1="rh_lfdistal" link2="rh_palm" reason="Never" />
+    <disable_collisions link1="rh_lfdistal" link2="rh_rfknuckle" reason="Never" />
     <disable_collisions link1="rh_lfdistal" link2="rh_thbase" reason="Never" />
     <disable_collisions link1="rh_lfdistal" link2="rh_thhub" reason="Never" />
+    <disable_collisions link1="rh_lfdistal" link2="rh_thmiddle" reason="Never" />
+    <disable_collisions link1="rh_lfdistal" link2="rh_thproximal" reason="Never" />
+    <disable_collisions link1="rh_lfdistal" link2="rh_wrist" reason="Never" />
+    <disable_collisions link1="rh_lfknuckle" link2="rh_lfmetacarpal" reason="Adjacent" />
+    <disable_collisions link1="rh_lfknuckle" link2="rh_lfmiddle" reason="Never" />
+    <disable_collisions link1="rh_lfknuckle" link2="rh_lfproximal" reason="Adjacent" />
+    <disable_collisions link1="rh_lfknuckle" link2="rh_mfdistal" reason="Never" />
+    <disable_collisions link1="rh_lfknuckle" link2="rh_mfknuckle" reason="Never" />
+    <disable_collisions link1="rh_lfknuckle" link2="rh_mfmiddle" reason="Never" />
+    <disable_collisions link1="rh_lfknuckle" link2="rh_mfproximal" reason="Never" />
+    <disable_collisions link1="rh_lfknuckle" link2="rh_palm" reason="Never" />
+    <disable_collisions link1="rh_lfknuckle" link2="rh_rfdistal" reason="Never" />
+    <disable_collisions link1="rh_lfknuckle" link2="rh_rfknuckle" reason="Never" />
+    <disable_collisions link1="rh_lfknuckle" link2="rh_rfmiddle" reason="Never" />
+    <disable_collisions link1="rh_lfknuckle" link2="rh_rfproximal" reason="Never" />
     <disable_collisions link1="rh_lfknuckle" link2="rh_thbase" reason="Never" />
     <disable_collisions link1="rh_lfknuckle" link2="rh_thdistal" reason="Never" />
     <disable_collisions link1="rh_lfknuckle" link2="rh_thhub" reason="Never" />
     <disable_collisions link1="rh_lfknuckle" link2="rh_thmiddle" reason="Never" />
     <disable_collisions link1="rh_lfknuckle" link2="rh_thproximal" reason="Never" />
-    <disable_collisions link1="rh_lfmiddle" link2="rh_thbase" reason="Never" />
-    <disable_collisions link1="rh_lfmiddle" link2="rh_thhub" reason="Never" />
-    <disable_collisions link1="rh_lfmiddle" link2="rh_thproximal" reason="Never" />
-    <disable_collisions link1="rh_lfmiddle" link2="rh_thmiddle" reason="Never" />
-    <disable_collisions link1="rh_lfmiddle" link2="rh_thdistal" reason="Adjacent" />
-    <disable_collisions link1="rh_lfdistal" link2="rh_thmiddle" reason="Never" />
-    <disable_collisions link1="rh_lfdistal" link2="rh_thproximal" reason="Never" />
-    <disable_collisions link1="rh_lfdistal" link2="rh_thdistal" reason="Adjacent" />
-    <disable_collisions link1="rh_lfdistal" link2="rh_thproximal" reason="Never" />
-    <disable_collisions link1="rh_lfproximal" link2="rh_thbase" reason="Never" />
-    <disable_collisions link1="rh_lfproximal" link2="rh_thhub" reason="Never" />
-    <disable_collisions link1="rh_lfproximal" link2="rh_thmiddle" reason="Never" />
-    <disable_collisions link1="rh_lfproximal" link2="rh_thproximal" reason="Never" />
-    <disable_collisions link1="rh_lfproximal" link2="rh_thdistal" reason="Adjacent" />
-    <disable_collisions link1="rh_lfdistal" link2="rh_thmiddle" reason="Never" />
+    <disable_collisions link1="rh_lfknuckle" link2="rh_wrist" reason="Never" />
+    <disable_collisions link1="rh_lfmetacarpal" link2="rh_lfmiddle" reason="Never" />
+    <disable_collisions link1="rh_lfmetacarpal" link2="rh_lfproximal" reason="Never" />
+    <disable_collisions link1="rh_lfmetacarpal" link2="rh_mfdistal" reason="Never" />
+    <disable_collisions link1="rh_lfmetacarpal" link2="rh_mfknuckle" reason="Never" />
+    <disable_collisions link1="rh_lfmetacarpal" link2="rh_mfmiddle" reason="Never" />
+    <disable_collisions link1="rh_lfmetacarpal" link2="rh_mfproximal" reason="Never" />
+    <disable_collisions link1="rh_lfmetacarpal" link2="rh_palm" reason="Adjacent" />
+    <disable_collisions link1="rh_lfmetacarpal" link2="rh_rfdistal" reason="Never" />
+    <disable_collisions link1="rh_lfmetacarpal" link2="rh_rfknuckle" reason="Never" />
+    <disable_collisions link1="rh_lfmetacarpal" link2="rh_rfmiddle" reason="Never" />
+    <disable_collisions link1="rh_lfmetacarpal" link2="rh_rfproximal" reason="Never" />
     <disable_collisions link1="rh_lfmetacarpal" link2="rh_thbase" reason="Never" />
     <disable_collisions link1="rh_lfmetacarpal" link2="rh_thdistal" reason="Never" />
     <disable_collisions link1="rh_lfmetacarpal" link2="rh_thhub" reason="Never" />
     <disable_collisions link1="rh_lfmetacarpal" link2="rh_thmiddle" reason="Never" />
     <disable_collisions link1="rh_lfmetacarpal" link2="rh_thproximal" reason="Never" />
-    <disable_collisions link1="rh_ffdistal" link2="rh_mfknuckle" reason="Never" />
-    <disable_collisions link1="rh_ffknuckle" link2="rh_mfdistal" reason="Never" />
-    <disable_collisions link1="rh_ffknuckle" link2="rh_mfknuckle" reason="Never" />
-    <disable_collisions link1="rh_ffknuckle" link2="rh_mfmiddle" reason="Never" />
-    <disable_collisions link1="rh_ffknuckle" link2="rh_mfproximal" reason="Never" />
-    <disable_collisions link1="rh_ffmiddle" link2="rh_mfknuckle" reason="Never" />
-    <disable_collisions link1="rh_ffproximal" link2="rh_mfknuckle" reason="Never" />
-    <disable_collisions link1="rh_ffproximal" link2="rh_mfproximal" reason="Adjacent" />
-    <disable_collisions link1="rh_ffproximal" link2="rh_mfmiddle" reason="Adjacent" />
-    <disable_collisions link1="rh_ffproximal" link2="rh_mfdistal" reason="Adjacent" />
-    <disable_collisions link1="rh_ffmiddle" link2="rh_mfproximal" reason="Adjacent" />
-    <disable_collisions link1="rh_ffmiddle" link2="rh_mfmiddle" reason="Adjacent" />
-    <disable_collisions link1="rh_ffmiddle" link2="rh_mfdistal" reason="Adjacent" />
-    <disable_collisions link1="rh_ffdistal" link2="rh_mfproximal" reason="Adjacent" />
-    <disable_collisions link1="rh_ffdistal" link2="rh_mfmiddle" reason="Adjacent" />
-    <disable_collisions link1="rh_ffdistal" link2="rh_mfdistal" reason="Adjacent" />
-    <disable_collisions link1="rh_ffdistal" link2="rh_rfknuckle" reason="Never" />
-    <disable_collisions link1="rh_ffknuckle" link2="rh_rfdistal" reason="Never" />
-    <disable_collisions link1="rh_ffknuckle" link2="rh_rfknuckle" reason="Never" />
-    <disable_collisions link1="rh_ffknuckle" link2="rh_rfmiddle" reason="Never" />
-    <disable_collisions link1="rh_ffknuckle" link2="rh_rfproximal" reason="Never" />
-    <disable_collisions link1="rh_ffmiddle" link2="rh_rfknuckle" reason="Never" />
-    <disable_collisions link1="rh_ffproximal" link2="rh_rfknuckle" reason="Never" />
-    <disable_collisions link1="rh_ffdistal" link2="rh_rfproximal" reason="Never" />
-    <disable_collisions link1="rh_ffmiddle" link2="rh_rfproximal" reason="Never" />
-    <disable_collisions link1="rh_ffproximal" link2="rh_rfdistal" reason="Never" />
-    <disable_collisions link1="rh_ffproximal" link2="rh_rfmiddle" reason="Never" />
-    <disable_collisions link1="rh_ffproximal" link2="rh_rfproximal" reason="Never" />
-    <disable_collisions link1="rh_ffdistal" link2="rh_lfknuckle" reason="Never" />
-    <disable_collisions link1="rh_ffdistal" link2="rh_lfproximal" reason="Never" />
-    <disable_collisions link1="rh_ffknuckle" link2="rh_lfdistal" reason="Never" />
-    <disable_collisions link1="rh_ffknuckle" link2="rh_lfknuckle" reason="Never" />
-    <disable_collisions link1="rh_ffknuckle" link2="rh_lfmiddle" reason="Never" />
-    <disable_collisions link1="rh_ffknuckle" link2="rh_lfproximal" reason="Never" />
-    <disable_collisions link1="rh_ffmiddle" link2="rh_lfknuckle" reason="Never" />
-    <disable_collisions link1="rh_ffmiddle" link2="rh_lfmiddle" reason="Never" />
-    <disable_collisions link1="rh_ffmiddle" link2="rh_lfproximal" reason="Never" />
-    <disable_collisions link1="rh_ffproximal" link2="rh_lfknuckle" reason="Never" />
-    <disable_collisions link1="rh_ffproximal" link2="rh_lfdistal" reason="Never" />
-    <disable_collisions link1="rh_ffproximal" link2="rh_lfmiddle" reason="Never" />
-    <disable_collisions link1="rh_ffproximal" link2="rh_lfproximal" reason="Never" />
-    <disable_collisions link1="rh_ffdistal" link2="rh_lfmetacarpal" reason="Never" />
-    <disable_collisions link1="rh_ffknuckle" link2="rh_lfmetacarpal" reason="Never" />
-    <disable_collisions link1="rh_ffmiddle" link2="rh_lfmetacarpal" reason="Never" />
-    <disable_collisions link1="rh_ffproximal" link2="rh_lfmetacarpal" reason="Never" />
+    <disable_collisions link1="rh_lfmetacarpal" link2="rh_wrist" reason="Never" />
+    <disable_collisions link1="rh_lfmiddle" link2="rh_lfproximal" reason="Adjacent" />
+    <disable_collisions link1="rh_lfmiddle" link2="rh_mfknuckle" reason="Never" />
+    <disable_collisions link1="rh_lfmiddle" link2="rh_mfmiddle" reason="Never" />
+    <disable_collisions link1="rh_lfmiddle" link2="rh_mfproximal" reason="Never" />
+    <disable_collisions link1="rh_lfmiddle" link2="rh_palm" reason="Never" />
+    <disable_collisions link1="rh_lfmiddle" link2="rh_rfknuckle" reason="Never" />
+    <disable_collisions link1="rh_lfmiddle" link2="rh_thbase" reason="Never" />
+    <disable_collisions link1="rh_lfmiddle" link2="rh_thhub" reason="Never" />
+    <disable_collisions link1="rh_lfmiddle" link2="rh_thmiddle" reason="Never" />
+    <disable_collisions link1="rh_lfmiddle" link2="rh_thproximal" reason="Never" />
+    <disable_collisions link1="rh_lfmiddle" link2="rh_wrist" reason="Never" />
+    <disable_collisions link1="rh_lfproximal" link2="rh_mfknuckle" reason="Never" />
+    <disable_collisions link1="rh_lfproximal" link2="rh_palm" reason="Never" />
+    <disable_collisions link1="rh_lfproximal" link2="rh_rfknuckle" reason="Never" />
+    <disable_collisions link1="rh_lfproximal" link2="rh_thbase" reason="Never" />
+    <disable_collisions link1="rh_lfproximal" link2="rh_thhub" reason="Never" />
+    <disable_collisions link1="rh_lfproximal" link2="rh_thmiddle" reason="Never" />
+    <disable_collisions link1="rh_lfproximal" link2="rh_thproximal" reason="Never" />
+    <disable_collisions link1="rh_lfproximal" link2="rh_wrist" reason="Never" />
+    <disable_collisions link1="rh_mfdistal" link2="rh_mfknuckle" reason="Never" />
+    <disable_collisions link1="rh_mfdistal" link2="rh_mfmiddle" reason="Adjacent" />
+    <disable_collisions link1="rh_mfdistal" link2="rh_mfproximal" reason="Never" />
+    <disable_collisions link1="rh_mfdistal" link2="rh_palm" reason="Never" />
     <disable_collisions link1="rh_mfdistal" link2="rh_rfknuckle" reason="Never" />
+    <disable_collisions link1="rh_mfdistal" link2="rh_thbase" reason="Never" />
+    <disable_collisions link1="rh_mfdistal" link2="rh_thmiddle" reason="Never" />
+    <disable_collisions link1="rh_mfdistal" link2="rh_thproximal" reason="Never" />
+    <disable_collisions link1="rh_mfdistal" link2="rh_wrist" reason="Never" />
+    <disable_collisions link1="rh_mfknuckle" link2="rh_mfmiddle" reason="Never" />
+    <disable_collisions link1="rh_mfknuckle" link2="rh_mfproximal" reason="Adjacent" />
+    <disable_collisions link1="rh_mfknuckle" link2="rh_palm" reason="Adjacent" />
     <disable_collisions link1="rh_mfknuckle" link2="rh_rfdistal" reason="Never" />
     <disable_collisions link1="rh_mfknuckle" link2="rh_rfknuckle" reason="Never" />
     <disable_collisions link1="rh_mfknuckle" link2="rh_rfmiddle" reason="Never" />
     <disable_collisions link1="rh_mfknuckle" link2="rh_rfproximal" reason="Never" />
+    <disable_collisions link1="rh_mfknuckle" link2="rh_thbase" reason="Never" />
+    <disable_collisions link1="rh_mfknuckle" link2="rh_thdistal" reason="Never" />
+    <disable_collisions link1="rh_mfknuckle" link2="rh_thhub" reason="Never" />
+    <disable_collisions link1="rh_mfknuckle" link2="rh_thmiddle" reason="Never" />
+    <disable_collisions link1="rh_mfknuckle" link2="rh_thproximal" reason="Never" />
+    <disable_collisions link1="rh_mfknuckle" link2="rh_wrist" reason="Never" />
+    <disable_collisions link1="rh_mfmiddle" link2="rh_mfproximal" reason="Adjacent" />
+    <disable_collisions link1="rh_mfmiddle" link2="rh_palm" reason="Never" />
     <disable_collisions link1="rh_mfmiddle" link2="rh_rfknuckle" reason="Never" />
+    <disable_collisions link1="rh_mfmiddle" link2="rh_rfproximal" reason="Never" />
+    <disable_collisions link1="rh_mfmiddle" link2="rh_thbase" reason="Never" />
+    <disable_collisions link1="rh_mfmiddle" link2="rh_thhub" reason="Never" />
+    <disable_collisions link1="rh_mfmiddle" link2="rh_thmiddle" reason="Never" />
+    <disable_collisions link1="rh_mfmiddle" link2="rh_thproximal" reason="Never" />
+    <disable_collisions link1="rh_mfmiddle" link2="rh_wrist" reason="Never" />
+    <disable_collisions link1="rh_mfproximal" link2="rh_palm" reason="Never" />
     <disable_collisions link1="rh_mfproximal" link2="rh_rfknuckle" reason="Never" />
-    <disable_collisions link1="rh_mfproximal" link2="rh_rfproximal" reason="Adjacent" />
-    <disable_collisions link1="rh_mfproximal" link2="rh_rfmiddle" reason="Adjacent" />
-    <disable_collisions link1="rh_mfproximal" link2="rh_rfdistal" reason="Adjacent" />
-    <disable_collisions link1="rh_mfmiddle" link2="rh_rfproximal" reason="Adjacent" />
-    <disable_collisions link1="rh_mfmiddle" link2="rh_rfmiddle" reason="Adjacent" />
-    <disable_collisions link1="rh_mfmiddle" link2="rh_rfdistal" reason="Adjacent" />
-    <disable_collisions link1="rh_mfdistal" link2="rh_rfproximal" reason="Adjacent" />
-    <disable_collisions link1="rh_mfdistal" link2="rh_rfmiddle" reason="Adjacent" />
-    <disable_collisions link1="rh_mfdistal" link2="rh_rfdistal" reason="Adjacent" />
-    <disable_collisions link1="rh_mfdistal" link2="rh_lfknuckle" reason="Never" />
-    <disable_collisions link1="rh_mfknuckle" link2="rh_lfdistal" reason="Never" />
-    <disable_collisions link1="rh_mfknuckle" link2="rh_lfknuckle" reason="Never" />
-    <disable_collisions link1="rh_mfknuckle" link2="rh_lfmiddle" reason="Never" />
-    <disable_collisions link1="rh_mfknuckle" link2="rh_lfproximal" reason="Never" />
-    <disable_collisions link1="rh_mfmiddle" link2="rh_lfknuckle" reason="Never" />
-    <disable_collisions link1="rh_mfproximal" link2="rh_lfknuckle" reason="Never" />
-    <disable_collisions link1="rh_mfdistal" link2="rh_lfmetacarpal" reason="Never" />
-    <disable_collisions link1="rh_mfknuckle" link2="rh_lfmetacarpal" reason="Never" />
-    <disable_collisions link1="rh_mfmiddle" link2="rh_lfmetacarpal" reason="Never" />
-    <disable_collisions link1="rh_mfproximal" link2="rh_lfmetacarpal" reason="Never" />
-    <disable_collisions link1="rh_rfdistal" link2="rh_lfknuckle" reason="Never" />
-    <disable_collisions link1="rh_rfknuckle" link2="rh_lfdistal" reason="Never" />
-    <disable_collisions link1="rh_rfknuckle" link2="rh_lfknuckle" reason="Never" />
-    <disable_collisions link1="rh_rfknuckle" link2="rh_lfmiddle" reason="Never" />
-    <disable_collisions link1="rh_rfknuckle" link2="rh_lfproximal" reason="Never" />
-    <disable_collisions link1="rh_rfmiddle" link2="rh_lfknuckle" reason="Never" />
-    <disable_collisions link1="rh_rfproximal" link2="rh_lfknuckle" reason="Never" />
-    <disable_collisions link1="rh_rfproximal" link2="rh_lfproximal" reason="Adjacent" />
-    <disable_collisions link1="rh_rfproximal" link2="rh_lfmiddle" reason="Adjacent" />
-    <disable_collisions link1="rh_rfproximal" link2="rh_lfdistal" reason="Adjacent" />
-    <disable_collisions link1="rh_rfmiddle" link2="rh_lfproximal" reason="Adjacent" />
-    <disable_collisions link1="rh_rfmiddle" link2="rh_lfmiddle" reason="Adjacent" />
-    <disable_collisions link1="rh_rfmiddle" link2="rh_lfdistal" reason="Adjacent" />
-    <disable_collisions link1="rh_rfdistal" link2="rh_lfproximal" reason="Adjacent" />
-    <disable_collisions link1="rh_rfdistal" link2="rh_lfmiddle" reason="Adjacent" />
-    <disable_collisions link1="rh_rfdistal" link2="rh_lfdistal" reason="Adjacent" />
-    <disable_collisions link1="rh_rfdistal" link2="rh_lfmetacarpal" reason="Never" />
-    <disable_collisions link1="rh_rfknuckle" link2="rh_lfmetacarpal" reason="Never" />
-    <disable_collisions link1="rh_rfmiddle" link2="rh_lfmetacarpal" reason="Never" />
-    <disable_collisions link1="rh_rfproximal" link2="rh_lfmetacarpal" reason="Never" />
+    <disable_collisions link1="rh_mfproximal" link2="rh_thbase" reason="Never" />
+    <disable_collisions link1="rh_mfproximal" link2="rh_thhub" reason="Never" />
+    <disable_collisions link1="rh_mfproximal" link2="rh_thmiddle" reason="Never" />
+    <disable_collisions link1="rh_mfproximal" link2="rh_thproximal" reason="Never" />
+    <disable_collisions link1="rh_mfproximal" link2="rh_wrist" reason="Never" />
+    <disable_collisions link1="rh_palm" link2="rh_rfdistal" reason="Never" />
+    <disable_collisions link1="rh_palm" link2="rh_rfknuckle" reason="Adjacent" />
+    <disable_collisions link1="rh_palm" link2="rh_rfmiddle" reason="Never" />
+    <disable_collisions link1="rh_palm" link2="rh_rfproximal" reason="Never" />
+    <disable_collisions link1="rh_palm" link2="rh_thbase" reason="Adjacent" />
+    <disable_collisions link1="rh_palm" link2="rh_thhub" reason="Never" />
+    <disable_collisions link1="rh_palm" link2="rh_thmiddle" reason="Never" />
+    <disable_collisions link1="rh_palm" link2="rh_wrist" reason="Adjacent" />
+    <disable_collisions link1="rh_rfdistal" link2="rh_rfknuckle" reason="Never" />
+    <disable_collisions link1="rh_rfdistal" link2="rh_rfmiddle" reason="Adjacent" />
+    <disable_collisions link1="rh_rfdistal" link2="rh_rfproximal" reason="Never" />
+    <disable_collisions link1="rh_rfdistal" link2="rh_thbase" reason="Never" />
+    <disable_collisions link1="rh_rfdistal" link2="rh_thhub" reason="Never" />
+    <disable_collisions link1="rh_rfdistal" link2="rh_thmiddle" reason="Never" />
+    <disable_collisions link1="rh_rfdistal" link2="rh_thproximal" reason="Never" />
+    <disable_collisions link1="rh_rfdistal" link2="rh_wrist" reason="Never" />
+    <disable_collisions link1="rh_rfknuckle" link2="rh_rfmiddle" reason="Never" />
+    <disable_collisions link1="rh_rfknuckle" link2="rh_rfproximal" reason="Adjacent" />
+    <disable_collisions link1="rh_rfknuckle" link2="rh_thbase" reason="Never" />
+    <disable_collisions link1="rh_rfknuckle" link2="rh_thdistal" reason="Never" />
+    <disable_collisions link1="rh_rfknuckle" link2="rh_thhub" reason="Never" />
+    <disable_collisions link1="rh_rfknuckle" link2="rh_thmiddle" reason="Never" />
+    <disable_collisions link1="rh_rfknuckle" link2="rh_thproximal" reason="Never" />
+    <disable_collisions link1="rh_rfknuckle" link2="rh_wrist" reason="Never" />
+    <disable_collisions link1="rh_rfmiddle" link2="rh_rfproximal" reason="Adjacent" />
+    <disable_collisions link1="rh_rfmiddle" link2="rh_thbase" reason="Never" />
+    <disable_collisions link1="rh_rfmiddle" link2="rh_thhub" reason="Never" />
+    <disable_collisions link1="rh_rfmiddle" link2="rh_thmiddle" reason="Never" />
+    <disable_collisions link1="rh_rfmiddle" link2="rh_thproximal" reason="Never" />
+    <disable_collisions link1="rh_rfmiddle" link2="rh_wrist" reason="Never" />
+    <disable_collisions link1="rh_rfproximal" link2="rh_thbase" reason="Never" />
+    <disable_collisions link1="rh_rfproximal" link2="rh_thhub" reason="Never" />
+    <disable_collisions link1="rh_rfproximal" link2="rh_thmiddle" reason="Never" />
+    <disable_collisions link1="rh_rfproximal" link2="rh_thproximal" reason="Never" />
+    <disable_collisions link1="rh_rfproximal" link2="rh_wrist" reason="Never" />
+    <disable_collisions link1="rh_thbase" link2="rh_thdistal" reason="Never" />
+    <disable_collisions link1="rh_thbase" link2="rh_thhub" reason="Never" />
+    <disable_collisions link1="rh_thbase" link2="rh_thmiddle" reason="Never" />
+    <disable_collisions link1="rh_thbase" link2="rh_thproximal" reason="Adjacent" />
+    <disable_collisions link1="rh_thbase" link2="rh_wrist" reason="Never" />
+    <disable_collisions link1="rh_thdistal" link2="rh_thhub" reason="Never" />
+    <disable_collisions link1="rh_thdistal" link2="rh_thmiddle" reason="Adjacent" />
+    <disable_collisions link1="rh_thdistal" link2="rh_thproximal" reason="Never" />
+    <disable_collisions link1="rh_thdistal" link2="rh_wrist" reason="Never" />
+    <disable_collisions link1="rh_thhub" link2="rh_thmiddle" reason="Adjacent" />
+    <disable_collisions link1="rh_thhub" link2="rh_thproximal" reason="Adjacent" />
+    <disable_collisions link1="rh_thhub" link2="rh_wrist" reason="Never" />
+    <disable_collisions link1="rh_thmiddle" link2="rh_thproximal" reason="Never" />
+    <disable_collisions link1="rh_thmiddle" link2="rh_wrist" reason="Never" />
+    <disable_collisions link1="rh_thproximal" link2="rh_wrist" reason="Never" />
 </robot>

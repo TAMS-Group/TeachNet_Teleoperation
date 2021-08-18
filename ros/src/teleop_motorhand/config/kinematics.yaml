@@ -30,6 +30,10 @@ thumb:
   #minimal_displacement_weight: 1
 right_hand:
   kinematics_solver: bio_ik/BioIKKinematicsPlugin
-  #kinematics_solver: hand_kinematics/HandKinematicsPlugin
   kinematics_solver_search_resolution: 0.005
-  kinematics_solver_timeout: 0.1
+  kinematics_solver_timeout: 0.005
+right_hand_floating:
+  kinematics_solver: bio_ik/BioIKKinematicsPlugin
+  kinematics_solver_search_resolution: 0.005
+  kinematics_solver_timeout: 0.01
+  mode: gd_c

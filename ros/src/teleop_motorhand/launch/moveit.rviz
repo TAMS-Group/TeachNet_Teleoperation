@@ -5,11 +5,14 @@ Panels:
     Property Tree Widget:
       Expanded:
         - /Global Options1
+        - /MotionPlanning1
+        - /MotionPlanning1/Scene Robot1
         - /MotionPlanning1/Planning Request1
         - /MarkerArray1
         - /TF1/Frames1
+        - /PoseArray1
       Splitter Ratio: 0.7425600290298462
-    Tree Height: 961
+    Tree Height: 927
   - Class: rviz/Help
     Name: Help
   - Class: rviz/Views
@@ -50,7 +53,6 @@ Visualization Manager:
       MoveIt_Allow_External_Program: false
       MoveIt_Allow_Replanning: false
       MoveIt_Allow_Sensor_Positioning: false
-      MoveIt_Goal_Tolerance: 0
       MoveIt_Planning_Attempts: 1
       MoveIt_Planning_Time: 5
       MoveIt_Use_Cartesian_Path: false
@@ -295,7 +297,7 @@ Visualization Manager:
         Goal State Color: 250; 128; 0
         Interactive Marker Size: 0.029999999329447746
         Joint Violation Color: 255; 0; 255
-        Planning Group: right_hand
+        Planning Group: right_hand_floating
         Query Goal State: false
         Query Start State: false
         Show Workspace: false
@@ -515,7 +517,7 @@ Visualization Manager:
             Alpha: 1
             Show Axes: false
             Show Trail: false
-        Robot Alpha: 1
+        Robot Alpha: 0.5
         Show Robot Collision: false
         Show Robot Visual: true
       Value: true
@@ -540,19 +542,35 @@ Visualization Manager:
       Unreliable: false
       Value: false
       Visibility:
-        "": true
         Grid: true
         InteractiveMarkers: true
         MarkerArray: true
         MotionPlanning: true
+        PoseArray: true
+        TF: true
         Value: true
       Zoom Factor: 1
     - Class: rviz/MarkerArray
       Enabled: true
-      Marker Topic: /opengl_shadow_bioik_dataset_generator/robot_keypoints
+      Marker Topic: /moveit_multi_bioik_dataset/robot_keypoints
       Name: MarkerArray
       Namespaces:
-        {}
+        0: true
+        1: true
+        100: true
+        15: true
+        16: true
+        17: true
+        18: true
+        19: true
+        2: true
+        3: true
+        4: true
+        5: true
+        6: true
+        7: true
+        8: true
+        9: true
       Queue Size: 100
       Value: true
     - Class: rviz/TF
@@ -569,6 +587,22 @@ Visualization Manager:
         {}
       Update Interval: 0
       Value: false
+    - Alpha: 1
+      Arrow Length: 0.30000001192092896
+      Axes Length: 0.30000001192092896
+      Axes Radius: 0.009999999776482582
+      Class: rviz/PoseArray
+      Color: 255; 25; 0
+      Enabled: true
+      Head Length: 0.07000000029802322
+      Head Radius: 0.029999999329447746
+      Name: PoseArray
+      Shaft Length: 0.23000000417232513
+      Shaft Radius: 0.009999999776482582
+      Shape: Axes
+      Topic: /moveit_multi_bioik_dataset/tag_goals
+      Unreliable: false
+      Value: true
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
@@ -585,32 +619,32 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/XYOrbit
-      Distance: 1.177659034729004
+      Distance: 0.45012152194976807
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: 0.03455056995153427
-        Y: 0.11522945016622543
-        Z: -1.639122046981356e-7
+        X: 0.050962164998054504
+        Y: -0.15905548632144928
+        Z: 1.1972025504292105e-7
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.09479726850986481
+      Pitch: -1.1852028369903564
       Target Frame: forearm
       Value: XYOrbit (rviz)
-      Yaw: 4.919923782348633
+      Yaw: 6.169943332672119
     Saved: ~
 Window Geometry:
   Camera:
     collapsed: false
   Displays:
     collapsed: false
-  Height: 1172
+  Height: 1138
   Help:
     collapsed: false
   Hide Left Dock: false
@@ -619,9 +653,9 @@ Window Geometry:
     collapsed: false
   MotionPlanning - Trajectory Slider:
     collapsed: false
-  QMainWindow State: 000000ff00000000fd0000000100000000000002c90000042cfc0200000007fc000000470000042c000001ef01000023fa000000010100000002fb0000001c004d006f00740069006f006e0050006c0061006e006e0069006e00670100000000ffffffff000002c800fffffffb000000100044006900730070006c0061007900730100000000000002c80000016100fffffffb0000000800480065006c00700000000342000000bb0000008400fffffffb0000000a0056006900650077007300000003b0000000b0000000c200fffffffb0000000c00430061006d00650072006100000002ff000001610000001900fffffffb0000001e004d006f00740069006f006e00200050006c0061006e006e0069006e006701000002330000019e0000000000000000fb00000044004d006f00740069006f006e0050006c0061006e006e0069006e00670020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000004d00fffffffb0000000c00430061006d00650072006101000002ca000001a90000000000000000000004690000042c00000001000000020000000100000002fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
+  QMainWindow State: 000000ff00000000fd00000001000000000000024e0000040afc0200000007fc000000470000040a000001e101000023fa000000010100000002fb0000001c004d006f00740069006f006e0050006c0061006e006e0069006e00670100000000ffffffff0000024e00fffffffb000000100044006900730070006c0061007900730100000000000002c80000016100fffffffb0000000800480065006c00700000000342000000bb0000008400fffffffb0000000a0056006900650077007300000003b0000000b0000000c200fffffffb0000000c00430061006d00650072006100000002ff000001610000001900fffffffb0000001e004d006f00740069006f006e00200050006c0061006e006e0069006e006701000002330000019e0000000000000000fb00000044004d006f00740069006f006e0050006c0061006e006e0069006e00670020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000001900000019fb0000000c00430061006d00650072006101000002ca000001a90000000000000000000004e40000040a00000001000000020000000100000002fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
   Views:
     collapsed: false
   Width: 1849
   X: 71
-  Y: 0
+  Y: 34
