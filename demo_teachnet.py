@@ -60,7 +60,7 @@ start_pos = {"rh_THJ1": 0, "rh_THJ2": 0, "rh_THJ3": 0, "rh_THJ4": 0, "rh_THJ5": 
              "rh_LFJ1": 0, "rh_LFJ2": 0, "rh_LFJ3": 0, "rh_LFJ4": 0, "rh_LFJ5": 0,
              "rh_WRJ1": 0, "rh_WRJ2": 0}
 
-model = torch.load(args.model_path, map_location='cpu')
+model = torch.load(args.model_path, map_location='cuda')
 model.device_ids = [args.gpu]
 print('load model {}'.format(args.model_path))
 
@@ -101,6 +101,8 @@ class Teleoperation():
         self.pub_seg_img = rospy.Publisher('segmented_image', Image, queue_size=5)
         self.rate = rospy.Rate(50)
         self.img = None
+        self.previous_joint = np.zeros([22])
+        self.max_joint_velocity = 1.0472 # 60 deg
         while not rospy.is_shutdown():
             self.hand_joint()
 
@@ -134,8 +136,13 @@ class Teleoperation():
 
         # run the model
         feature = test(model, img)
-        # network_time = rospy.Time.now().to_sec() - start
-        # print("network_time is ", network_time)
+
+        # Apply joint-space velocity limit
+        joint_diff = np.absolute(feature - self.previous_joint)
+        speed_factor = np.ones_like(feature).astype(np.float32)
+        index = joint_diff > self.max_joint_velocity
+        speed_factor[index] = self.max_joint_velocity / joint_diff[index]
+        feature = feature * speed_factor + self.previous_joint * (1-speed_factor)
 
         joint = [0.0, 0.0]
         joint += feature.tolist()
@@ -187,7 +194,7 @@ class Teleoperation():
 
 
 def main():
-    rospy.init_node('human_teleop_shadow')
+    rospy.init_node('teachnet_human_teleop_shadow')
     tele = Teleoperation()
     rospy.spin()
 

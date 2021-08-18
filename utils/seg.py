@@ -68,11 +68,13 @@ def inner(inner_edge, img, zero_as_infty, fore_thresh, mask, gap, thresh, x, y, 
                     if img[xx, yy] > img[i, j]:
                         if img[i, j] <= fore_thresh:
                             mask[xx, yy] = 0
-                            inner_edge.append((i, j))
+                            new_inner_edge = np.array([i, j]).reshape(1, 2)
+                            inner_edge = np.vstack((inner_edge, new_inner_edge))
                     else:
                         if img[xx, yy] <= fore_thresh:
                             mask[i, j] = 0
-                            inner_edge.append((xx, yy))
+                            new_inner_edge = np.array([xx, yy]).reshape(1, 2)
+                            inner_edge = np.vstack((inner_edge, new_inner_edge))
     return inner_edge, mask
 
 
@@ -113,23 +115,10 @@ def seg_hand_depth(img, gap=100, thresh=500, padding=10, output_size=100, scale=
     open_mask -= tmp
     img[open_mask.astype(np.bool)] = np.iinfo(np.uint16).max
 
-    inner_edge = [(1, 1)]
+    inner_edge = np.array([1, 1]).reshape(1, 2)
     inner_edge, mask = inner(inner_edge, img, zero_as_infty, fore_thresh, mask, gap, thresh, x, y, w, l, add)
     inner_edge = inner_edge[1:]
-    # for i, j in zip(x, y):
-    #     sur = surround(i, j, w, l, add)
-    #     for s in sur:
-    #         xx, yy = s
-    #         if gap < abs(img[xx, yy] - img[i, j]):
-    #             if zero_as_infty or abs(img[xx, yy] - img[i, j]) < thresh:
-    #                 if img[xx, yy] > img[i, j]:
-    #                     if img[i, j] <= fore_thresh:
-    #                         mask[xx, yy] = 0
-    #                         inner_edge.append((i, j))
-    #                 else:
-    #                     if img[xx, yy] <= fore_thresh:
-    #                         mask[i, j] = 0
-    #                         inner_edge.append((xx, yy))
+
     mask = mask.astype(np.bool)
     edge_x, edge_y = np.where(mask == 0)
     x_min, x_max = np.min(edge_x), np.max(edge_x)
