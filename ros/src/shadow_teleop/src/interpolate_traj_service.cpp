@@ -6,11 +6,11 @@
 #include <moveit/robot_trajectory/robot_trajectory.h>
 #include <moveit/trajectory_processing/iterative_time_parameterization.h>
 #include <moveit/move_group_interface/move_group_interface.h>
-#include <moveit/collision_detection/collision_robot.h>
+#include <moveit/collision_detection/collision_common.h>
 
 #include <shadow_teleop/checkSelfCollision.h>
 
-#include <moveit/collision_detection_fcl/collision_robot_fcl.h>
+#include <moveit/collision_detection_fcl/collision_common.h>
 
 
 class CheckSelfCollision{
@@ -34,17 +34,10 @@ public:
       planning_scene::PlanningScene scene(robot_model);
       moveit::core::RobotState last_robot_state(scene.getCurrentState());
       last_robot_state.setVariablePositions(req.start);
-      collision_detection::CollisionRobotFCL collision_robot(robot_model);
-      collision_detection::AllowedCollisionMatrix allowed_collision_matrix;
-      for (auto &dc : rml.getModel()->getSRDF()->getDisabledCollisionPairs()) {
-          allowed_collision_matrix.setEntry(dc.link1_, dc.link2_, true);
-      }
 
       moveit::core::RobotState robot_state(scene.getCurrentState());
       robot_state.setVariablePositions(req.goal);
-
       robot_trajectory::RobotTrajectory trajectory(robot_model, "right_hand");
-
       moveit::core::RobotState interpolated_robot_state(scene.getCurrentState());
 
       // ros::Time begin = ros::Time::now();
@@ -63,8 +56,8 @@ public:
           collision_request.verbose = false;
           collision_detection::CollisionResult collision_result;
           interpolated_robot_state.updateCollisionBodyTransforms();
-          collision_robot.checkSelfCollision(collision_request, collision_result,
-                                             interpolated_robot_state, allowed_collision_matrix);
+          scene.checkSelfCollision(collision_request, collision_result,
+                                             interpolated_robot_state);
           if (collision_result.collision) {
             ROS_ERROR("collision, cannot manipulate this pose");
             return 0;
